@@ -10,3 +10,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/Code/testJSP/nbproject/private/
+/Code/testJSP/testJSP-war/nbproject/private/
+/Code/testJSP/testJSP-ejb/nbproject/private/
+/Code/glassfishTest/nbproject/private/
+/Code/glassfishTest/glassfishTest-war/nbproject/private/
+/Code/glassfishTest/glassfishTest-war/build/
