@@ -16,3 +16,6 @@ hs_err_pid*
 /Code/glassfishTest/nbproject/private/
 /Code/glassfishTest/glassfishTest-war/nbproject/private/
 /Code/glassfishTest/glassfishTest-war/build/
+/Code/glassfishTest/glassfishTest-war/dist/
+/Code/glassfishTest/dist/
+/Code/glassfishTest/build/
