@@ -31,3 +31,6 @@ hs_err_pid*
 /Source/U8/A2/U8A2/build/
 /Source/U8/A2/U8A2/U8A2-war/dist/
 /Source/U8/A2/U8A2/U8A2-war/build/
+/Source/ConferenceMain/nbproject/private/
+/Source/ConferenceMain/ConferenceMain-war/nbproject/private/
+/Source/ConferenceMain/ConferenceMain-ejb/nbproject/private/
