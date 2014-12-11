@@ -15,21 +15,17 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class StatefulTestBean implements StatefulTestBeanLocal {
+	// Add business logic below. (Right-click in editor and choose
+	// "Insert Code > Add Business Method")
+	private Date creation;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
-    private Date creation;
-    
-    @PostConstruct
-    private void init() {
-        creation = new Date();
-    }
+	@PostConstruct
+	private void init() {
+		creation = new Date();
+	}
 
-    @Override
-    public Date getCreationDate() {
-        return creation;
-    }
-    
-    
+	@Override
+	public Date getCreationDate() {
+		return creation;
+	}
 }
