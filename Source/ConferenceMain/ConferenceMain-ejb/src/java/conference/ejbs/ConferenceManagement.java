@@ -1,6 +1,8 @@
 package conference.ejbs;
 
-import conference.businessObjects.*;
+import conference.businessObjects.Conference;
+import conference.businessObjects.Organizer;
+import conference.businessObjects.User;
 import java.util.Date;
 import javax.ejb.Stateless;
 
