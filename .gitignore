@@ -34,3 +34,6 @@ hs_err_pid*
 /Source/ConferenceMain/nbproject/private/
 /Source/ConferenceMain/ConferenceMain-war/nbproject/private/
 /Source/ConferenceMain/ConferenceMain-ejb/nbproject/private/
+/Source/ConferenceMain/ConferenceMain-war/build/
+/Source/ConferenceMain/ConferenceMain-ejb/build/
+/Source/ConferenceMain/ConferenceMain-ejb/dist/

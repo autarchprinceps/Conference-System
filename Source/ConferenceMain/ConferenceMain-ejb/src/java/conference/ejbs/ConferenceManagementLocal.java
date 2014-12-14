@@ -15,5 +15,7 @@ public interface ConferenceManagementLocal {
     int getConferenceRating(final int conferenceId) throws Exception;
 
     int getOrganizerRating(final int organizerId) throws Exception;
+
+    int createUser(final String name, final boolean isOrganizer);
     
 }

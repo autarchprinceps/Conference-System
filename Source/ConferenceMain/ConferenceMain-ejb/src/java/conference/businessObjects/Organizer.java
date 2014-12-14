@@ -21,4 +21,8 @@ public class Organizer extends User {
                 .reduce(Double::sum)
                 .get() / organizedConferences.size();
     }
+
+    public List<Conference> getOrganizedConferences() {
+        return organizedConferences;
+    }
 }

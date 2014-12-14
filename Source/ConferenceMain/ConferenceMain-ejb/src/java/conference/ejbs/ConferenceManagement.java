@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
  * TODO:
  * - Don't use general Exception
  * - DAO
+ * - Stateful ?
  */
 
 @Stateless
@@ -72,6 +73,11 @@ public class ConferenceManagement implements ConferenceManagementLocal {
         } else {
             throw new Exception("getOrganizerRating: Selected user is not an organozer");
         }
+    }
+
+    @Override
+    public int createUser(final String name, final boolean isOrganizer) {
+        return isOrganizer ? new User(name).getId() : new Organizer(name).getId();
     }
 
     

@@ -7,6 +7,10 @@ import java.util.Map;
 public class Conference {
     private final static Map<Integer, Conference> table = new HashMap<>();
     private static int id_gen = 0;
+
+    public static Map<Integer, Conference> getTable() {
+        return table;
+    }
     
     private final int id;
     private final String name;
@@ -62,5 +66,9 @@ public class Conference {
 
     public Date getEnd() {
         return end;
+    }
+
+    public Organizer getOrganizer() {
+        return organizer;
     }
 }

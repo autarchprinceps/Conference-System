@@ -6,6 +6,10 @@ import java.util.Map;
 public class User {
     private final static Map<Integer, User> table = new HashMap<>();
     private static int id_gen = 0;
+
+    public static Map<Integer, User> getTable() {
+        return table;
+    }
     
     private final int id;
     private final String name;
