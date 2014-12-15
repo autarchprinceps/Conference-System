@@ -32,4 +32,11 @@ public class User {
     public String getName() {
         return name;
     }
+
+	/**
+	 * @return the organizer
+	 */
+	public boolean isOrganizer() {
+		return this instanceof Organizer;
+	}
 }

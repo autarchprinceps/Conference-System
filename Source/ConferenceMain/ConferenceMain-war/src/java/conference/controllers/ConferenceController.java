@@ -1,10 +1,12 @@
 package conference.controllers;
 
+import com.sun.javafx.webkit.Accessor;
 import conference.businessObjects.Conference;
 import conference.businessObjects.Organizer;
 import conference.businessObjects.User;
 import conference.ejbs.ConferenceManagementLocal;
-import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,22 +20,19 @@ public class ConferenceController {
     @EJB
     private ConferenceManagementLocal ejb;
     
-    public ConferenceController() {
+    public Collection<Conference> getConferences() {
+        return Conference.getTable().values();
     }
     
-    public Conference[] getConferences() {
-        return (Conference[])Conference.getTable().values().toArray();
+    public Collection<User> getUsers() {
+        return User.getTable().values();
     }
     
-    public User[] getUsers() {
-        return (User[])User.getTable().values().toArray();
-    }
-    
-    public Organizer[] getOrganizers() {
-        return (Organizer[])
-                User.getTable().values().stream()
-                .filter((user) -> user instanceof Organizer)
-                .toArray();
+	// TODO cast will probably fail
+    public ArrayList<User> getOrganizers() {
+		ArrayList<User> tmp = new ArrayList<>();
+        User.getTable().values().stream().filter((user) -> user instanceof Organizer).forEach((user) -> tmp.add(user));
+		return tmp;
     }
     
     private String result = "";
@@ -52,18 +51,18 @@ public class ConferenceController {
     private String userId;
     
     public String addUser() {
-        result = "User created with ID: " + ejb.createUser(userName, organizer);
-        return "main.xhtml";
+        result = "User created with ID: " + ejb.createUser(userName, !organizer);
+        return Pages.main;
     }
     
     public String addConference() {
         try {
-            result = "Conference created with ID: " + ejb.createConference(Integer.parseInt(confOrganizer), confName, Integer.parseInt(confMaxPart), new Date(confStartDate), new Date(confEndDate));
+            result = "Conference created with ID: " + ejb.createConference(Integer.parseInt(confOrganizer), confName, Integer.parseInt(confMaxPart), new Date(), new Date());// new Date(confStartDate), new Date(confEndDate));
         } catch (Exception ex) {
             result = "ERROR: " + ex.toString();
             Logger.getLogger(ConferenceController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "main.xhtml";
+        return Pages.main;
     }
     
     public String registerToConference() {
@@ -74,7 +73,7 @@ public class ConferenceController {
             result = "ERROR: " + ex.toString();
             Logger.getLogger(ConferenceController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "main.xhtml";
+        return Pages.main;
     }
     
     public String rateConference() {
@@ -85,7 +84,7 @@ public class ConferenceController {
             result = "ERROR: " + ex.toString();
             Logger.getLogger(ConferenceController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "main.xhtml";
+        return Pages.main;
     }
 
     public String getConfName() {

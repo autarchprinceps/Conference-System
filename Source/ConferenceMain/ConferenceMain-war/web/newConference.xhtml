@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
     </h:head>
     <h:body>
@@ -13,17 +14,17 @@
             <h:inputText value="#{conferenceController.confName}"></h:inputText>
             <h:outputLabel value="Organizer:"></h:outputLabel>
             <h:selectOneListbox value="#{conferenceController.confOrganizer}">
-                <ui:repeat value="#{conferenceController.organizers}" var="organizer">
+				<c:forEach items="#{conferenceController.organizers}" var="organizer">
                     <f:selectItem itemValue="#{organizer.id}" itemLabel="#{organizer.name}"></f:selectItem>
-                </ui:repeat>
+				</c:forEach>
             </h:selectOneListbox>
             <h:outputLabel value="Max. Participants:"></h:outputLabel>
             <h:inputText value="#{conferenceController.confMaxPart}"></h:inputText>
-            <h:outputLabel value="Start:"></h:outputLabel>
+            <!-- <h:outputLabel value="Start:"></h:outputLabel>
             <h:inputText value="#{conferenceController.confStartDate}"></h:inputText>
             <h:outputLabel value="End:"></h:outputLabel>
-            <h:inputText value="#{conferenceController.confEndDate}"></h:inputText>
-            <h:commandButton action="#{conferenceController.addUser()}"></h:commandButton>
+            <h:inputText value="#{conferenceController.confEndDate}"></h:inputText> -->
+            <h:commandButton action="#{conferenceController.addConference()}"></h:commandButton>
         </h:form>
     </h:body>
 </html>

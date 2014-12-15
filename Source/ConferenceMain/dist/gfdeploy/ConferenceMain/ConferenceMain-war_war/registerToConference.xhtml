@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
     </h:head>
     <h:body>
@@ -11,15 +12,15 @@
         <h:form>
             <h:outputLabel value="User:"></h:outputLabel>
             <h:selectOneListbox value="#{conferenceController.userId}">
-                <ui:repeat value="#{conferenceController.users}" var="user">
+                <c:forEach items="#{conferenceController.users}" var="user">
                     <f:selectItem itemValue="#{user.id}" itemLabel="#{user.name}"></f:selectItem>
-                </ui:repeat>
+                </c:forEach>
             </h:selectOneListbox>
             <h:outputLabel value="Conference:"></h:outputLabel>
             <h:selectOneListbox value="#{conferenceController.confId}">
-                <ui:repeat value="#{conferenceController.conferences}" var="conference">
+                <c:forEach items="#{conferenceController.conferences}" var="conference">
                     <f:selectItem itemValue="#{conference.id}" itemLabel="#{conference.name}"></f:selectItem>
-                </ui:repeat>
+                </c:forEach>
             </h:selectOneListbox>
             <h:commandButton action="#{conferenceController.registerToConference()}"></h:commandButton>
         </h:form>

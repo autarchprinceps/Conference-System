@@ -47,9 +47,11 @@ public class Conference {
     }
     
     public double getRating() {
-        return (1.0 * userVote.values().stream()
+        return userVote.size() > 0 ?
+				(1.0 * userVote.values().stream()
                 .reduce(Integer::sum)
-                .get()) / userVote.size();
+                .get()) / userVote.size()
+				: 0;
     }
 
     public int getId() {

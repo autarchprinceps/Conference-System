@@ -39,3 +39,4 @@ hs_err_pid*
 /Source/ConferenceMain/ConferenceMain-ejb/dist/
 /Source/ConferenceMain/build/
 /Source/ConferenceMain/ConferenceMain-war/dist/
+/Source/ConferenceMain/dist/
