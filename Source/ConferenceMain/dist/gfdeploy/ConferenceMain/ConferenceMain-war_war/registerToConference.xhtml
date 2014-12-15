@@ -16,13 +16,15 @@
                     <f:selectItem itemValue="#{user.id}" itemLabel="#{user.name}"></f:selectItem>
                 </c:forEach>
             </h:selectOneListbox>
+			<br />
             <h:outputLabel value="Conference:"></h:outputLabel>
             <h:selectOneListbox value="#{conferenceController.confId}">
                 <c:forEach items="#{conferenceController.conferences}" var="conference">
                     <f:selectItem itemValue="#{conference.id}" itemLabel="#{conference.name}"></f:selectItem>
                 </c:forEach>
             </h:selectOneListbox>
-            <h:commandButton action="#{conferenceController.registerToConference()}"></h:commandButton>
+			<br />
+			<h:commandButton value="Register" action="#{conferenceController.registerToConference()}"></h:commandButton>
         </h:form>
     </h:body>
 </html>

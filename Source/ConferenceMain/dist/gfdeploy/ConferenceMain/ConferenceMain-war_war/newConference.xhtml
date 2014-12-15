@@ -12,19 +12,28 @@
         <h:form>
             <h:outputLabel value="Name:"></h:outputLabel>
             <h:inputText value="#{conferenceController.confName}"></h:inputText>
+			<br />
             <h:outputLabel value="Organizer:"></h:outputLabel>
             <h:selectOneListbox value="#{conferenceController.confOrganizer}">
 				<c:forEach items="#{conferenceController.organizers}" var="organizer">
                     <f:selectItem itemValue="#{organizer.id}" itemLabel="#{organizer.name}"></f:selectItem>
 				</c:forEach>
             </h:selectOneListbox>
+			<br />
             <h:outputLabel value="Max. Participants:"></h:outputLabel>
             <h:inputText value="#{conferenceController.confMaxPart}"></h:inputText>
-            <!-- <h:outputLabel value="Start:"></h:outputLabel>
-            <h:inputText value="#{conferenceController.confStartDate}"></h:inputText>
+			<br />
+            <h:outputLabel value="Start:"></h:outputLabel>
+            <h:inputText value="#{conferenceController.confStartDateY}"></h:inputText>
+			<h:inputText value="#{conferenceController.confStartDateM}"></h:inputText>
+			<h:inputText value="#{conferenceController.confStartDateD}"></h:inputText>
+			<br />
             <h:outputLabel value="End:"></h:outputLabel>
-            <h:inputText value="#{conferenceController.confEndDate}"></h:inputText> -->
-            <h:commandButton action="#{conferenceController.addConference()}"></h:commandButton>
+            <h:inputText value="#{conferenceController.confEndDateY}"></h:inputText>
+			<h:inputText value="#{conferenceController.confEndDateM}"></h:inputText>
+			<h:inputText value="#{conferenceController.confEndDateD}"></h:inputText>
+			<br />
+            <h:commandButton value="Create" action="#{conferenceController.addConference()}"></h:commandButton>
         </h:form>
     </h:body>
 </html>

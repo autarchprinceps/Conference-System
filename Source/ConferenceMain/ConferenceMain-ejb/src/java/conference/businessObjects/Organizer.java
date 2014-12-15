@@ -16,10 +16,12 @@ public class Organizer extends User {
     }
     
     public double getRating() {
-        return organizedConferences.stream()
+        return organizedConferences.size() > 0 ?
+				organizedConferences.stream()
                 .map((conference) -> conference.getRating())
                 .reduce(Double::sum)
-                .get() / organizedConferences.size();
+                .get() / organizedConferences.size()
+				: 0;
     }
 
     public List<Conference> getOrganizedConferences() {

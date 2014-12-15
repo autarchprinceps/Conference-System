@@ -9,8 +9,11 @@
         <h:form>
             <h:outputLabel value="Name:"></h:outputLabel>
             <h:inputText value="#{conferenceController.userName}"></h:inputText>
-            <h:selectBooleanCheckbox value="#{conferenceController.organizer}" label="Is organizer?"></h:selectBooleanCheckbox>
-            <h:commandButton action="#{conferenceController.addUser()}"></h:commandButton>
+			<br />
+			<h:outputLabel value="Is organizer?"></h:outputLabel>
+            <h:selectBooleanCheckbox value="#{conferenceController.organizer}"></h:selectBooleanCheckbox>
+			<br />
+            <h:commandButton value="Create" action="#{conferenceController.addUser()}"></h:commandButton>
         </h:form>
     </h:body>
 </html>
