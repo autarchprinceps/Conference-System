@@ -40,8 +40,12 @@ public class ConferenceController {
     private String confName;
     private String confOrganizer;
     private String confMaxPart;
-    private String confStartDate; // TODO better
-    private String confEndDate; // TODO better
+    private String confStartDateY;
+	private String confStartDateM;
+	private String confStartDateD;
+    private String confEndDateY;
+	private String confEndDateM;
+	private String confEndDateD;
     
     private boolean organizer;
     private String userName;
@@ -57,7 +61,7 @@ public class ConferenceController {
     
     public String addConference() {
         try {
-            result = "Conference created with ID: " + ejb.createConference(Integer.parseInt(confOrganizer), confName, Integer.parseInt(confMaxPart), new Date(), new Date());// new Date(confStartDate), new Date(confEndDate));
+            result = "Conference created with ID: " + ejb.createConference(Integer.parseInt(confOrganizer), confName, Integer.parseInt(confMaxPart), new Date(Integer.parseInt(confStartDateY), Integer.parseInt(confStartDateM), Integer.parseInt(confStartDateD)), new Date(Integer.parseInt(confEndDateY), Integer.parseInt(confEndDateM), Integer.parseInt(confEndDateD)));
         } catch (Exception ex) {
             result = "ERROR: " + ex.toString();
             Logger.getLogger(ConferenceController.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,21 +115,6 @@ public class ConferenceController {
         this.confMaxPart = confMaxPart;
     }
 
-    public String getConfStartDate() {
-        return confStartDate;
-    }
-
-    public void setConfStartDate(String confStartDate) {
-        this.confStartDate = confStartDate;
-    }
-
-    public String getConfEndDate() {
-        return confEndDate;
-    }
-
-    public void setConfEndDate(String confEndDate) {
-        this.confEndDate = confEndDate;
-    }
 
     public boolean isOrganizer() {
         return organizer;
@@ -174,4 +163,88 @@ public class ConferenceController {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+	/**
+	 * @return the confStartDateY
+	 */
+	public String getConfStartDateY() {
+		return confStartDateY;
+	}
+
+	/**
+	 * @param confStartDateY the confStartDateY to set
+	 */
+	public void setConfStartDateY(String confStartDateY) {
+		this.confStartDateY = confStartDateY;
+	}
+
+	/**
+	 * @return the confStartDateM
+	 */
+	public String getConfStartDateM() {
+		return confStartDateM;
+	}
+
+	/**
+	 * @param confStartDateM the confStartDateM to set
+	 */
+	public void setConfStartDateM(String confStartDateM) {
+		this.confStartDateM = confStartDateM;
+	}
+
+	/**
+	 * @return the confStartDateD
+	 */
+	public String getConfStartDateD() {
+		return confStartDateD;
+	}
+
+	/**
+	 * @param confStartDateD the confStartDateD to set
+	 */
+	public void setConfStartDateD(String confStartDateD) {
+		this.confStartDateD = confStartDateD;
+	}
+
+	/**
+	 * @return the confEndDateY
+	 */
+	public String getConfEndDateY() {
+		return confEndDateY;
+	}
+
+	/**
+	 * @param confEndDateY the confEndDateY to set
+	 */
+	public void setConfEndDateY(String confEndDateY) {
+		this.confEndDateY = confEndDateY;
+	}
+
+	/**
+	 * @return the confEndDateM
+	 */
+	public String getConfEndDateM() {
+		return confEndDateM;
+	}
+
+	/**
+	 * @param confEndDateM the confEndDateM to set
+	 */
+	public void setConfEndDateM(String confEndDateM) {
+		this.confEndDateM = confEndDateM;
+	}
+
+	/**
+	 * @return the confEndDateD
+	 */
+	public String getConfEndDateD() {
+		return confEndDateD;
+	}
+
+	/**
+	 * @param confEndDateD the confEndDateD to set
+	 */
+	public void setConfEndDateD(String confEndDateD) {
+		this.confEndDateD = confEndDateD;
+	}
 }
