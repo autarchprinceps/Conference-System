@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
 	  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
@@ -10,36 +9,36 @@
     <h:body>
         <h1>Rate Conference</h1>
         <h:form>
-            <h:outputLabel value="User:"></h:outputLabel>
+            <h:outputLabel value="User:"/>
             <h:selectOneListbox value="#{conferenceController.userId}">
                 <c:forEach items="#{conferenceController.users}" var="user">
-                    <f:selectItem itemValue="#{user.id}" itemLabel="#{user.name}"></f:selectItem>
+                    <f:selectItem itemValue="#{user.id}" itemLabel="#{user.name}"/>
                 </c:forEach>
             </h:selectOneListbox>
 			<br />
-            <h:outputLabel value="Conference:"></h:outputLabel>
+            <h:outputLabel value="Conference:"/>
             <h:selectOneListbox value="#{conferenceController.confId}">
                 <c:forEach items="#{conferenceController.conferences}" var="conference">
-                    <f:selectItem itemValue="#{conference.id}" itemLabel="#{conference.name}"></f:selectItem>
+                    <f:selectItem itemValue="#{conference.id}" itemLabel="#{conference.name}"/>
                 </c:forEach>
             </h:selectOneListbox>
 			<br />
-            <h:outputLabel value="Rating:"></h:outputLabel>
+            <h:outputLabel value="Rating:"/>
             <h:selectOneRadio value="#{conferenceController.rating}">
-				<f:selectItem itemValue="-5" itemLabel="-5"></f:selectItem>
-				<f:selectItem itemValue="-4" itemLabel="-4"></f:selectItem>
-				<f:selectItem itemValue="-3" itemLabel="-3"></f:selectItem>
-				<f:selectItem itemValue="-2" itemLabel="-2"></f:selectItem>
-				<f:selectItem itemValue="-1" itemLabel="-1"></f:selectItem>
-				<f:selectItem itemValue="0" itemLabel="0"></f:selectItem>
-				<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
-				<f:selectItem itemValue="2" itemLabel="2"></f:selectItem>
-				<f:selectItem itemValue="3" itemLabel="3"></f:selectItem>
-				<f:selectItem itemValue="4" itemLabel="4"></f:selectItem>
-				<f:selectItem itemValue="5" itemLabel="5"></f:selectItem>
+				<f:selectItem itemValue="-5" itemLabel="-5"/>
+				<f:selectItem itemValue="-4" itemLabel="-4"/>
+				<f:selectItem itemValue="-3" itemLabel="-3"/>
+				<f:selectItem itemValue="-2" itemLabel="-2"/>
+				<f:selectItem itemValue="-1" itemLabel="-1"/>
+				<f:selectItem itemValue="0" itemLabel="0"/>
+				<f:selectItem itemValue="1" itemLabel="1"/>
+				<f:selectItem itemValue="2" itemLabel="2"/>
+				<f:selectItem itemValue="3" itemLabel="3"/>
+				<f:selectItem itemValue="4" itemLabel="4"/>
+				<f:selectItem itemValue="5" itemLabel="5"/>
 			</h:selectOneRadio>
 			<br />
-			<h:commandButton value="Rate" action="#{conferenceController.rateConference()}"></h:commandButton>
+			<h:commandButton value="Rate" action="#{conferenceController.rateConference()}"/>
         </h:form>
     </h:body>
 </html>

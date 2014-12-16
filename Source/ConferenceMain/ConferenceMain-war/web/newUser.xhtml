@@ -7,13 +7,13 @@
     <h:body>
         <h1>Create User</h1>
         <h:form>
-            <h:outputLabel value="Name:"></h:outputLabel>
-            <h:inputText value="#{conferenceController.userName}"></h:inputText>
+            <h:outputLabel value="Name:"/>
+            <h:inputText value="#{conferenceController.userName}"/>
 			<br />
-			<h:outputLabel value="Is organizer?"></h:outputLabel>
-            <h:selectBooleanCheckbox value="#{conferenceController.organizer}"></h:selectBooleanCheckbox>
+			<h:outputLabel value="Is organizer?"/>
+            <h:selectBooleanCheckbox value="#{conferenceController.organizer}"/>
 			<br />
-            <h:commandButton value="Create" action="#{conferenceController.addUser()}"></h:commandButton>
+            <h:commandButton value="Create" action="#{conferenceController.addUser()}"/>
         </h:form>
     </h:body>
 </html>

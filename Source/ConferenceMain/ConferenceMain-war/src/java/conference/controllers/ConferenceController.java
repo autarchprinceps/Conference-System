@@ -1,6 +1,5 @@
 package conference.controllers;
 
-import com.sun.javafx.webkit.Accessor;
 import conference.businessObjects.Conference;
 import conference.businessObjects.Organizer;
 import conference.businessObjects.User;
@@ -28,7 +27,6 @@ public class ConferenceController {
         return User.getTable().values();
     }
     
-	// TODO cast will probably fail
     public ArrayList<User> getOrganizers() {
 		ArrayList<User> tmp = new ArrayList<>();
         User.getTable().values().stream().filter((user) -> user instanceof Organizer).forEach((user) -> tmp.add(user));
@@ -83,7 +81,7 @@ public class ConferenceController {
     public String rateConference() {
         try {
             ejb.rateConference(Integer.parseInt(confId), Integer.parseInt(userId), Integer.parseInt(rating));
-            result = "Conference rated";
+            result = "Conference rated: " + Conference.getConferenceById(Integer.parseInt(confId)).getName() + " " + User.getUserById(Integer.parseInt(userId)).getName() + " " + Integer.parseInt(rating);
         } catch (Exception ex) {
             result = "ERROR: " + ex.toString();
             Logger.getLogger(ConferenceController.class.getName()).log(Level.SEVERE, null, ex);
