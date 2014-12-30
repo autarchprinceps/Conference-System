@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <p:growl/>
+        <h1>#{conferenceViewController.conferenceName}</h1>
+        <!-- goto search in this conference -->
+        <p:outputLabel for="organizer" value="Organizer:"/>
+        <p:link>
+            <f:param name="userId" value=""
+        </p:link>
+        <h2>Associated Users</h2>
+        <p:dataTable value="#{conferenceViewController.users}" var="edge" emptyMessage="No users registered yet">
+            <p:column headerText="User">
+                <p:link outcome="#{pageController.userView}" value="#{edge.userName}">
+                    <f:param name="userId" value="#{edge.userId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Role">
+                <h:outputText value="#{edge.role}"/>
+            </p:column>
+        </p:dataTable>
+        <!-- TODO check whether logged in -->
+        <h2>Actions</h2>
+        <p:menubar>
+            <c:choose <!-- TODO layout? not just after -->>
+                <c:when test="#{conferenceViewController.currentUserRegisteredToThis}">
+                    <p:commandButton value="Deregister" actionListener="#{conferenceViewController.doDeregister()}"/>
+                    <!-- goto pubview if author or reviewer -->
+                </c:when>
+                <c:otherwise>
+                    <p:commandButton onclick="PF('registerDialog').show();" value="Register"/>
+                </c:otherwise>
+            </c:choose>
+        </p:menubar>
+        
+        <p:dialog header="Register to conference" modal="true" widgetVar="registerDialog">
+            <p:outputLabel for="selectRole" value="Role in conference:"/>
+            <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
+                <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
+            </p:selectOneMenu>
+            <p:commandButton value="Send registration" actionListener="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();"/>
+        </p:dialog>
+    </h:body>
+</html>
+

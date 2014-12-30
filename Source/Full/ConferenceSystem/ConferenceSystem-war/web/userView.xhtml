@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <p:growl/>
+        <!-- Above common from pages -> include ? -->
+        <h1>#{userViewController.userName}</h1>
+        <h2>Associated Conferences</h2>
+        <p:dataTable value="#{userViewController.conferences}" var="edge" emptyMessage="Not registered to any conference yet">
+            <p:column headerText="Conference">
+                <p:link outcome="#{pageController.conferenceView}" value="#{edge.conferenceName}">
+                    <f:param name="conferenceId" value="#{edge.conferenceId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Role">
+                <h:outputText value="#{edge.role}"/>
+            </p:column>
+            <c:if test="#{userViewController.account}">
+                <p:column>
+                    <p:commandButton value="Deregister" actionListener="#{userViewController.doDeregister(edge.conferenceId)}"/>
+                </p:column>
+            </c:if>
+        </p:dataTable>
+        <h2>Administer Account</h2>
+        <c:if test="#{userViewController.account}">
+            <!--
+            TODO account area
+                - Change password
+            -->
+        </c:if>
+    </h:body>
+</html>
+
