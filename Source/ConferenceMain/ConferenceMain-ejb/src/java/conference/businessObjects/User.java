@@ -1,5 +1,6 @@
 package conference.businessObjects;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class User {
     private static int id_gen = 0;
 
     public static Map<Integer, User> getTable() {
-        return table;
+        return Collections.unmodifiableMap(table);
     }
     
     private final int id;
