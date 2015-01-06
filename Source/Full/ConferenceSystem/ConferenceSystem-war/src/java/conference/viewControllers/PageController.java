@@ -12,6 +12,16 @@ public class PageController {
     private final String userView = "userView";
     private final String conferenceSearch = "conferenceSearch";
     private final String pubSearch = "pubSearch";
+    private final String index = "index";
+    private final String error = "error";
+
+    public String getError() {
+        return error;
+    }
+
+    public String getIndex() {
+        return index;
+    }
 
     public String getConferenceView() {
         return conferenceView;

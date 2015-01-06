@@ -1,11 +1,26 @@
 package conference.viewControllers;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
 public class LoginRegController {
+    
+    @ManagedProperty(value="#{errorController}")
+    private ErrorController errorController;
+    
+    @ManagedProperty(value="#{pageController}")
+    private PageController pageController;
+
+    public PageController getPageController() {
+        return pageController;
+    }
+
+    public void setPageController(PageController pageController) {
+        this.pageController = pageController;
+    }
     
     private String userNameLogin;
 
@@ -58,4 +73,38 @@ public class LoginRegController {
         this.regPassRepeat = regPassRepeat;
     }
 
+    /**
+     * @return the errorController
+     */
+    public ErrorController getErrorController() {
+        return errorController;
+    }
+
+    /**
+     * @param errorController the errorController to set
+     */
+    public void setErrorController(ErrorController errorController) {
+        this.errorController = errorController;
+    }
+
+    
+    public String doLogin() {
+        //TODO login
+        if(true) {
+            return pageController.getIndex();
+        } else {
+            errorController.setErrorMsg(new Message("TODO", "TODO"));
+            return pageController.getError();
+        }
+    }
+    
+    public String doRegister() {
+        //TODO reg + login
+        if(true) {
+            return pageController.getIndex();
+        } else {
+            errorController.setErrorMsg(new Message("TODO", "TODO"));
+            return pageController.getError();
+        }
+    }
 }
