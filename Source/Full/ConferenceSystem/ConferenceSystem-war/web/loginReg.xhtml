@@ -9,10 +9,25 @@
         <div class="ui-grid ui-grid-responsive">
             <div class="ui-grid-row">
                 <div class="ui-grid-col-6">
-                    Login
+                    <p:panelGrid columns="2">
+                        <h:outputText value="User name:"/>
+                        <p:inputText value="#{loginRegController.userNameLogin}"/>
+                        <h:outputText value="Password:"/>
+                        <p:password value="#{loginRegController.passwordLogin}"/>
+                        <!-- TODO button -->
+                    </p:panelGrid>
                 </div>
                 <div class="ui-grid-col-6">
-                    Register
+                    <p:messages autoUpdate="true"/>
+                    <p:panelGrid id="reg" columns="2">
+                        <h:outputText value="User name:"/>
+                        <p:inputText value="#{loginRegController.regUserName}" required="true"/>
+                        <h:outputText value="Password:"/>
+                        <p:password id="regPass" required="true" match="repeatPass" value="#{loginRegController.regPass}" feedback="true"/>
+                        <h:outputText value="Repeat Password:"/>
+                        <p:password id="repeatPass" required="true" value="#{loginRegController.regPassRepeat}"/>
+                    </p:panelGrid>
+                    <p:commandButton update="reg" value="Register"/> <!-- TODO link to something -->
                 </div>
             </div>
         </div>

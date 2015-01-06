@@ -12,8 +12,8 @@
         <h1>#{conferenceViewController.conferenceName}</h1>
         <!-- goto search in this conference -->
         <p:outputLabel for="organizer" value="Organizer:"/>
-        <p:link>
-            <f:param name="userId" value=""
+        <p:link outcome="#{pageController.userView}" value="#{conferenceViewController.conferenceOrganizerName}">
+            <f:param name="userId" value="#{conferenceViewController.conferenceOrganizerId}"/>
         </p:link>
         <h2>Associated Users</h2>
         <p:dataTable value="#{conferenceViewController.users}" var="edge" emptyMessage="No users registered yet">

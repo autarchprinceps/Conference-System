@@ -10,6 +10,8 @@ public class PageController {
     private final String loginReg = "loginReg";
     private final String pubView = "pubView";
     private final String userView = "userView";
+    private final String conferenceSearch = "conferenceSearch";
+    private final String pubSearch = "pubSearch";
 
     public String getConferenceView() {
         return conferenceView;
@@ -25,5 +27,13 @@ public class PageController {
 
     public String getUserView() {
         return userView;
+    }
+    
+    public String getConferenceSearch() {
+        return conferenceSearch;
+    }
+
+    public String getPubSearch() {
+        return pubSearch;
     }
 }
