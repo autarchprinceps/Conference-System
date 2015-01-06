@@ -43,3 +43,8 @@ hs_err_pid*
 /Source/Full/ConferenceSystem/nbproject/private/
 /Source/Full/ConferenceSystem/ConferenceSystem-war/nbproject/private/
 /Source/Full/ConferenceSystem/ConferenceSystem-ejb/nbproject/private/
+/Source/Full/ConferenceSystem/ConferenceSystem-ejb/build/
+/Source/Full/ConferenceSystem/ConferenceSystem-war/build/
+/Source/Full/ConferenceSystem/build/
+/Source/Full/ConferenceSystem/dist/
+
