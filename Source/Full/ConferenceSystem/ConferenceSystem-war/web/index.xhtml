@@ -27,7 +27,7 @@
         <h1>Navigation</h1>
         <p:link outcome="#{pageController.conferenceSearch}" value="Search for conference"/>
         <p:link outcome="#{pageController.pubSearch}" value="Search for publication"/>
-        <p:link outcome="#{pageController.userView}">
+        <p:link outcome="#{pageController.userView}" value="Your account">
             <f:param name="userId" value=""/> <!-- TODO get current userId from auth -->
         </p:link>
     </h:body>

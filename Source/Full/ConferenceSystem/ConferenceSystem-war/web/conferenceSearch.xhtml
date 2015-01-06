@@ -2,11 +2,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
     </h:head>
     <h:body>
-        <p:autoComplete minQueryLength="2" completeMethod="#{conferenceSearchController.doAutocomplete}"/>        
+        <p:autoComplete minQueryLength="2" completeMethod="#{conferenceSearchController.doAutocomplete}" value="#{conferenceSearchController.searchTerm}">
+            <p:ajax event="keyup" delay="40" update="results"/>
+        </p:autoComplete>
+        <!-- TODO filters -->
+        
+        <p:dataTable id="results" value="#{conferenceSearchController.searchResults}" var="result" emptyMessage="">
+            <p:column headerText="Name">
+                <p:link outcome="#{pageController.conferenceView}" value="#{result.name}">
+                    <f:param name="conferenceId" value="#{result.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Organizer">
+                <p:link outcome="#{pageController.userView}" value="#{result.organizerName}">
+                    <f:param name="userId" value="#{result.organizerId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Start">
+                <h:outputText value="#{result.start}"/>
+            </p:column>
+            <p:column headerText="End">
+                <h:outputText value="#{result.end}"/>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
 
