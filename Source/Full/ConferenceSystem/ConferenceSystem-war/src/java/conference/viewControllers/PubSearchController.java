@@ -9,4 +9,18 @@ import javax.faces.bean.ViewScoped;
 public class PubSearchController {
     @ManagedProperty(value = "#{param.conferenceId}")
     private int conferenceId;
+
+    /**
+     * @return the conferenceId
+     */
+    public int getConferenceId() {
+        return conferenceId;
+    }
+
+    /**
+     * @param conferenceId the conferenceId to set
+     */
+    public void setConferenceId(int conferenceId) {
+        this.conferenceId = conferenceId;
+    }
 }

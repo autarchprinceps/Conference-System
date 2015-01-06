@@ -16,6 +16,14 @@ public class UserViewController {
     
     @ManagedProperty(value = "#{param.userId}")
     private int userIdGetParameter;
+
+    public int getUserIdGetParameter() {
+        return userIdGetParameter;
+    }
+
+    public void setUserIdGetParameter(int userIdGetParameter) {
+        this.userIdGetParameter = userIdGetParameter;
+    }
     
     public String getUserName() {
         // TODO get name from jpa entities by id
