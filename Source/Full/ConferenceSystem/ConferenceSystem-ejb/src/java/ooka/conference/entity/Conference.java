@@ -49,7 +49,7 @@ public class Conference implements Serializable {
     @JoinColumn(name = "CONFERENCE_REVIEWER")
     private Set<User> reviewer;
 
-    @OneToMany
+    @OneToMany(mappedBy = "conferenec")
     @JoinColumn(name = "CONFERENCE_PUBLICATIONS")
     private Set<Publication> publications;
 

@@ -7,6 +7,7 @@ package ooka.conference.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.annotation.Generated;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -27,13 +28,14 @@ public class Publication implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private PublicationId id;
+    @Id
+    @GeneratedValue
+    private int id;
 
     @ManyToOne
     private Conference conference;
 
-    @OneToMany
+    @ManyToOne
     private User author;
 
     @ManyToOne
@@ -82,13 +84,14 @@ public class Publication implements Serializable {
      this.id = id;
      }
      */
+    /*
     @Override
     public int hashCode() {
         int hash = 0;
         hash += ((PublicationId) id).hashCode();
         return hash;
     }
-
+*/
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -106,12 +109,12 @@ public class Publication implements Serializable {
     public String toString() {
         return "conference.entity.Publication[ id=" + id + " ]";
     }
-
+/*
     @Embeddable
-    class PublicationId {
+    class PublicationId implements Serializable {
 
         int author_id;
         int conference_id;
     }
-
+*/
 }

@@ -30,22 +30,41 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "organizer")
     private Set<Conference> conferencesAsOrganizer;
 
     @ManyToMany
     private Set<Conference> conferencesAsAuthor;
 
-    @OneToMany
+    @OneToMany(mappedBy = "viewer")
     private Set<ConferenceViewerAssociation> conferencesAsViewer;
 
     @ManyToMany
     private Set<Conference> conferencesAsReviewer;
 
-    @OneToMany
+    @OneToMany(mappedBy = "publications")
+    private Set<Publication> publications;
+    
+    @OneToMany(mappedBy = "reviews")
     private Set<Review> reviews;
     
     private String name;
+
+    public Set<Publication> getPublications() {
+        return publications;
+    }
+
+    public void setPublications(Set<Publication> publications) {
+        this.publications = publications;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public Set<Conference> getConferencesAsReviewer() {
         return conferencesAsReviewer;
