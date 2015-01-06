@@ -6,13 +6,11 @@
 package conference.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,47 +18,46 @@ import javax.persistence.Table;
  * @author bastian
  */
 @Entity
-@Table(name = "PUBLICATION")
-public class Publication implements Serializable {
-
+@Table(name = "REVIEW")
+public class Review implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @ManyToOne
-    private Conference conference;
+    private User author;
+    
+    @ManyToOne
+    private Publication publication;
+    
+    private String text;
 
-    @OneToMany
-    private Set<Review> reviews;
-
-    private String name;
-
-    public Set<Review> getReviews() {
-        return reviews;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
-    public Conference getConference() {
-        return conference;
+    public Publication getPublication() {
+        return publication;
     }
 
-    public void setConference(Conference conference) {
-        this.conference = conference;
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -79,10 +76,10 @@ public class Publication implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Publication)) {
+        if (!(object instanceof Review)) {
             return false;
         }
-        Publication other = (Publication) object;
+        Review other = (Review) object;
         if (this.id != other.id) {
             return false;
         }
@@ -91,7 +88,7 @@ public class Publication implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.Publication[ id=" + id + " ]";
+        return "conference.entity.Review[ id=" + id + " ]";
     }
-
+    
 }

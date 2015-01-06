@@ -6,13 +6,12 @@
 package conference.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,8 +19,8 @@ import javax.persistence.Table;
  * @author bastian
  */
 @Entity
-@Table(name = "PUBLICATION")
-public class Publication implements Serializable {
+@Table(name = "CONFERENCE_VIEWER_ASSOCIATION")
+public class ConferenceViewerAssociation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,18 +31,10 @@ public class Publication implements Serializable {
     @ManyToOne
     private Conference conference;
 
-    @OneToMany
-    private Set<Review> reviews;
+    @ManyToOne
+    private User viewer;
 
-    private String name;
-
-    public Set<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
+    private int rating;
 
     public Conference getConference() {
         return conference;
@@ -53,12 +44,20 @@ public class Publication implements Serializable {
         this.conference = conference;
     }
 
-    public String getName() {
-        return name;
+    public User getViewer() {
+        return viewer;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setViewer(User viewer) {
+        this.viewer = viewer;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public int getId() {
@@ -79,10 +78,10 @@ public class Publication implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Publication)) {
+        if (!(object instanceof ConferenceViewerAssociation)) {
             return false;
         }
-        Publication other = (Publication) object;
+        ConferenceViewerAssociation other = (ConferenceViewerAssociation) object;
         if (this.id != other.id) {
             return false;
         }
@@ -91,7 +90,7 @@ public class Publication implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.Publication[ id=" + id + " ]";
+        return "conference.entity.ConferenceToViewerAssociation[ id=" + id + " ]";
     }
 
 }
