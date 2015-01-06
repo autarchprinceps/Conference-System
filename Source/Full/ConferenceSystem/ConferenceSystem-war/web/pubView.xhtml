@@ -2,10 +2,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
     </h:head>
     <h:body>
+        <h1>Author</h1>
+        <p:panelGrid columns="2">
+            <h:outputText value="Name:"/>
+            <p:link outcome="#{pageController.userView}" value="#{pubViewController.authorName}">
+                <f:param name="userId" value="#{pubViewController.authorId}"/>
+            </p:link>
+        </p:panelGrid>
+        <h1>Publication</h1>
+        <c:choose>
+            <c:when test="#{pubViewController.publicationAvailable}">
+                <c:forEach items="#{pubViewController.publicationContent}" var="line">
+                    <h:outputText style="word-wrap: break-word;" value="#{line}"/>
+                </c:forEach>
+                <c:if test="#{pubViewController.currentUserAuthor}">
+                    <!-- TODO change publication -->
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <h:outputText value="Content of the publication hasn't been made available yet"/>
+                <c:if test="#{pubViewController.currentUserAuthor}">
+                    <!-- TODO enter pub content -->
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+        <h1>Reviews</h1>
+        <p:dataTable value="#{pubViewController.reviews}" var="review" emptyMessage="No reviewers assigned to this publication yet">
+            <p:column headerText="Reviewer">
+                <p:link outcome="#{pageController.userView}" value="#{review.reviewer.name}">
+                    <f:param name="userId" value="#{review.reviewer.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Content">
+                <c:forEach items="#{review.content}" var="line">
+                    <h:outputText style="word-wrap: break-word;" value="#{line}"/>
+                </c:forEach>
+            </p:column>
+            <c:if test="#{pubViewController.isCurrentUserReviewer(review.reviewer.id)}">
+                <!-- TODO edit review content -->
+            </c:if>
+        </p:dataTable>
     </h:body>
 </html>
 

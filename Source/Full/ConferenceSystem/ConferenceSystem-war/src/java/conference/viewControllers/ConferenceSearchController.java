@@ -1,5 +1,6 @@
 package conference.viewControllers;
 
+import conference.dataTransferal.Conference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -12,4 +13,21 @@ public class ConferenceSearchController {
         // TODO
         return new ArrayList<>();
     }
+
+    public List<Conference> getSearchResults() {
+        // TODO do search
+        return new ArrayList<>();
+    }
+    
+    private String searchTerm;
+
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
+
+
 }
