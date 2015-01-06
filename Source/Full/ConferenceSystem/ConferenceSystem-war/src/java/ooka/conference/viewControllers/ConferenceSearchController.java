@@ -1,6 +1,6 @@
-package conference.viewControllers;
+package ooka.conference.viewControllers;
 
-import conference.dataTransferal.Conference;
+import ooka.conference.dto.Conference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;

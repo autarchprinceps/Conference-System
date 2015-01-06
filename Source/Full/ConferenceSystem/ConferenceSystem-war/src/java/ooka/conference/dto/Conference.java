@@ -1,4 +1,4 @@
-package conference.dataTransferal;
+package ooka.conference.dto;
 
 import java.util.Date;
 

@@ -1,7 +1,7 @@
-package conference.viewControllers;
+package ooka.conference.viewControllers;
 
-import conference.dataTransferal.UserConferenceConnection;
-import conference.dataTransferal.ParticipantRole;
+import ooka.conference.dto.UserConferenceConnection;
+import ooka.conference.dto.ParticipantRole;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;

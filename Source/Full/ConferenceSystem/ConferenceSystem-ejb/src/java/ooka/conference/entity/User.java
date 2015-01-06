@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package conference.entity;
+package ooka.conference.entity;
 
 import java.io.Serializable;
 import java.util.Set;

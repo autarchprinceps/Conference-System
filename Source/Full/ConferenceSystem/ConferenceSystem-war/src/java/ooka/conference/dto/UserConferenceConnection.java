@@ -1,4 +1,4 @@
-package conference.dataTransferal;
+package ooka.conference.dto;
 
 public class UserConferenceConnection {
     private final int userId;

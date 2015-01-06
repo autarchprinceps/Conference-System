@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package conference.entity;
+package ooka.conference.entity;
 
 import java.io.Serializable;
-import javax.persistence.Embedded;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,46 +19,47 @@ import javax.persistence.Table;
  * @author bastian
  */
 @Entity
-@Table(name = "REVIEW")
-public class Review implements Serializable {
+@Table(name = "CONFERENCE_VIEWER_ASSOCIATION")
+public class ConferenceViewerAssociation implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @ManyToOne
-    private User author;
-    
+    private Conference conference;
+
     @ManyToOne
-    private Publication publication;
-    
-    private String text;
+    private User viewer;
 
-    public User getAuthor() {
-        return author;
+    private int rating;
+
+    public Conference getConference() {
+        return conference;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setConference(Conference conference) {
+        this.conference = conference;
     }
 
-    public Publication getPublication() {
-        return publication;
+    public User getViewer() {
+        return viewer;
     }
 
-    public void setPublication(Publication publication) {
-        this.publication = publication;
+    public void setViewer(User viewer) {
+        this.viewer = viewer;
     }
 
-    public String getText() {
-        return text;
+    public int getRating() {
+        return rating;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -77,10 +78,10 @@ public class Review implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Review)) {
+        if (!(object instanceof ConferenceViewerAssociation)) {
             return false;
         }
-        Review other = (Review) object;
+        ConferenceViewerAssociation other = (ConferenceViewerAssociation) object;
         if (this.id != other.id) {
             return false;
         }
@@ -89,6 +90,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.Review[ id=" + id + " ]";
+        return "conference.entity.ConferenceToViewerAssociation[ id=" + id + " ]";
     }
+
 }
