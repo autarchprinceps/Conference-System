@@ -7,6 +7,8 @@ package conference.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,17 +27,27 @@ public class Publication implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @EmbeddedId
+    private PublicationId id;
 
     @ManyToOne
     private Conference conference;
 
     @OneToMany
+    private User author;
+
+    @ManyToOne
     private Set<Review> reviews;
 
     private String name;
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     public Set<Review> getReviews() {
         return reviews;
@@ -61,18 +73,19 @@ public class Publication implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
+    /*
+     public PublicationId getId() {
+     return id;
+     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+     public void setPublicationId(PublicationId id) {
+     this.id = id;
+     }
+     */
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += ((PublicationId) id).hashCode();
         return hash;
     }
 
@@ -92,6 +105,13 @@ public class Publication implements Serializable {
     @Override
     public String toString() {
         return "conference.entity.Publication[ id=" + id + " ]";
+    }
+
+    @Embeddable
+    class PublicationId {
+
+        int author_id;
+        int conference_id;
     }
 
 }

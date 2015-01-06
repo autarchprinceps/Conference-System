@@ -6,6 +6,7 @@
 package conference.entity;
 
 import java.io.Serializable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -90,5 +91,4 @@ public class Review implements Serializable {
     public String toString() {
         return "conference.entity.Review[ id=" + id + " ]";
     }
-    
 }
