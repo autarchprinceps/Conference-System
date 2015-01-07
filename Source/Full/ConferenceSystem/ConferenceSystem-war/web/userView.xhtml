@@ -11,6 +11,18 @@
         <p:growl/>
         <!-- Above common from pages -> include ? -->
         <h1>#{userViewController.userName}</h1>
+		<h2>Organized Conferences</h2>
+		<!-- TODO overall rating -->
+		<p:dataTable value="#{userViewController.organizedConferences}" var="orgConf" emptyMessage="Not a conference organizer yet">
+			<p:column headerText="Name">
+				<p:link outcome="#{pageController.conferenceView}" value="#{orgConf.conferenceName}">
+                    <f:param name="conferenceId" value="#{orgConf.conferenceId}"/>
+                </p:link>
+			</p:column>
+			<p:column headerText="Rating">
+				<p:rating stars="11" value="#{orgConf.rating + 6}" disabled="true"/>
+			</p:column>
+		</p:dataTable>
         <h2>Associated Conferences</h2>
         <p:dataTable value="#{userViewController.conferences}" var="edge" emptyMessage="Not registered to any conference yet">
             <p:column headerText="Conference">
@@ -32,6 +44,7 @@
             <!--
             TODO account area
                 - Change password
+				- Organize Conference
             -->
         </c:if>
     </h:body>

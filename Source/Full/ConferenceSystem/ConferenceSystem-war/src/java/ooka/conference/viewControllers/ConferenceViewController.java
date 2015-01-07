@@ -4,17 +4,23 @@ import ooka.conference.dto.UserConferenceConnection;
 import ooka.conference.dto.ParticipantRole;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import ooka.conference.ejb.ConferenceAdministrationLocal;
+import org.primefaces.event.RateEvent;
 
 @ManagedBean
 @ViewScoped
 public class ConferenceViewController {
     @ManagedProperty(value = "#{param.conferenceId}")
     private int conferenceId;
+	
+	@EJB
+	private ConferenceAdministrationLocal conferenceAdministrationBean;
     
     private ParticipantRole selectedRoleForRegistration;
     
@@ -64,6 +70,16 @@ public class ConferenceViewController {
             );
         }
     }
+	
+	public int getOverallConferenceRating() {
+		// TODO
+		return 0 + 6;
+	}
+	
+	public int getCurrentUsersRating() {
+		// TODO
+		return 0 + 6;
+	}
     
     public void doRegister() {
         // TODO getCurrentUserId from authentication
@@ -80,6 +96,15 @@ public class ConferenceViewController {
             );
         }
     }
+	
+	public void doRate(RateEvent event) {
+		// TODO get current userId from auth
+		try {
+			conferenceAdministrationBean.rateConference(conferenceId, 0, ((Integer)(event.getRating())) - 6);
+		} catch(Exception ex) {
+			// TODO
+		}
+	}
 
     public int getConferenceId() {
         return conferenceId;

@@ -11,10 +11,14 @@
         <p:growl/>
         <h1>#{conferenceViewController.conferenceName}</h1>
         <!-- goto search in this conference -->
-        <p:outputLabel for="organizer" value="Organizer:"/>
-        <p:link outcome="#{pageController.userView}" value="#{conferenceViewController.conferenceOrganizerName}">
-            <f:param name="userId" value="#{conferenceViewController.conferenceOrganizerId}"/>
-        </p:link>
+		<p:panelGrid columns="2">
+			<p:outputLabel for="organizer" value="Organizer:"/>
+			<p:link outcome="#{pageController.userView}" value="#{conferenceViewController.conferenceOrganizerName}">
+				<f:param name="userId" value="#{conferenceViewController.conferenceOrganizerId}"/>
+			</p:link>
+			<p:outputLabel for="avgrating" value="Rating:"/>
+			<p:rating id="avgrating" stars="11" disabled="true" value="#{conferenceViewController.overallConferenceRating}"/>
+		</p:panelGrid>
         <h2>Associated Users</h2>
         <p:dataTable value="#{conferenceViewController.users}" var="edge" emptyMessage="No users registered yet">
             <p:column headerText="User">
@@ -31,6 +35,9 @@
         <p:menubar>
             <c:choose <!-- TODO layout? not just after -->>
                 <c:when test="#{conferenceViewController.currentUserRegisteredToThis}">
+					<p:rating stars="11" value="#{conferenceViewController.currentUsersRating}">
+						<p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
+					</p:rating>
                     <p:commandButton value="Deregister" actionListener="#{conferenceViewController.doDeregister()}"/>
                     <!-- goto pubview if author or reviewer -->
                 </c:when>

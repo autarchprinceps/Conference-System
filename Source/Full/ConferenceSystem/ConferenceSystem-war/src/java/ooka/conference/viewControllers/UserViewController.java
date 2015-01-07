@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import ooka.conference.dto.Conference;
 
 @ManagedBean
 @ViewScoped
@@ -36,6 +37,11 @@ public class UserViewController {
         result.add(new UserConferenceConnection(0, "Max Muster", 0, "conf", ParticipantRole.Author));
         return result;
     }
+	
+	public List<Conference> getOrganizedConferences() {
+		// TODO
+		return new ArrayList<>();
+	}
     
     public boolean isAccount() {
         // TODO getCurrentUserId from authentication service
