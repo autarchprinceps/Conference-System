@@ -1,10 +1,30 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
     </h:head>
     <h:body>
+        <p:autoComplete minQueryLength="2" completeMethod="#{pubSearchController.doAutocomplete}" value="#{pubSearchController.searchTerm}">
+            <p:ajax event="keyup" delay="40" update="results"/>
+        </p:autoComplete>
+        <!-- TODO filters -->
+        
+        <p:dataTable id="results" value="#{pubSearchController.searchResults}" var="result" emptyMessage="">
+            <p:column headerText="Name">
+                <p:link outcome="#{pageController.pubView}" value="#{result.title}">
+                    <f:param name="authorId" value="#{result.author.id}"/>
+                    <f:param name="conferenceId" value="#{result.conference.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Author">
+                <p:link outcome="#{pageController.userView}" value="#{result.author.name}">
+                    <f:param name="userId" value="#{result.author.id}"/>
+                </p:link>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
 

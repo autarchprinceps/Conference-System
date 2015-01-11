@@ -11,8 +11,8 @@ import ooka.conference.ejb.SearchLocal;
 @ManagedBean
 @ViewScoped
 public class ConferenceSearchController {
-	@EJB
-	private SearchLocal searchBean;
+    @EJB
+    private SearchLocal searchBean;
 	
     public List<String> doAutocomplete(String query) {
 		return searchBean.getConferenceAutocompletion(query);
