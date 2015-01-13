@@ -6,96 +6,74 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author bastian
  */
 @Entity
-@Table(name = "WEB_USER")
+@Table(name = "end_user", schema = "conference_system")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")})
 public class User implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @OneToMany(mappedBy = "organizer")
-    private Set<Conference> conferencesAsOrganizer;
-
-    @ManyToMany
-    private Set<Conference> conferencesAsAuthor;
-
-    @OneToMany(mappedBy = "viewer")
-    private Set<ConferenceViewerAssociation> conferencesAsViewer;
-
-    @ManyToMany
-    private Set<Conference> conferencesAsReviewer;
-
-    @OneToMany(mappedBy = "publications")
-    private Set<Publication> publications;
-    
-    @OneToMany(mappedBy = "reviews")
-    private Set<Review> reviews;
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "name")
     private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Publication> publicationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Review> reviewCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<ConferenceUserRole> conferenceUserRoleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<ConferenceRating> conferenceRatingCollection;
 
-    public Set<Publication> getPublications() {
-        return publications;
+    public User() {
     }
 
-    public void setPublications(Set<Publication> publications) {
-        this.publications = publications;
+    public User(Integer id) {
+        this.id = id;
     }
 
-    public Set<Review> getReviews() {
-        return reviews;
+    public User(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
+    public Integer getId() {
+        return id;
     }
 
-    public Set<Conference> getConferencesAsReviewer() {
-        return conferencesAsReviewer;
-    }
-
-    public void setConferencesAsReviewer(Set<Conference> conferencesAsReviewer) {
-        this.conferencesAsReviewer = conferencesAsReviewer;
-    }
-
-    public Set<Conference> getConferencesAsOrganizer() {
-        return conferencesAsOrganizer;
-    }
-
-    public void setConferencesAsOrganizer(Set<Conference> conferencesAsOrganizer) {
-        this.conferencesAsOrganizer = conferencesAsOrganizer;
-    }
-
-    public Set<Conference> getConferencesAsAuthor() {
-        return conferencesAsAuthor;
-    }
-
-    public void setConferencesAsAuthor(Set<Conference> conferencesAsAuthor) {
-        this.conferencesAsAuthor = conferencesAsAuthor;
-    }
-
-    public Set<ConferenceViewerAssociation> getConferencesAsViewer() {
-        return conferencesAsViewer;
-    }
-
-    public void setConferencesAsViewer(Set<ConferenceViewerAssociation> conferencesAsViewer) {
-        this.conferencesAsViewer = conferencesAsViewer;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -106,18 +84,46 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    @XmlTransient
+    public Collection<Publication> getPublicationCollection() {
+        return publicationCollection;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPublicationCollection(Collection<Publication> publicationCollection) {
+        this.publicationCollection = publicationCollection;
+    }
+
+    @XmlTransient
+    public Collection<Review> getReviewCollection() {
+        return reviewCollection;
+    }
+
+    public void setReviewCollection(Collection<Review> reviewCollection) {
+        this.reviewCollection = reviewCollection;
+    }
+
+    @XmlTransient
+    public Collection<ConferenceUserRole> getConferenceUserRoleCollection() {
+        return conferenceUserRoleCollection;
+    }
+
+    public void setConferenceUserRoleCollection(Collection<ConferenceUserRole> conferenceUserRoleCollection) {
+        this.conferenceUserRoleCollection = conferenceUserRoleCollection;
+    }
+
+    @XmlTransient
+    public Collection<ConferenceRating> getConferenceRatingCollection() {
+        return conferenceRatingCollection;
+    }
+
+    public void setConferenceRatingCollection(Collection<ConferenceRating> conferenceRatingCollection) {
+        this.conferenceRatingCollection = conferenceRatingCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +134,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if (this.id != other.id) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -136,7 +142,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.User[ id=" + id + " ]";
+        return "ooka.conference.entity.User[ id=" + id + " ]";
     }
-
+    
 }

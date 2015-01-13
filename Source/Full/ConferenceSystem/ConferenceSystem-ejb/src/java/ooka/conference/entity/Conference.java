@@ -6,98 +6,90 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author bastian
  */
 @Entity
-@Table(name = "CONFERENCE")
+@Table(name = "conference", schema = "conference_system")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Conference.findAll", query = "SELECT c FROM Conference c"),
+    @NamedQuery(name = "Conference.findById", query = "SELECT c FROM Conference c WHERE c.id = :id"),
+    @NamedQuery(name = "Conference.findByName", query = "SELECT c FROM Conference c WHERE c.name = :name"),
+    @NamedQuery(name = "Conference.findByParticipantLimit", query = "SELECT c FROM Conference c WHERE c.participantLimit = :participantLimit"),
+    @NamedQuery(name = "Conference.findByDate", query = "SELECT c FROM Conference c WHERE c.date = :date")})
 public class Conference implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "CONFERENCE_ORGANIZER")
-    private User organizer;
-
-    @ManyToMany
-    @JoinColumn(name = "CONFERENCE_AUTHORS")
-    private Set<User> authors;
-
-    @OneToMany
-    @JoinColumn(name = "CONFERENCE_VIEWER")
-    private Set<ConferenceViewerAssociation> viewer;
-
-    @ManyToMany
-    @JoinColumn(name = "CONFERENCE_REVIEWER")
-    private Set<User> reviewer;
-
-    @OneToMany(mappedBy = "conferenec")
-    @JoinColumn(name = "CONFERENCE_PUBLICATIONS")
-    private Set<Publication> publications;
-
-    @Column(name = "conference_date")
-    private Date date;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "name")
     private String name;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "participant_limit")
     private int participantLimit;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
+    private Collection<Publication> publicationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
+    private Collection<Review> reviewCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
+    private Collection<ConferenceUserRole> conferenceUserRoleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
+    private Collection<ConferenceRating> conferenceRatingCollection;
 
-    public Set<User> getReviewer() {
-        return reviewer;
+    public Conference() {
     }
 
-    public void setReviewer(Set<User> reviewer) {
-        this.reviewer = reviewer;
+    public Conference(Integer id) {
+        this.id = id;
     }
 
-    public User getOrganizer() {
-        return organizer;
+    public Conference(Integer id, String name, int participantLimit, Date date) {
+        this.id = id;
+        this.name = name;
+        this.participantLimit = participantLimit;
+        this.date = date;
     }
 
-    public void setOrganizer(User organizer) {
-        this.organizer = organizer;
+    public Integer getId() {
+        return id;
     }
 
-    public Set<ConferenceViewerAssociation> getViewer() {
-        return viewer;
-    }
-
-    public void setViewer(Set<ConferenceViewerAssociation> viewer) {
-        this.viewer = viewer;
-    }
-
-    public Set<User> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<User> authors) {
-        this.authors = authors;
-    }
-
-    public Set<Publication> getPublications() {
-        return publications;
-    }
-
-    public void setPublications(Set<Publication> publications) {
-        this.publications = publications;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -108,14 +100,6 @@ public class Conference implements Serializable {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public int getParticipantLimit() {
         return participantLimit;
     }
@@ -124,18 +108,54 @@ public class Conference implements Serializable {
         this.participantLimit = participantLimit;
     }
 
-    public int getId() {
-        return id;
+    public Date getDate() {
+        return date;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @XmlTransient
+    public Collection<Publication> getPublicationCollection() {
+        return publicationCollection;
+    }
+
+    public void setPublicationCollection(Collection<Publication> publicationCollection) {
+        this.publicationCollection = publicationCollection;
+    }
+
+    @XmlTransient
+    public Collection<Review> getReviewCollection() {
+        return reviewCollection;
+    }
+
+    public void setReviewCollection(Collection<Review> reviewCollection) {
+        this.reviewCollection = reviewCollection;
+    }
+
+    @XmlTransient
+    public Collection<ConferenceUserRole> getConferenceUserRoleCollection() {
+        return conferenceUserRoleCollection;
+    }
+
+    public void setConferenceUserRoleCollection(Collection<ConferenceUserRole> conferenceUserRoleCollection) {
+        this.conferenceUserRoleCollection = conferenceUserRoleCollection;
+    }
+
+    @XmlTransient
+    public Collection<ConferenceRating> getConferenceRatingCollection() {
+        return conferenceRatingCollection;
+    }
+
+    public void setConferenceRatingCollection(Collection<ConferenceRating> conferenceRatingCollection) {
+        this.conferenceRatingCollection = conferenceRatingCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -146,7 +166,7 @@ public class Conference implements Serializable {
             return false;
         }
         Conference other = (Conference) object;
-        if (this.id != other.id) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -154,7 +174,7 @@ public class Conference implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.Conference[ id=" + id + " ]";
+        return "ooka.conference.entity.Conference[ id=" + id + " ]";
     }
-
+    
 }

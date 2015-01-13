@@ -6,49 +6,61 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
-import javax.persistence.Embedded;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author bastian
  */
 @Entity
-@Table(name = "REVIEW")
+@Table(name = "publication_review", schema = "conference_system")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
+    @NamedQuery(name = "Review.findByAuthorId", query = "SELECT r FROM Review r WHERE r.reviewPK.authorId = :authorId"),
+    @NamedQuery(name = "Review.findByConferenceId", query = "SELECT r FROM Review r WHERE r.reviewPK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "Review.findByText", query = "SELECT r FROM Review r WHERE r.text = :text")})
 public class Review implements Serializable {
     private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @ManyToOne
-    private User author;
-    
-    @ManyToOne
-    private Publication publication;
-    
+    @EmbeddedId
+    protected ReviewPK reviewPK;
+    @Size(max = 2147483647)
+    @Column(name = "text")
     private String text;
+    @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Conference conference;
+    @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private User user;
 
-    public User getAuthor() {
-        return author;
+    public Review() {
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public Review(ReviewPK reviewPK) {
+        this.reviewPK = reviewPK;
     }
 
-    public Publication getPublication() {
-        return publication;
+    public Review(int authorId, int conferenceId) {
+        this.reviewPK = new ReviewPK(authorId, conferenceId);
     }
 
-    public void setPublication(Publication publication) {
-        this.publication = publication;
+    public ReviewPK getReviewPK() {
+        return reviewPK;
+    }
+
+    public void setReviewPK(ReviewPK reviewPK) {
+        this.reviewPK = reviewPK;
     }
 
     public String getText() {
@@ -58,19 +70,27 @@ public class Review implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-    
-    public int getId() {
-        return id;
+
+    public Conference getConference() {
+        return conference;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setConference(Conference conference) {
+        this.conference = conference;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += (reviewPK != null ? reviewPK.hashCode() : 0);
         return hash;
     }
 
@@ -81,7 +101,7 @@ public class Review implements Serializable {
             return false;
         }
         Review other = (Review) object;
-        if (this.id != other.id) {
+        if ((this.reviewPK == null && other.reviewPK != null) || (this.reviewPK != null && !this.reviewPK.equals(other.reviewPK))) {
             return false;
         }
         return true;
@@ -89,6 +109,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "conference.entity.Review[ id=" + id + " ]";
+        return "ooka.conference.entity.Review[ reviewPK=" + reviewPK + " ]";
     }
+    
 }
