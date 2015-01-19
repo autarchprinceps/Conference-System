@@ -1,4 +1,4 @@
-package ooka.conference.viewControllers;
+package ooka.conference.util;
 
 public class Message {
     private final String title;

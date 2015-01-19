@@ -6,8 +6,10 @@ import javax.faces.bean.ApplicationScoped;
 @ManagedBean
 @ApplicationScoped
 public class PageController {
+
     private final String conferenceView = "conferenceView";
-    private final String loginReg = "loginReg";
+    private final String login = "login";
+    private final String register = "register";
     private final String pubView = "pubView";
     private final String userView = "userView";
     private final String conferenceSearch = "conferenceSearch";
@@ -27,18 +29,22 @@ public class PageController {
         return conferenceView;
     }
 
-    public String getLoginReg() {
-        return loginReg;
+    public String getLogin() {
+        return login;
     }
 
     public String getPubView() {
         return pubView;
     }
 
+    public String getRegister() {
+        return register;
+    }
+
     public String getUserView() {
         return userView;
     }
-    
+
     public String getConferenceSearch() {
         return conferenceSearch;
     }

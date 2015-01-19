@@ -1,5 +1,6 @@
 package ooka.conference.viewControllers;
 
+import ooka.conference.util.Message;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 

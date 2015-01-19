@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+        <jdbc-resource enabled="true" jndi-name="jdbc/ooka-postgresql" pool-name="DerbyPool" object-type="user">
+            <property name="serverName" value="dumbo.inf.h-brs.de"/>
+            <property name="databaseName" value="bmager2s"/>
+            <property name="User" value="bmager2s"/>
+            <property name="Password" value="bmager2s"/>
+            <property name="URL" value="jdbc:postgresql://dumbo.inf.h-brs.de/bmager2s"/>
+            <property name="driverClass" value="org.postgresql.Driver"/>
+        </jdbc-resource>
+</resources>
