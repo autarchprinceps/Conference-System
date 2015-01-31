@@ -31,9 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Publication.findAll", query = "SELECT p FROM Publication p"),
     @NamedQuery(name = "Publication.findByAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId"),
     @NamedQuery(name = "Publication.findByConferenceId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "Publication.findByConferenceIdAndAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId AND p.publicationPK.authorId = :authorId"),
     @NamedQuery(name = "Publication.findByTitle", query = "SELECT p FROM Publication p WHERE p.title = :title"),
     @NamedQuery(name = "Publication.findByText", query = "SELECT p FROM Publication p WHERE p.text = :text")})
 public class Publication implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PublicationPK publicationPK;
@@ -132,5 +134,5 @@ public class Publication implements Serializable {
     public String toString() {
         return "ooka.conference.entity.Publication[ publicationPK=" + publicationPK + " ]";
     }
-    
+
 }

@@ -3,9 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <h2>Conference-System</h2>
+        <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
         <div class="ui-grid ui-grid-responsive">
@@ -15,12 +16,12 @@
                         <p:messages autoUpdate="true"/>
                         <p:panelGrid id="reg" columns="2">
 
-                            <h:outputText value="User name:"/>
-                            <p:inputText value="#{loginRegController.regUserName}" required="true"/>
+                            <h:outputText value="Username:"/>
+                            <p:inputText value="#{loginRegController.registrationUsername}" required="true"/>
                             <h:outputText value="Password:"/>
-                            <p:password id="regPass" required="true" match="repeatPass" value="#{loginRegController.regPass}" feedback="true"/>
+                            <p:password id="regPass" required="true" match="repeatPass" value="#{loginRegController.registrationPassword}" feedback="true"/>
                             <h:outputText value="Repeat Password:"/>
-                            <p:password id="repeatPass" required="true" value="#{loginRegController.regPassRepeat}"/>
+                            <p:password id="repeatPass" required="true"/>
                             <f:facet name="footer">
                                 <h:panelGroup style="display: block; text-align:center">
                                     <p:commandButton update="reg" value="Register" action="#{loginRegController.doRegister()}"/>
@@ -30,7 +31,7 @@
                     </h:form>
                 </div>
                 <div class="navigation" align="center">
-                    <p:link outcome="#{pageController.login}" value="Go back to Login"/>
+                    <p:link outcome="#{pageController.userLoginPage}" value="Go back to Login"/>
                 </div>
             </div>
         </div>

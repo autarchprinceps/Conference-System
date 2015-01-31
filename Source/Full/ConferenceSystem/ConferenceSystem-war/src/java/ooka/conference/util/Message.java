@@ -1,6 +1,7 @@
 package ooka.conference.util;
 
 public class Message {
+
     private final String title;
     private final String content;
     private boolean read;
@@ -8,7 +9,11 @@ public class Message {
     public boolean isRead() {
         return read;
     }
-    
+
+    public void setRead(boolean isRead) {
+        read = isRead;
+    }
+
     public Message(String title, String content) {
         this.title = title;
         this.content = content;

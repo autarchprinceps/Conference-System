@@ -1,4 +1,4 @@
-package ooka.conference.viewControllers;
+package ooka.conference.appControllers;
 
 import ooka.conference.util.Message;
 import javax.faces.bean.ManagedBean;
@@ -18,5 +18,8 @@ public class ErrorController {
         this.errorMsg = errorMsg;
     }
 
+    public boolean hasMessage() {
+        return errorMsg != null && !errorMsg.isRead();
+    }
 
 }

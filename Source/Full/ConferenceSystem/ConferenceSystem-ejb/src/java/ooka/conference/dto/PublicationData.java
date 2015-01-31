@@ -1,9 +1,8 @@
 package ooka.conference.dto;
 
-public class Publication {
-    private Conference conference;
-    private User author;
-    private Review[] reviews;
+public class PublicationData {
+    private ConferenceData conference;
+    private ReviewData[] reviews;
     private String title;
     private String[] content;
     private boolean delivered;
@@ -12,11 +11,7 @@ public class Publication {
         return delivered ? content : new String[]{"Publication not yet delivered"};
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public Review[] getReviews() {
+    public ReviewData[] getReviews() {
         return reviews;
     }
 
@@ -28,7 +23,7 @@ public class Publication {
         return delivered;
     }
     
-    public Conference getConference() {
+    public ConferenceData getConference() {
         return conference;
     }
 }

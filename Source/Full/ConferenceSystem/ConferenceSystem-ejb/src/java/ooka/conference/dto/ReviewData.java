@@ -1,16 +1,11 @@
 package ooka.conference.dto;
 
-public class Review {
-    private User reviewer;
+public class ReviewData {
     private String[] content;
     private boolean delivered;
 
     public boolean isDelivered() {
         return delivered;
-    }
-
-    public User getReviewer() {
-        return reviewer;
     }
 
     public String[] getContent() {

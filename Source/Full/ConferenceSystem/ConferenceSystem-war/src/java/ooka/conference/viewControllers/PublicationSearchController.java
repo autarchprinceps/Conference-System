@@ -1,48 +1,43 @@
 package ooka.conference.viewControllers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import ooka.conference.dto.Conference;
-import ooka.conference.dto.Publication;
+import ooka.conference.entity.Publication;
 import ooka.conference.ejb.SearchLocal;
 
 @ManagedBean
 @ViewScoped
-public class PubSearchController {
+public class PublicationSearchController {
+
     @ManagedProperty(value = "#{param.conferenceId}")
     private int conferenceId;
 
-    /**
-     * @return the conferenceId
-     */
+    @EJB
+    private SearchLocal searchEJB;
+
+    private String searchTerm;
+
+    private Collection<Publication> searchResults;
+
     public int getConferenceId() {
         return conferenceId;
     }
 
-    /**
-     * @param conferenceId the conferenceId to set
-     */
     public void setConferenceId(int conferenceId) {
         this.conferenceId = conferenceId;
     }
-    
-    @EJB
-    private SearchLocal searchBean;
-	
-    public List<String> doAutocomplete(String query) {
-        return searchBean.getConferenceAutocompletion(query);
+
+    public void doSearch(String searchTerm) {
+        //TODO
+        searchResults = searchEJB.searchForPublications();
     }
 
-    public List<Publication> getSearchResults() {
-        // TODO do search
-        return new ArrayList<>();
+    public Collection<Publication> getSearchResults() {
+        return searchResults;
     }
-    
-    private String searchTerm;
 
     public String getSearchTerm() {
         return searchTerm;

@@ -1,6 +1,6 @@
 package ooka.conference.viewControllers;
 
-import ooka.conference.dto.Review;
+import ooka.conference.dto.ReviewData;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -9,7 +9,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
-public class PubViewController {
+public class PublicationViewController {
 
     @ManagedProperty(value = "#{param.authorId}")
     private int authorId;
@@ -38,7 +38,7 @@ public class PubViewController {
         return "Max Muster";
     }
     
-    public List<Review> getReviews() {
+    public List<ReviewData> getReviews() {
         // TODO
         return new ArrayList<>();
     }

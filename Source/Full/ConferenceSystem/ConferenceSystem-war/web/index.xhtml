@@ -4,32 +4,46 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
+        <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <c:if test="#{!indexController.message.read}">
-            <div class="ui-messages ui-widget" aria-live="polite" data-global="false" data-summary="data-summary" data-detail="data-detail" data-severity="all,error" data-redisplay="true">
-                <div class="ui-messages-info ui-corner-all">
-                    <a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;">
-                        <span class="ui-icon ui-icon-close"></span>
-                    </a>
-                    <span class="ui-messages-info-icon"></span>
-                    <ul>
-                        <li>
-                            <span class="ui-messages-info-summary">#{indexController.message.title}</span>
-                            <span class="ui-messages-info-detail">#{indexController.message.content}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </c:if>
-        <h1>Navigation</h1>
-        <p:link outcome="#{pageController.conferenceSearch}" value="Search for conference"/>
-        <p:link outcome="#{pageController.pubSearch}" value="Search for publication"/>
-        <p:link outcome="#{pageController.userView}" value="Your account">
-            <f:param name="userId" value=""/> <!-- TODO get current userId from auth -->
-        </p:link>
+        <ui:include src="/shared/messages.xhtml"/>
+
+        <h3>Navigation</h3>
+        <ul>
+            <li><p:link outcome="#{pageController.confSearchPage}" value="Search for Conferences"/></li>
+            <li><p:link outcome="#{pageController.pubSearchPage}" value="Search for Publications"/></li>
+            <li><p:link outcome="#{pageController.confCreatePage}" value="Create new Conference">
+                    <f:param name="userId" value="1"/>
+                </p:link>
+            </li>
+            <li><p:link outcome="#{pageController.userViewPage}" value="Your Account">
+                    <f:param name="userId" value=""/> <!-- TODO get current userId from auth -->
+                </p:link>
+            </li>
+        </ul>
+
+        <h3>Associated Conferences</h3>
+        <p:dataTable value="#{userViewController.conferences}" var="edge" emptyMessage="Not registered to any conference yet">
+            <p:column headerText="Conference">
+                <p:link outcome="#{pageController.confViewPage}" value="#{edge.conferenceName}">
+                    <f:param name="conferenceId" value="#{edge.conferenceId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Your Role">
+                <h:outputText value="#{edge.role}"/>
+            </p:column>
+            <!--
+            <c:if test="#{userViewController.account}">
+                <p:column>
+                    <p:commandButton value="Deregister" actionListener="#{userViewController.doDeregister(edge.conferenceId)}"/>
+                </p:column>
+            </c:if>
+            -->
+        </p:dataTable>
+
     </h:body>
 </html>
 

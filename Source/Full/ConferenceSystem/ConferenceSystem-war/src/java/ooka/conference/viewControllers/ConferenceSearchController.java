@@ -1,8 +1,7 @@
 package ooka.conference.viewControllers;
 
-import ooka.conference.dto.Conference;
-import java.util.ArrayList;
-import java.util.List;
+import ooka.conference.entity.Conference;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -11,19 +10,21 @@ import ooka.conference.ejb.SearchLocal;
 @ManagedBean
 @ViewScoped
 public class ConferenceSearchController {
+
     @EJB
-    private SearchLocal searchBean;
-	
-    public List<String> doAutocomplete(String query) {
-		return searchBean.getConferenceAutocompletion(query);
+    private SearchLocal searchEJB;
+
+    private String searchTerm;
+
+    private Collection<Conference> searchResults;
+
+    public void doSearch(String query) {
+        searchResults = searchEJB.searchForConferences();
     }
 
-    public List<Conference> getSearchResults() {
-        // TODO do search
-        return new ArrayList<>();
+    public Collection<Conference> getSearchResults() {
+        return searchResults;
     }
-    
-    private String searchTerm;
 
     public String getSearchTerm() {
         return searchTerm;
@@ -32,6 +33,5 @@ public class ConferenceSearchController {
     public void setSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
     }
-
 
 }

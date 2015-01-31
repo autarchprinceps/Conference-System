@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ooka.conference.ejb;
 
-import java.util.List;
+import java.util.Collection;
 import javax.ejb.Local;
+import ooka.conference.entity.Conference;
+import ooka.conference.entity.Publication;
 
-/**
- *
- * @author Administrator
- */
 @Local
 public interface SearchLocal {
 
-	List<String> getConferenceAutocompletion(final String query);
+    public Collection<Publication> searchForPublications();
 
-	List<String> getPubAutocomplete(final String query);
-	
+    public Collection<Conference> searchForConferences();
 }

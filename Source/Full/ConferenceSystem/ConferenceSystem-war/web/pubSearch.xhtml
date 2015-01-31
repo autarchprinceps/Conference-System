@@ -3,25 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
+        <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <p:autoComplete minQueryLength="2" completeMethod="#{pubSearchController.doAutocomplete}" value="#{pubSearchController.searchTerm}">
-            <p:ajax event="keyup" delay="40" update="results"/>
-        </p:autoComplete>
-        <!-- TODO filters -->
-        
-        <p:dataTable id="results" value="#{pubSearchController.searchResults}" var="result" emptyMessage="">
+        <p:dataTable id="results" value="#{publicationSearchController.searchResults}" var="result" emptyMessage="nothing found">
             <p:column headerText="Name">
-                <p:link outcome="#{pageController.pubView}" value="#{result.title}">
-                    <f:param name="authorId" value="#{result.author.id}"/>
-                    <f:param name="conferenceId" value="#{result.conference.id}"/>
+                <p:link outcome="#{pageController.pubViewPage}" value="#{result.title}">
+
                 </p:link>
             </p:column>
             <p:column headerText="Author">
-                <p:link outcome="#{pageController.userView}" value="#{result.author.name}">
-                    <f:param name="userId" value="#{result.author.id}"/>
+                <p:link outcome="#{pageController.userViewPage}" value="link to author">
+
                 </p:link>
             </p:column>
         </p:dataTable>
