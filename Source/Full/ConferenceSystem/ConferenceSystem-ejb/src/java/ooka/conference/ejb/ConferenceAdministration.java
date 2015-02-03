@@ -52,7 +52,6 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         newOrganizerRole.setConference(newConference);
         newOrganizerRole.setUserRole(Role.ORGANIZER.toString());
         newOrganizerRole.setUser(organizer);
-        newOrganizerRole.setConference(newConference);
 
         ConferenceUserRolePK associatioin_pk = new ConferenceUserRolePK();
         associatioin_pk.setConferenceId(newConference.getId());
@@ -61,6 +60,21 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         newOrganizerRole.setConferenceUserRolePK(associatioin_pk);
 
         em.persist(newOrganizerRole);
+
+        for (User reviewer : data.getComittee()) {
+            ConferenceUserRole newReviewerRole = new ConferenceUserRole();
+            newReviewerRole.setConference(newConference);
+            newReviewerRole.setUserRole(Role.REVIEWER.toString());
+            newReviewerRole.setUser(reviewer);
+
+            associatioin_pk = new ConferenceUserRolePK();
+            associatioin_pk.setConferenceId(newConference.getId());
+            associatioin_pk.setUserId(reviewer.getId());
+            
+            newReviewerRole.setConferenceUserRolePK(associatioin_pk);
+            em.persist(newReviewerRole);
+        }
+
     }
 
     @Override

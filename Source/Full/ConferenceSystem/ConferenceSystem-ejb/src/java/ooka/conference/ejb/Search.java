@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.Publication;
+import ooka.conference.entity.User;
 
 @Stateless
 public class Search implements SearchLocal {
@@ -27,4 +28,19 @@ public class Search implements SearchLocal {
         Query searchQuery = em.createNamedQuery("Conference.findAll");
         return searchQuery.getResultList();
     }
+
+    @Override
+    public Collection<User> searchForUsers() {
+        Query searchQuery = em.createNamedQuery("User.findAll");
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public User searchUserById(Integer pk) {
+        Query searchQuery = em.createNamedQuery("User.findById");
+        searchQuery.setParameter("id", pk);
+        return (User)searchQuery.getSingleResult();
+    }
+    
+    
 }

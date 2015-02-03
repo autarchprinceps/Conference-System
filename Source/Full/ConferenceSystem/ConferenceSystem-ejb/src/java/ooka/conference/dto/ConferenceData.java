@@ -1,14 +1,26 @@
 package ooka.conference.dto;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import ooka.conference.entity.User;
 
 public class ConferenceData implements Serializable {
 
     private String name;
     private Date date;
     private int participantLimit;
+    private Collection<User> comittee;
     private int rating;
+
+    public Collection<User> getComittee() {
+        return comittee;
+    }
+
+    public void setComittee(Collection<User> comittee) {
+        this.comittee = comittee;
+    }
 
     public String getName() {
         return name;

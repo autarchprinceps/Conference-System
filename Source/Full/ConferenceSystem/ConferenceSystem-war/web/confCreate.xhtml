@@ -24,11 +24,16 @@
                             <p:calendar value="#{conferenceCreateController.newConfDate}" required="true"/>
                             <h:outputText value="Participant Limit"/>
                             <p:inputText value="#{conferenceCreateController.newConfParticipantLimit}" required="true"/>
+                            <h:outputText value="Committee (Reviewer)"/>
+                            <h:selectManyListbox value="#{conferenceCreateController.selectedUsers}" size="5" converter="#{userConverter}">
+                                <f:selectItems
+                                    value="#{conferenceCreateController.availableUsers}" var="user" itemLabel="#{user.name}" itemValue="#{user}" />
+                            </h:selectManyListbox>
                             <f:facet name="footer">
                                 <h:panelGroup style="display: block; text-align:center">
                                     <p:commandButton update="reg" value="Create" action="#{conferenceCreateController.doCreate()}"/>
                                 </h:panelGroup>
-                            </f:facet>
+                            </f:facet> 
                         </p:panelGrid>
                     </h:form>
                 </div>
