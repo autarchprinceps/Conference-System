@@ -15,9 +15,7 @@
                 <div class="ui-grid-col-6" align="left">
                     <h3>Create new Conference</h3>
                     <h:form>
-                        <p:messages autoUpdate="true"/>
-                        <p:panelGrid id="reg" columns="2">
-
+                        <p:panelGrid columns="2">
                             <h:outputText value="Conference Name"/>
                             <p:inputText value="#{conferenceCreateController.newConfName}" required="true"/>
                             <h:outputText value="Date"/>
@@ -31,7 +29,7 @@
                             </h:selectManyListbox>
                             <f:facet name="footer">
                                 <h:panelGroup style="display: block; text-align:center">
-                                    <p:commandButton update="reg" value="Create" action="#{conferenceCreateController.doCreate()}"/>
+                                    <p:commandButton value="Create" action="#{conferenceCreateController.doCreate()}"/>
                                 </h:panelGroup>
                             </f:facet> 
                         </p:panelGrid>

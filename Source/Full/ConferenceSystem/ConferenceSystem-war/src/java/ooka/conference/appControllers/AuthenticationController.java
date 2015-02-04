@@ -1,35 +1,52 @@
 package ooka.conference.appControllers;
 
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import ooka.conference.dto.UserData;
 import ooka.conference.ejb.UserAdministrationLocal;
+import ooka.conference.entity.User;
+import ooka.conference.util.NotLoggedInException;
+import ooka.conference.util.WrongLoginCredentialsException;
 
+@ManagedBean
 @SessionScoped
 public class AuthenticationController {
 
     @EJB
     private UserAdministrationLocal userEJB;
-    
-    private boolean loggedIn;
-    private int userId;
-    
-    public boolean loginUser(UserData data) {
 
-        return true;
+    private User currentUser;
+
+    public void loginUser(UserData data) throws WrongLoginCredentialsException {
+        User user = userEJB.validateUser(data);
+        if (user == null) {
+            throw new WrongLoginCredentialsException();
+        }
+
+        currentUser = user;
     }
 
     public boolean logoutUser() {
-
+        currentUser = null;
         return true;
     }
 
     public boolean isLoggedIn() {
-        return loggedIn;
+        return !(currentUser == null);
     }
 
-    public int getUserId() {
-        return userId;
+    public User getCurrentUser() throws NotLoggedInException {
+        if (!isLoggedIn()) {
+            throw new NotLoggedInException();
+        } else {
+            return currentUser;
+        }
+    }
+
+    public boolean registerUser(UserData data) {
+        userEJB.registerUser(data);
+        return true;
     }
 
 }

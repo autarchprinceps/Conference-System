@@ -30,14 +30,14 @@ public class UserViewController {
         // TODO get name from jpa entities by id
         return "Max Muster";
     }
-
+/*
     public List<UserConferenceConnection> getConferences() {
         // TODO get from jpa
         List<UserConferenceConnection> result = new ArrayList<>();
         result.add(new UserConferenceConnection(0, "Max Muster", 0, "conf", Role.AUTHOR));
         return result;
     }
-
+*/
     public List<ConferenceData> getOrganizedConferences() {
         // TODO
         return new ArrayList<>();

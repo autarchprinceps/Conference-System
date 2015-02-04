@@ -13,35 +13,21 @@
 
         <h3>Navigation</h3>
         <ul>
+            <li><p:link outcome="#{pageController.confCreatePage}" value="Create new Conference"/></li>
             <li><p:link outcome="#{pageController.confSearchPage}" value="Search for Conferences"/></li>
             <li><p:link outcome="#{pageController.pubSearchPage}" value="Search for Publications"/></li>
-            <li><p:link outcome="#{pageController.confCreatePage}" value="Create new Conference">
-                    <f:param name="userId" value="1"/>
-                </p:link>
-            </li>
-            <li><p:link outcome="#{pageController.userViewPage}" value="Your Account">
-                    <f:param name="userId" value=""/> <!-- TODO get current userId from auth -->
-                </p:link>
-            </li>
         </ul>
 
         <h3>Associated Conferences</h3>
-        <p:dataTable value="#{userViewController.conferences}" var="edge" emptyMessage="Not registered to any conference yet">
+        <p:dataTable value="#{indexController.conferences}" var="conf_assoc" emptyMessage="Not registered to any conference yet">
             <p:column headerText="Conference">
-                <p:link outcome="#{pageController.confViewPage}" value="#{edge.conferenceName}">
-                    <f:param name="conferenceId" value="#{edge.conferenceId}"/>
+                <p:link outcome="#{pageController.confViewPage}" value="#{conf_assoc.conference.name}">
+                    <f:param name="confId" value="#{conf_assoc.conference.id}"/>
                 </p:link>
             </p:column>
             <p:column headerText="Your Role">
-                <h:outputText value="#{edge.role}"/>
+                <h:outputText value="#{conf_assoc.userRole}"/>
             </p:column>
-            <!--
-            <c:if test="#{userViewController.account}">
-                <p:column>
-                    <p:commandButton value="Deregister" actionListener="#{userViewController.doDeregister(edge.conferenceId)}"/>
-                </p:column>
-            </c:if>
-            -->
         </p:dataTable>
 
     </h:body>

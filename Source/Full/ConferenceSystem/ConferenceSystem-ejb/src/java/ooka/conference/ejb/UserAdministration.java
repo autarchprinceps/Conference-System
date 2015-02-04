@@ -16,34 +16,19 @@ public class UserAdministration implements UserAdministrationLocal {
     EntityManager em;
 
     @Override
-    public boolean registerUser(UserData data) {
+    public void registerUser(UserData data) {
         User newUser = new User();
         newUser.setName(data.getName());
         newUser.setPassword(data.getPassword());
-        try {
-            em.persist(newUser);
-        } catch (EntityExistsException e) {
-            return false;
-        } catch (ConstraintViolationException ce) {
-            System.out.println(ce.getConstraintViolations());
-            return false;
-        }
-
-        return true;
+        em.persist(newUser);
     }
 
     @Override
-    public boolean loginUser(UserData data) {
+    public User validateUser(UserData data) {
         Query checkQuery = em.createNamedQuery("User.check");
         checkQuery.setParameter("name", data.getName());
         checkQuery.setParameter("password", data.getPassword());
-        try {
-            checkQuery.getSingleResult();
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
+        return (User) checkQuery.getSingleResult();
     }
 
 }

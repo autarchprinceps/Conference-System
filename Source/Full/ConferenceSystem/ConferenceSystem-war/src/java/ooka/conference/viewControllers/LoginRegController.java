@@ -1,15 +1,19 @@
 package ooka.conference.viewControllers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import ooka.conference.appControllers.ErrorController;
 import ooka.conference.appControllers.PageController;
-import javax.ejb.EJB;
 import ooka.conference.util.Message;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.UserData;
-import ooka.conference.ejb.UserAdministrationLocal;
+import ooka.conference.util.NotLoggedInException;
+import ooka.conference.util.Redirector;
+import ooka.conference.util.WrongLoginCredentialsException;
 
 @ManagedBean
 @ViewScoped
@@ -21,13 +25,33 @@ public class LoginRegController {
     @ManagedProperty(value = "#{pageController}")
     private PageController pageController;
 
-    @EJB
-    private UserAdministrationLocal authEJB;
-    
+    @ManagedProperty(value = "#{authenticationController}")
+    private AuthenticationController authEJB;
+
     private String registrationPassword;
     private String registrationUsername;
     private String loginPassword;
     private String loginUserame;
+
+    @PostConstruct
+    public void init() {
+        if (authEJB.isLoggedIn()) {
+            try {
+                loginUserame = authEJB.getCurrentUser().getName();
+                loginPassword = authEJB.getCurrentUser().getPassword();
+            } catch (NotLoggedInException ex) {
+
+            }
+        }
+    }
+
+    public AuthenticationController getAuthEJB() {
+        return authEJB;
+    }
+
+    public void setAuthEJB(AuthenticationController authEJB) {
+        this.authEJB = authEJB;
+    }
 
     public PageController getPageController() {
         return pageController;
@@ -77,28 +101,33 @@ public class LoginRegController {
         this.errorController = errorController;
     }
 
-    public String doLogin() {
+    public void doLogin() {
 
         UserData data = new UserData(loginUserame, loginPassword);
-        boolean successful = authEJB.loginUser(data);
-
-        if (successful) {
-            errorController.setErrorMsg(null);
-            return pageController.getIndexPage();
-        } else {
+        try {
+            authEJB.loginUser(data);
+        } catch (WrongLoginCredentialsException ex) {
+            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
             errorController.setErrorMsg(new Message("Login", "failure"));
-            return pageController.getUserLoginPage();
+            Redirector.redirectTo(pageController.getUserLoginPage());
         }
+
+        errorController.setErrorMsg(null);
+        Redirector.redirectTo("faces/" + pageController.getIndexPage());
     }
 
-    public String doRegister() {
+    public void doLogout() {
+        authEJB.logoutUser();
+        Redirector.redirectTo(pageController.getUserLoginPage());
+    }
+
+    public void doRegister() {
 
         UserData data = new UserData(registrationUsername, registrationPassword);
         if (!authEJB.registerUser(data)) {
             errorController.setErrorMsg(new Message("Register", "failure"));
-            return pageController.getErrorPage();
         }
 
-        return pageController.getUserLoginPage();
+        Redirector.redirectTo("faces/" + pageController.getUserLoginPage());
     }
 }

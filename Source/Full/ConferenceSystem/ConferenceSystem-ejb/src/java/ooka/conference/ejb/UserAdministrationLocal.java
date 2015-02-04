@@ -2,12 +2,13 @@ package ooka.conference.ejb;
 
 import javax.ejb.Local;
 import ooka.conference.dto.UserData;
+import ooka.conference.entity.User;
 
 @Local
 public interface UserAdministrationLocal {
 
-    public boolean registerUser(UserData data);
+    public void registerUser(UserData data);
 
-    public boolean loginUser(UserData data);
+    public User validateUser(UserData data);
 
 }

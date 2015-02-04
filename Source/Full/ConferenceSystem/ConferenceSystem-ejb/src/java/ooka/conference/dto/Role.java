@@ -1,6 +1,8 @@
 package ooka.conference.dto;
 
-public enum Role {
+import java.io.Serializable;
+
+public enum Role implements Serializable {
 
     AUTHOR, REVIEWER, VIEWER, ORGANIZER;
 
@@ -9,6 +11,6 @@ public enum Role {
     }
 
     public static Role[] getParticipantRoles() {
-        return new Role[]{AUTHOR, REVIEWER, VIEWER};
+        return new Role[]{AUTHOR, VIEWER};
     }
 }

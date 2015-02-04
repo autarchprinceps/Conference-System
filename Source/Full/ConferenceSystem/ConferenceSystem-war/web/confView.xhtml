@@ -10,52 +10,45 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <p:growl/>
-        <h1>#{conferenceViewController.conferenceName}</h1>
-        <!-- goto search in this conference -->
-        <p:panelGrid columns="2">
-            <!--<p:outputLabel for="organizer" value="Organizer:"/>-->
-            <p:link outcome="#{pageController.userViewPage}" value="#{conferenceViewController.conferenceOrganizerName}">
-                <f:param name="userId" value="#{conferenceViewController.conferenceOrganizerId}"/>
-            </p:link>
-            <p:outputLabel for="avgrating" value="Rating:"/>
-            <p:rating id="avgrating" stars="11" disabled="true" value="#{conferenceViewController.overallConferenceRating}"/>
-        </p:panelGrid>
-        <h2>Associated Users</h2>
-        <p:dataTable value="#{conferenceViewController.users}" var="edge" emptyMessage="No users registered yet">
-            <p:column headerText="User">
-                <p:link outcome="#{pageController.userViewPage}" value="#{edge.userName}">
-                    <f:param name="userId" value="#{edge.userId}"/>
-                </p:link>
-            </p:column>
-            <p:column headerText="Role">
-                <h:outputText value="#{edge.role}"/>
-            </p:column>
-        </p:dataTable>
-        <!-- TODO check whether logged in -->
-        <h2>Actions</h2>
 
+        <p:growl/>
+        <h2>Conference #{conferenceViewController.currentConference.name}</h2>
+        Average Rating:
+        <p:rating id="avgrating" stars="11" disabled="true" value="#{conferenceViewController.overallConferenceRating}"/>
+        <br/><br/>
         <c:choose> <!-- TODO layout? not just after -->
-            <c:when test="#{conferenceViewController.currentUserRegisteredToThis}">
+            <c:when test="#{conferenceViewController.currentUserIsRegistered}">
+                Rate Conference:
                 <p:rating stars="11" value="#{conferenceViewController.currentUsersRating}">
                     <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
-                </p:rating>
+                </p:rating><br/><br/>
                 <p:commandButton value="Deregister" actionListener="#{conferenceViewController.doDeregister()}"/>
                 <!-- goto pubview if author or reviewer -->
             </c:when>
             <c:otherwise>
-                <!--<p:commandButton onclick="PF('registerDialog').show();" value="Register"/>-->
+                <p:commandButton onclick="PF('registerDialog').show();" value="Register"/>
+                <p:dialog header="Register to Conference" modal="true" widgetVar="registerDialog">
+                    <p:outputLabel for="selectRole" value="Select your Role"/>
+                    <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
+                        <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Send Registration" actionListener="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();"/>
+                </p:dialog>
             </c:otherwise>
         </c:choose>
 
+        <h3>Associated Users</h3>
+        <p:dataTable value="#{conferenceViewController.currentConference.conferenceUserRoleCollection}" var="conf_assoc">
+            <p:column headerText="User">
+                <p:link outcome="#{pageController.userViewPage}" value="#{conf_assoc.user.name}">
+                    <f:param name="userId" value="#{conf_assoc.user.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Role">
+                <h:outputText value="#{conf_assoc.userRole}"/>
+            </p:column>
+        </p:dataTable>
 
-        <p:dialog header="Register to conference" modal="true" widgetVar="registerDialog">
-            <p:outputLabel for="selectRole" value="Role in conference:"/>
-            <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
-                <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
-            </p:selectOneMenu>
-            <!--<p:commandButton value="Send registration" actionListener="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();"/>-->
-        </p:dialog>
     </h:body>
 </html>
 

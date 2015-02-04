@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
         <ui:insert name="header">
             <title>Conference-System</title>
             <h2>Conference-System</h2>
+            <c:if test="#{authenticationController.loggedIn}">
+                <h:outputText value="Logged in as "/>
+                <p:link outcome="#{pageController.userViewPage}" value="#{authenticationController.currentUser.name}">
+                    <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
+                </p:link>
+            </c:if>
         </ui:insert>
     </ui:composition> 
 </html>

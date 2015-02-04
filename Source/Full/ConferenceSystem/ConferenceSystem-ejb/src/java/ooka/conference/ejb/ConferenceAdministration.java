@@ -16,7 +16,7 @@ import ooka.conference.entity.User;
 public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Override
     public void rateConference(int conferenceId, int userId, int rating) throws Exception {
@@ -75,6 +75,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             em.persist(newReviewerRole);
         }
 
+        em.flush();
     }
 
     @Override
