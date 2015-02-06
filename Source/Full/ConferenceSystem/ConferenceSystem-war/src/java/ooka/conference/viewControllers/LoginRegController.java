@@ -11,8 +11,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.UserData;
-import ooka.conference.util.NotLoggedInException;
-import ooka.conference.util.Redirector;
 import ooka.conference.util.WrongLoginCredentialsException;
 
 @ManagedBean
@@ -36,12 +34,8 @@ public class LoginRegController {
     @PostConstruct
     public void init() {
         if (authEJB.isLoggedIn()) {
-            try {
-                loginUserame = authEJB.getCurrentUser().getName();
-                loginPassword = authEJB.getCurrentUser().getPassword();
-            } catch (NotLoggedInException ex) {
-
-            }
+            loginUserame = authEJB.getCurrentUser().getName();
+            loginPassword = authEJB.getCurrentUser().getPassword();
         }
     }
 
@@ -109,16 +103,16 @@ public class LoginRegController {
         } catch (WrongLoginCredentialsException ex) {
             Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
             errorController.setErrorMsg(new Message("Login", "failure"));
-            Redirector.redirectTo(pageController.getUserLoginPage());
+            PageController.redirectTo(pageController.getUserLoginPage());
         }
 
         errorController.setErrorMsg(null);
-        Redirector.redirectTo("faces/" + pageController.getIndexPage());
+        PageController.redirectTo(PageController.userViewPage);
     }
 
     public void doLogout() {
         authEJB.logoutUser();
-        Redirector.redirectTo(pageController.getUserLoginPage());
+        PageController.redirectTo(PageController.userLoginPage);
     }
 
     public void doRegister() {
@@ -128,6 +122,6 @@ public class LoginRegController {
             errorController.setErrorMsg(new Message("Register", "failure"));
         }
 
-        Redirector.redirectTo("faces/" + pageController.getUserLoginPage());
+        PageController.redirectTo(PageController.userLoginPage);
     }
 }

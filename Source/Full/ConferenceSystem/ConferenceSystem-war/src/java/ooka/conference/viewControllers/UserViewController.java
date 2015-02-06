@@ -1,66 +1,69 @@
 package ooka.conference.viewControllers;
 
-import ooka.conference.dto.UserConferenceConnection;
-import ooka.conference.dto.Role;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.application.FacesMessage;
+import java.util.Collection;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import ooka.conference.dto.ConferenceData;
-import ooka.conference.dto.Role;
+import ooka.conference.appControllers.AuthenticationController;
+import ooka.conference.ejb.SearchLocal;
+import ooka.conference.entity.Conference;
+import ooka.conference.entity.ConferenceUserRole;
+import ooka.conference.entity.User;
 
 @ManagedBean
 @ViewScoped
 public class UserViewController {
-    
-    private int userIdGetParameter;
 
-    public int getUserIdGetParameter() {
-        return userIdGetParameter;
-    }
+    @ManagedProperty(value = "#{authenticationController}")
+    private AuthenticationController authEJB;
 
-    public void setUserIdGetParameter(int userIdGetParameter) {
-        this.userIdGetParameter = userIdGetParameter;
-    }
+    @EJB
+    private SearchLocal searchEJB;
 
-    public String getUserName() {
-        // TODO get name from jpa entities by id
-        return "Max Muster";
-    }
-/*
-    public List<UserConferenceConnection> getConferences() {
-        // TODO get from jpa
-        List<UserConferenceConnection> result = new ArrayList<>();
-        result.add(new UserConferenceConnection(0, "Max Muster", 0, "conf", Role.AUTHOR));
-        return result;
-    }
-*/
-    public List<ConferenceData> getOrganizedConferences() {
-        // TODO
-        return new ArrayList<>();
-    }
+    private User currentUser;
 
-    public boolean isAccount() {
-        // TODO getCurrentUserId from authentication service
-        return userIdGetParameter == 0;
-    }
-
-    public void doDeregister(int conferenceId) {
-        // TODO refresh dataTable
-        // TODO send action to managing ejb
-        // TODO add + getConferenceName
-        // TODO add + getError
-        if (true /* successful deregister*/) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully deregistered from conference", null)
-            );
+    @PostConstruct
+    public void init() {
+        Map<String, String> context = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (context.containsKey("userId")) {
+            String userId = (String) context.get("userId");
+            currentUser = searchEJB.searchUserById(Integer.parseInt(userId));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while trying to deregistered from conference", null)
-            );
+            currentUser = authEJB.getCurrentUser();
         }
     }
+
+    public boolean viewingUserIsCurrentUser() {
+        return currentUser.equals(authEJB.getCurrentUser());
+    }
+
+    public Collection<ConferenceUserRole> getConferences() {
+        // search to get the most recent data
+        return searchEJB.searchConferencesForUser(currentUser.getId());
+    }
+
+    public AuthenticationController getAuthEJB() {
+        return authEJB;
+    }
+
+    public void setAuthEJB(AuthenticationController authEJB) {
+        this.authEJB = authEJB;
+    }
+
+    public SearchLocal getSearchEJB() {
+        return searchEJB;
+    }
+
+    public void setSearchEJB(SearchLocal searchEJB) {
+        this.searchEJB = searchEJB;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
 }

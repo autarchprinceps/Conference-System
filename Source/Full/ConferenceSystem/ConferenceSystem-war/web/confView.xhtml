@@ -14,25 +14,25 @@
         <p:growl/>
         <h2>Conference #{conferenceViewController.currentConference.name}</h2>
         Average Rating:
-        <p:rating id="avgrating" stars="11" disabled="true" value="#{conferenceViewController.overallConferenceRating}"/>
+        <p:rating id="avgrating" stars="6" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
         <br/><br/>
         <c:choose> <!-- TODO layout? not just after -->
             <c:when test="#{conferenceViewController.currentUserIsRegistered}">
                 Rate Conference:
-                <p:rating stars="11" value="#{conferenceViewController.currentUsersRating}">
+                <p:rating stars="6" value="#{conferenceViewController.currentUsersRating}">
                     <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
                 </p:rating><br/><br/>
-                <p:commandButton value="Deregister" actionListener="#{conferenceViewController.doDeregister()}"/>
+                <p:commandButton value="Deregister" action="#{conferenceViewController.doDeregister()}" type="button"/>
                 <!-- goto pubview if author or reviewer -->
             </c:when>
             <c:otherwise>
-                <p:commandButton onclick="PF('registerDialog').show();" value="Register"/>
+                <p:commandButton onclick="PF('registerDialog').show();" value="Register" type="button"/>
                 <p:dialog header="Register to Conference" modal="true" widgetVar="registerDialog">
                     <p:outputLabel for="selectRole" value="Select your Role"/>
                     <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
                         <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
                     </p:selectOneMenu>
-                    <p:commandButton value="Send Registration" actionListener="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();"/>
+                    <p:commandButton value="Send Registration" action="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();" type="button"/>
                 </p:dialog>
             </c:otherwise>
         </c:choose>

@@ -1,9 +1,6 @@
 package ooka.conference.viewControllers;
 
 import ooka.conference.dto.Role;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -17,9 +14,9 @@ import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
+import ooka.conference.entity.ConferenceRating;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.User;
-import ooka.conference.util.NotLoggedInException;
 import org.primefaces.event.RateEvent;
 
 @ManagedBean
@@ -35,68 +32,58 @@ public class ConferenceViewController {
     @EJB
     private SearchLocal searchEJB;
 
-    private Role selectedRoleForRegistration;
+    private boolean currentUserIsRegistered;
 
     private Conference currentConference;
 
-    private boolean currentUserIsRegistered;
+    private ConferenceRating currentConferenceRating;
+
+    private int averageConferenceRating;
+
+    private Role selectedRoleForRegistration;
 
     @PostConstruct
     public void init() {
+
         String confId = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("confId");
         currentConference = searchEJB.searchConferenceById(Integer.parseInt(confId));
 
-        User currentUser = null;
-        try {
-            currentUser = authEJB.getCurrentUser();
-        } catch (NotLoggedInException ex) {
-            Logger.getLogger(ConferenceViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        User currentUser = authEJB.getCurrentUser();
         for (ConferenceUserRole role : currentConference.getConferenceUserRoleCollection()) {
             if (role.getUser().equals(currentUser)) {
                 currentUserIsRegistered = true;
                 break;
             }
         }
+
+        for (ConferenceRating rating : currentConference.getConferenceRatingCollection()) {
+            if (rating.getUser().equals(currentUser)) {
+                averageConferenceRating = rating.getRating();
+                currentConferenceRating = rating;
+                break;
+            }
+        }
+
+        int ratingCount = currentConference.getConferenceRatingCollection().size();
+        if (ratingCount > 0) {
+            averageConferenceRating = Math.round(averageConferenceRating / ratingCount);
+            averageConferenceRating = averageConferenceRating > 6 ? 6 : averageConferenceRating;
+        } else {
+            averageConferenceRating = 0;
+        }
+
     }
 
-
-    /*
-     public List<UserConferenceConnection> getUsers() {
-     // TODO get from jpa
-     List<UserConferenceConnection> result = new ArrayList<>();
-     result.add(new UserConferenceConnection(0, "Max Muster", 0, "conf", Role.AUTHOR));
-     return result;
-     }
-     */
     public Role[] getRolesForSelection() {
         return Role.getParticipantRoles();
     }
 
     public void doDeregister() {
-        // TODO getCurrentUserId from authentication
-        // TODO do deregister in model
-        // TODO + getError
-        // TODO refresh
-        if (true /* successful deregister*/) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully deregistered from conference " + currentConference.getName(), null)
-            );
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while trying to deregistered from conference", null)
-            );
+        try {
+            confAdminEJB.deregisterToConference(currentConference.getId(), authEJB.getCurrentUser().getId());
+        } catch (Exception ex) {
+            Logger.getLogger(ConferenceViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public int getOverallConferenceRating() {
-        // TODO
-        return 0 + 6;
-    }
-
-    public int getCurrentUsersRating() {
-        // TODO
-        return 0 + 6;
     }
 
     public void doRegister() {
@@ -119,7 +106,19 @@ public class ConferenceViewController {
         try {
             confAdminEJB.rateConference(currentConference.getId(), authEJB.getCurrentUser().getId(), ((Integer) (event.getRating())) - 6);
         } catch (Exception ex) {
-            // TODO
+
+        }
+    }
+
+    public int getAverageConferenceRating() {
+        return averageConferenceRating;
+    }
+
+    public int getCurrentUsersRating() {
+        if (currentConferenceRating == null) {
+            return 0;
+        } else {
+            return currentConferenceRating.getRating();
         }
     }
 

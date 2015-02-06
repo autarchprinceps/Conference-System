@@ -100,20 +100,20 @@ public class ConferenceCreateController {
         return availableUsers;
     }
 
-    public void  doCreate() {
+    public void doCreate() {
         ConferenceData data = new ConferenceData();
         data.setName(newConfName);
         data.setDate(newConfDate);
         data.setParticipantLimit(newConfParticipantLimit);
         data.setComittee(selectedUsers);
-        
+
         try {
             confAdminEJB.createConference(authEJB.getCurrentUser().getId(), data);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        Redirector.redirectTo(pageController.getIndexPage());
+
+        PageController.redirectTo(pageController.getUserViewPage());
     }
 
 }

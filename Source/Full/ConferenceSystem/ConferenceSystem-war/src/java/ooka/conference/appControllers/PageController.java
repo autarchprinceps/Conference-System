@@ -1,29 +1,37 @@
 package ooka.conference.appControllers;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.context.FacesContext;
+import ooka.conference.viewControllers.LoginRegController;
 
 @ManagedBean
 @ApplicationScoped
 public class PageController {
 
-    private final String indexPage = "index";
-    private final String errorPage = "error";
-    private final String confSearchPage = "confSearch";
-    private final String confViewPage = "confView";
-    private final String confCreatePage = "confCreate";
-    private final String userLoginPage = "userLogin";
-    private final String userRegisterPage = "userRegister";
-    private final String userViewPage = "userView";
-    private final String pubViewPage = "pubView";
-    private final String pubSearchPage = "pubSearch";
+    public static final String errorPage = "error";
+    public static final String confSearchPage = "confSearch";
+    public static final String confViewPage = "confView";
+    public static final String confCreatePage = "confCreate";
+    public static final String userLoginPage = "userLogin";
+    public static final String userRegisterPage = "userRegister";
+    public static final String userViewPage = "userView";
+    public static final String pubViewPage = "pubView";
+    public static final String pubSearchPage = "pubSearch";
+
+    public static void redirectTo(String page) {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public String getErrorPage() {
         return errorPage;
-    }
-
-    public String getIndexPage() {
-        return indexPage;
     }
 
     public String getConfCreatePage() {

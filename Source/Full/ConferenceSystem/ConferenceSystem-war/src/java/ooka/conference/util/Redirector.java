@@ -21,12 +21,4 @@ public class Redirector {
 
     }
 
-    public static void redirectTo(String page) {
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

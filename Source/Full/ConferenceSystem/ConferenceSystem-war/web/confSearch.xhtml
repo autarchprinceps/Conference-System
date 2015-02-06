@@ -6,13 +6,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
+        <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
         <p:autoComplete minQueryLength="2" completeMethod="#{conferenceSearchController.doSearch}" value="#{conferenceSearchController.searchTerm}">
             <p:ajax event="keyup" delay="40" update="results"/>
         </p:autoComplete>
         <!-- TODO filters -->
-        
+
         <p:dataTable id="results" value="#{conferenceSearchController.searchResults}" var="result" emptyMessage="">
             <p:column headerText="Name">
                 <p:link outcome="#{pageController.confView}" value="#{result.name}">
@@ -31,7 +32,7 @@
                 <h:outputText value="#{result.end}"/>
             </p:column>
             <p:column headerText="Rating">
-                    <p:rating stars="11" value="#{result.rating + 6}" disabled="true"/>
+                <p:rating stars="11" value="#{result.rating + 6}" disabled="true"/>
             </p:column>
         </p:dataTable>
     </h:body>

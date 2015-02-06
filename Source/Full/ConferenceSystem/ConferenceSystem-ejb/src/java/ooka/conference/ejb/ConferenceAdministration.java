@@ -70,7 +70,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             associatioin_pk = new ConferenceUserRolePK();
             associatioin_pk.setConferenceId(newConference.getId());
             associatioin_pk.setUserId(reviewer.getId());
-            
+
             newReviewerRole.setConferenceUserRolePK(associatioin_pk);
             em.persist(newReviewerRole);
         }
@@ -92,6 +92,12 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         newConferenceUserRole.setConferenceUserRolePK(associatioin_pk);
 
         em.persist(newConferenceUserRole);
+    }
+
+    @Override
+    public void deregisterToConference(int conferenceId, int userId) throws Exception {
+        ConferenceUserRole association = em.find(ConferenceUserRole.class, new ConferenceUserRolePK(userId, conferenceId));
+        em.remove(association);
     }
 
 }

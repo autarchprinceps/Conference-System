@@ -4,36 +4,33 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <p:growl/>
-        <!-- Above common from pages -> include ? -->
-        <h1>#{userViewController.userName}</h1>
-        <h2>Organized Conferences</h2>
-        <!-- TODO overall rating -->
-        <p:dataTable value="#{userViewController.organizedConferences}" var="orgConf" emptyMessage="Not a conference organizer yet">
-            <p:column headerText="Name">
-                <p:link outcome="#{pageController.confView}" value="#{orgConf.conferenceName}">
-                    <f:param name="conferenceId" value="#{orgConf.conferenceId}"/>
+
+        <c:if test="#{!userViewController.viewingUserIsCurrentUser()}">
+            <h3><h:outputText value="User: #{userViewController.currentUser.name}"/></h3>
+        </c:if>
+
+        <c:if test="#{userViewController.viewingUserIsCurrentUser()}">
+            <h3>Administrate Your Account</h3>
+            ...
+        </c:if>
+
+        <h3>Associated Conferences</h3>
+        <p:dataTable value="#{userViewController.conferences}" var="conf_assoc" emptyMessage="Not registered to any conference yet">
+            <p:column headerText="Conference">
+                <p:link outcome="#{pageController.confViewPage}" value="#{conf_assoc.conference.name}">
+                    <f:param name="confId" value="#{conf_assoc.conference.id}"/>
                 </p:link>
             </p:column>
-            <p:column headerText="Rating">
-                <p:rating stars="11" value="#{orgConf.rating + 6}" disabled="true"/>
+            <p:column headerText="Role">
+                <h:outputText value="#{conf_assoc.userRole}"/>
             </p:column>
         </p:dataTable>
-        
-        <h2>Administer Account</h2>
-        <c:if test="#{userViewController.account}">
-            <!--
-            TODO account area
-                - Change password
-                                - Organize Conference
-            -->
-        </c:if>
     </h:body>
 </html>
 

@@ -8,9 +8,11 @@ import ooka.conference.dto.Role;
 public interface ConferenceAdministrationLocal {
 
     void rateConference(int conferenceId, int userId, int rating) throws Exception;
-
+    
     void createConference(int organizerId, ConferenceData data) throws Exception;
 
     void registerToConference(int conferenceId, int userId, Role role) throws Exception;
+    
+    void deregisterToConference(int conferenceId, int userId) throws Exception;
 
 }
