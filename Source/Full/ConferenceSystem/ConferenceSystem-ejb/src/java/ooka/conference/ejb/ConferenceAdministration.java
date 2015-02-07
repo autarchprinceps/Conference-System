@@ -1,8 +1,10 @@
 package ooka.conference.ejb;
 
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ooka.conference.dto.ConferenceData;
 import ooka.conference.dto.Role;
 import ooka.conference.entity.Conference;
@@ -96,8 +98,27 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void deregisterToConference(int conferenceId, int userId) throws Exception {
-        ConferenceUserRole association = em.find(ConferenceUserRole.class, new ConferenceUserRolePK(userId, conferenceId));
-        em.remove(association);
+        Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceIdAndUserId");
+        associationQuery.setParameter("conferenceId", conferenceId);
+        associationQuery.setParameter("userId", userId);
+        associationQuery.executeUpdate();
+    }
+
+    @Override
+    public void cancelConference(int conferenceId) throws Exception {
+        em.getTransaction().begin();
+        Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
+        Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
+        associationQuery.setParameter("conferenceId", conferenceId);
+        ratingQuery.setParameter("conferenceId", conferenceId);
+        try {
+            associationQuery.executeUpdate();
+            ratingQuery.executeUpdate();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new Exception();
+        }
+        em.getTransaction().commit();
     }
 
 }

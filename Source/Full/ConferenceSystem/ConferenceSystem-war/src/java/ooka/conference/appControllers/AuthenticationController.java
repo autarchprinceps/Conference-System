@@ -27,9 +27,9 @@ public class AuthenticationController {
         currentUser = user;
     }
 
-    public boolean logoutUser() {
+    public void logoutUser() {
         currentUser = null;
-        return true;
+        PageController.redirectTo(PageController.userLoginPage);
     }
 
     public boolean isLoggedIn() {

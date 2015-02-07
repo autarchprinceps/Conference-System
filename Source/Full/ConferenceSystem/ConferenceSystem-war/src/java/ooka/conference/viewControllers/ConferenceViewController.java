@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
+import ooka.conference.appControllers.PageController;
 import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
@@ -34,6 +35,8 @@ public class ConferenceViewController {
 
     private boolean currentUserIsRegistered;
 
+    private String currentUserRole;
+
     private Conference currentConference;
 
     private ConferenceRating currentConferenceRating;
@@ -52,6 +55,7 @@ public class ConferenceViewController {
         for (ConferenceUserRole role : currentConference.getConferenceUserRoleCollection()) {
             if (role.getUser().equals(currentUser)) {
                 currentUserIsRegistered = true;
+                currentUserRole = (String) role.getUserRole();
                 break;
             }
         }
@@ -83,6 +87,8 @@ public class ConferenceViewController {
             confAdminEJB.deregisterToConference(currentConference.getId(), authEJB.getCurrentUser().getId());
         } catch (Exception ex) {
             Logger.getLogger(ConferenceViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            PageController.redirectTo(PageController.userViewPage);
         }
     }
 
@@ -108,6 +114,17 @@ public class ConferenceViewController {
         } catch (Exception ex) {
 
         }
+    }
+
+    public void doCancel() {
+        try {
+            confAdminEJB.cancelConference(currentConference.getId());
+        } catch (Exception ex) {
+            Logger.getLogger(ConferenceViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            PageController.redirectTo(PageController.userViewPage);
+        }
+
     }
 
     public int getAverageConferenceRating() {
@@ -136,6 +153,10 @@ public class ConferenceViewController {
 
     public boolean isCurrentUserIsRegistered() {
         return currentUserIsRegistered;
+    }
+
+    public String getCurrentUserRole() {
+        return currentUserRole;
     }
 
     public AuthenticationController getAuthEJB() {

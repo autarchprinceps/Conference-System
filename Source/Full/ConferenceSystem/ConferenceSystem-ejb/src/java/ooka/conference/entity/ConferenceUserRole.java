@@ -30,8 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ConferenceUserRole.findAll", query = "SELECT c FROM ConferenceUserRole c"),
     @NamedQuery(name = "ConferenceUserRole.findByUserId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.userId = :userId"),
-    @NamedQuery(name = "ConferenceUserRole.findByConferenceId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId")})
+    @NamedQuery(name = "ConferenceUserRole.findByConferenceId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "ConferenceUserRole.deleteByConferenceId", query = "DELETE FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "ConferenceUserRole.deleteByConferenceIdAndUserId", query = "DELETE FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId AND c.conferenceUserRolePK.userId = :userId")})
 public class ConferenceUserRole implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ConferenceUserRolePK conferenceUserRolePK;
@@ -119,5 +122,5 @@ public class ConferenceUserRole implements Serializable {
     public String toString() {
         return "ooka.conference.entity.ConferenceUserRole[ conferenceUserRolePK=" + conferenceUserRolePK + " ]";
     }
-    
+
 }
