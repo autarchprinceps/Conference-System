@@ -17,7 +17,7 @@
         <br/>
         <h:outputText value="Average Rating:" />
         <p:rating id="avgrating" stars="6" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
-        <br/>
+        <br />
 
         <c:if test="#{conferenceViewController.currentUserRole == 'ORGANIZER'}">
             <h:outputText value="You are the Organizer" />
@@ -30,12 +30,21 @@
         </c:if>
 
         <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
-            <h:outputText value="You are registered as #{conferenceViewController.currentUserRole}"/>
-            <br/>
+            <h:outputText value="You are registered as #{conferenceViewController.currentUserRole} "/>
+
+            (<c:if test="#{conferenceViewController.currentUserRole == 'AUTHOR'}">
+                <p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
+                    <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
+                </p:link>
+            </c:if>)
+
+            <br /><br />
+
             <h:outputText value="Rate Conference:" />
             <p:rating stars="6" value="#{conferenceViewController.currentUsersRating}">
                 <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
             </p:rating>
+
             <br /><br />
             <p:commandButton value="Deregister" action="#{conferenceViewController.doDeregister()}" type="button"/>
         </c:if>
@@ -52,7 +61,6 @@
             </p:dialog>
         </c:if>
 
-
         <h3>Associated Users</h3>
         <p:dataTable value="#{conferenceViewController.currentConference.conferenceUserRoleCollection}" var="conf_assoc">
             <p:column headerText="User">
@@ -62,6 +70,21 @@
             </p:column>
             <p:column headerText="Role">
                 <h:outputText value="#{conf_assoc.userRole}"/>
+            </p:column>
+        </p:dataTable>
+
+        <h3>Associated Publications</h3>
+        <p:dataTable value="#{conferenceViewController.currentConference.publicationCollection}" var="pub_assoc">
+            <p:column headerText="Publication">
+                <p:link outcome="#{pageController.pubViewPage}" value="#{pub_assoc.title}">
+                    <f:param name="confId" value="#{pub_assoc.publicationPK.conferenceId}"/>
+                    <f:param name="userId" value="#{pub_assoc.publicationPK.authorId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Author">
+                <p:link outcome="#{pageController.userViewPage}" value="#{pub_assoc.user.name}">
+                    <f:param name="userId" value="#{pub_assoc.user.id}"/>
+                </p:link>
             </p:column>
         </p:dataTable>
 

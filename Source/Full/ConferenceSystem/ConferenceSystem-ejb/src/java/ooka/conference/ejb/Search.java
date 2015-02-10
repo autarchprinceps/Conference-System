@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
+import ooka.conference.entity.Review;
 import ooka.conference.entity.User;
 
 @Stateless
@@ -17,9 +18,11 @@ public class Search implements SearchLocal {
     private EntityManager em;
 
     @Override
-    public Collection<Publication> searchForPublications() {
-        Query searchQuery = em.createNamedQuery("Publication.findAll");
-        return searchQuery.getResultList();
+    public Publication searchForPublication(Integer confId, Integer userId) {
+        Query searchQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
+        searchQuery.setParameter("conferenceId", confId);
+        searchQuery.setParameter("authorId", userId);
+        return (Publication) searchQuery.getSingleResult();
     }
 
     @Override
@@ -59,6 +62,20 @@ public class Search implements SearchLocal {
     public Collection<ConferenceUserRole> searchUsersForConference(Integer confId) {
         Query searchQuery = em.createNamedQuery("ConferenceUserRole.findByConferenceId");
         searchQuery.setParameter("conferenceId", confId);
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public Collection<Publication> searchPublicationsForUser(Integer userId) {
+        Query searchQuery = em.createNamedQuery("Publication.findByAuthorId");
+        searchQuery.setParameter("authorId", userId);
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public Collection<Review> searchReviewsForUser(Integer userId) {
+        Query searchQuery = em.createNamedQuery("Review.findByAuthorId");
+        searchQuery.setParameter("authorId", userId);
         return searchQuery.getResultList();
     }
 

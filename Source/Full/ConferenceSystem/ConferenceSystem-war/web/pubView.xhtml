@@ -10,27 +10,32 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <h1>Author</h1>
-        <p:panelGrid columns="2">
-            <h:outputText value="Name:"/>
-            <p:link outcome="#{pageController.userViewPage}" value="#{pubViewController.authorName}">
-                <f:param name="userId" value="#{pubViewController.authorId}"/>
-            </p:link>
-        </p:panelGrid>
-        <h1>Publication</h1>
+        <h2>Publication #{publicationViewController.currentPublication.title}</h2>
+
+        <h:outputText value="Author:"/>
+        <p:link outcome="#{pageController.userViewPage}" value="#{publicationViewController.currentPublication.user.name}">
+            <f:param name="userId" value="#{pubViewController.authorId}"/>
+        </p:link>
+
+        <c:if test="#{publicationViewController.currentUserIsAuthor()}">
+            Your are the author...
+        </c:if>
+
+        <!--
+        <h3>Publication</h3>
         <c:choose>
             <c:when test="#{pubViewController.publicationAvailable}">
                 <c:forEach items="#{pubViewController.publicationContent}" var="line">
                     <h:outputText style="word-wrap: break-word;" value="#{line}"/>
                 </c:forEach>
                 <c:if test="#{pubViewController.currentUserAuthor}">
-                    <!-- TODO change publication -->
+
                 </c:if>
             </c:when>
             <c:otherwise>
                 <h:outputText value="Content of the publication hasn't been made available yet"/>
                 <c:if test="#{pubViewController.currentUserAuthor}">
-                    <!-- TODO enter pub content -->
+              
                 </c:if>
             </c:otherwise>
         </c:choose>
@@ -47,9 +52,10 @@
                 </c:forEach>
             </p:column>
             <c:if test="#{pubViewController.isCurrentUserReviewer(review.reviewer.id)}">
-                <!-- TODO edit review content -->
+              
             </c:if>
         </p:dataTable>
+        -->
     </h:body>
 </html>
 

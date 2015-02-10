@@ -12,6 +12,8 @@ import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
+import ooka.conference.entity.Publication;
+import ooka.conference.entity.Review;
 import ooka.conference.entity.User;
 
 @ManagedBean
@@ -44,6 +46,16 @@ public class UserViewController {
     public Collection<ConferenceUserRole> getConferences() {
         // search to get the most recent data
         return searchEJB.searchConferencesForUser(currentUser.getId());
+    }
+
+    public Collection<Publication> getPublications() {
+        // search to get the most recent data
+        return searchEJB.searchPublicationsForUser(currentUser.getId());
+    }
+
+    public Collection<Review> getReviews() {
+        // search to get the most recent data
+        return searchEJB.searchReviewsForUser(currentUser.getId());
     }
 
     public AuthenticationController getAuthEJB() {

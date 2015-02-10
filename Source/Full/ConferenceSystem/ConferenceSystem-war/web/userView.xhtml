@@ -30,7 +30,24 @@
             <p:column headerText="Role">
                 <h:outputText value="#{conf_assoc.userRole}"/>
             </p:column>
+            <p:column headerText="Date">
+                <h:outputText value="#{conf_assoc.conference.date}"/>
+            </p:column>
         </p:dataTable>
+
+        <h3>Associated Publications</h3>
+        <p:dataTable value="#{userViewController.publications}" var="pub_assoc">
+            <p:column headerText="Publication">
+                <p:link outcome="#{pageController.pubViewPage}" value="#{pub_assoc.title}">
+                    <f:param name="confId" value="#{pub_assoc.publicationPK.conferenceId}"/>
+                    <f:param name="userId" value="#{pub_assoc.publicationPK.authorId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Conference">
+                <h:outputText value="#{pub_assoc.conference.name}"/>
+            </p:column>
+        </p:dataTable>
+
     </h:body>
 </html>
 

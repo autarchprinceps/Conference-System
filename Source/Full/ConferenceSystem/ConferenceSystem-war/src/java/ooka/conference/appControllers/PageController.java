@@ -19,12 +19,21 @@ public class PageController {
     public static final String userLoginPage = "userLogin";
     public static final String userRegisterPage = "userRegister";
     public static final String userViewPage = "userView";
+    public static final String pubCreatePage = "pubCreate";
     public static final String pubViewPage = "pubView";
     public static final String pubSearchPage = "pubSearch";
 
     public static void redirectTo(String page) {
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void redirectTo(String page, String paramName, String paramValue) {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml?" + paramName + "=" + paramValue);
         } catch (IOException ex) {
             Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,4 +74,9 @@ public class PageController {
     public String getPubSearchPage() {
         return pubSearchPage;
     }
+
+    public String getPubCreatePage() {
+        return pubCreatePage;
+    }
+
 }

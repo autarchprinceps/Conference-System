@@ -1,29 +1,24 @@
 package ooka.conference.dto;
 
 public class PublicationData {
-    private ConferenceData conference;
-    private ReviewData[] reviews;
+
     private String title;
-    private String[] content;
-    private boolean delivered;
-    
-    public String[] getContent() {
-        return delivered ? content : new String[]{"Publication not yet delivered"};
+    private String content;
+
+    public String getContent() {
+        return content == null ? content : "### Publication not yet delivered ###";
     }
 
-    public ReviewData[] getReviews() {
-        return reviews;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public boolean isDelivered() {
-        return delivered;
+    public void setTitle(String title) {
+        this.title = title;
     }
-    
-    public ConferenceData getConference() {
-        return conference;
-    }
+
 }

@@ -32,7 +32,7 @@ public class PublicationSearchController {
 
     public void doSearch(String searchTerm) {
         //TODO
-        searchResults = searchEJB.searchForPublications();
+        
     }
 
     public Collection<Publication> getSearchResults() {
