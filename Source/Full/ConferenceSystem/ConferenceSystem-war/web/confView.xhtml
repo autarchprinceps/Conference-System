@@ -11,24 +11,29 @@
     </h:head>
     <h:body>
 
-        <p:growl/>
         <h2>Conference #{conferenceViewController.currentConference.name}</h2>
         <h:outputText value="Date: #{conferenceViewController.currentConference.date}" />
         <br/>
         <h:outputText value="Average Rating:" />
-        <p:rating id="avgrating" stars="6" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
+        <h:form>
+            <p:rating id="avgrating" stars="6" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
+        </h:form>
         <br />
 
+        <!-- ======================= ORGANIZER ======================= -->
         <c:if test="#{conferenceViewController.currentUserRole == 'ORGANIZER'}">
             <h:outputText value="You are the Organizer" />
             <br/>
-            <p:commandButton onclick="PF('cancelDialog').show();" value="Cancel Conference" type="button"/>
-            <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
-                <p:commandButton value="Yes, cancel #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doCancel()}" onclick="PF('cancelDialog').hide();" type="button"/>
-                <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
-            </p:dialog>
+            <h:form>
+                <p:commandButton onclick="PF('cancelDialog').show();" value="Cancel Conference" type="button"/>
+                <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
+                    <p:commandButton value="Yes, cancel #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doCancel()}" type="submit"/>
+                    <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
+                </p:dialog>
+            </h:form>
         </c:if>
 
+        <!-- ======================= REGISTERED USER ======================= -->
         <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
             <h:outputText value="You are registered as #{conferenceViewController.currentUserRole} "/>
 
@@ -41,24 +46,35 @@
             <br /><br />
 
             <h:outputText value="Rate Conference:" />
-            <p:rating stars="6" value="#{conferenceViewController.currentUsersRating}">
-                <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
-            </p:rating>
+            <h:form>
+                <p:rating stars="6" value="#{conferenceViewController.currentUsersRating}">
+                    <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
+                </p:rating>
+            </h:form>
 
             <br /><br />
-            <p:commandButton value="Deregister" action="#{conferenceViewController.doDeregister()}" type="button"/>
+            <h:form>
+                <p:commandButton onclick="PF('cancelDialog').show();" value="Deregister" type="button"/>
+                <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
+                    <p:commandButton value="Yes, derigster from #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doDeregister()}" type="submit"/>
+                    <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
+                </p:dialog>
+            </h:form>
         </c:if>
 
+        <!-- ======================= UNREGISTERED USER ======================= -->
         <c:if test="#{conferenceViewController.currentUserRole == null}">
             <h:outputText value="You are not registered. Register now:" />
-            <p:commandButton onclick="PF('registerDialog').show();" value="Register" type="button"/>
-            <p:dialog header="Register to Conference" modal="true" widgetVar="registerDialog">
-                <p:outputLabel for="selectRole" value="Select your Role"/>
-                <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
-                    <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
-                </p:selectOneMenu>
-                <p:commandButton value="Send Registration" action="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();" type="button"/>
-            </p:dialog>
+            <h:form>
+                <p:commandButton onclick="PF('registerDialog').show();" value="Register" type="button"/>
+                <p:dialog header="Register to Conference" modal="true" widgetVar="registerDialog">
+                    <p:outputLabel for="selectRole" value="Select your Role"/>
+                    <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
+                        <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Send Registration" action="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();" type="submit"/>
+                </p:dialog>
+            </h:form>
         </c:if>
 
         <h3>Associated Users</h3>

@@ -116,7 +116,7 @@ public class ConferenceViewController {
         }
     }
 
-    public void doCancel() {
+    public void  doCancel() {
         try {
             confAdminEJB.cancelConference(currentConference.getId());
         } catch (Exception ex) {

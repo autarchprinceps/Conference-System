@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ConferenceRating.findByUserId", query = "SELECT c FROM ConferenceRating c WHERE c.conferenceRatingPK.userId = :userId"),
     @NamedQuery(name = "ConferenceRating.findByConferenceId", query = "SELECT c FROM ConferenceRating c WHERE c.conferenceRatingPK.conferenceId = :conferenceId"),
     @NamedQuery(name = "ConferenceRating.findByRating", query = "SELECT c FROM ConferenceRating c WHERE c.rating = :rating"),
-    @NamedQuery(name = "ConferenceRating.deleteByConferenceId", query = "DELETE FROM ConferenceRating c WHERE c.conferenceRatingPK.conferenceId = :conferenceId")})
+    @NamedQuery(name = "ConferenceRating.deleteByConferenceId", query = "DELETE FROM ConferenceRating c WHERE c.conferenceRatingPK.conferenceId = :conferenceId"),
+})
 public class ConferenceRating implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -106,7 +106,6 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void cancelConference(int conferenceId) throws Exception {
-        em.getTransaction().begin();
         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
         Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
         associationQuery.setParameter("conferenceId", conferenceId);
@@ -118,7 +117,6 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             em.getTransaction().rollback();
             throw new Exception();
         }
-        em.getTransaction().commit();
     }
 
 }
