@@ -94,6 +94,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         newConferenceUserRole.setConferenceUserRolePK(associatioin_pk);
 
         em.persist(newConferenceUserRole);
+        em.flush();
     }
 
     @Override
@@ -106,6 +107,11 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void cancelConference(int conferenceId) throws Exception {
+        Query searchQuery = em.createNamedQuery("Conference.findById");
+        searchQuery.setParameter("id", conferenceId);
+        em.remove(searchQuery.getSingleResult());
+        
+        /*
         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
         Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
         associationQuery.setParameter("conferenceId", conferenceId);
@@ -117,6 +123,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             em.getTransaction().rollback();
             throw new Exception();
         }
+                */
     }
 
 }

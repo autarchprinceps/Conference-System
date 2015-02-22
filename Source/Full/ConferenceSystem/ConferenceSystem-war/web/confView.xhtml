@@ -20,50 +20,50 @@
         </h:form>
         <br />
 
-        <!-- ======================= ORGANIZER ======================= -->
-        <c:if test="#{conferenceViewController.currentUserRole == 'ORGANIZER'}">
-            <h:outputText value="You are the Organizer" />
-            <br/>
-            <h:form>
-                <p:commandButton onclick="PF('cancelDialog').show();" value="Cancel Conference" type="button"/>
-                <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
-                    <p:commandButton value="Yes, cancel #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doCancel()}" type="submit"/>
-                    <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
-                </p:dialog>
-            </h:form>
-        </c:if>
 
-        <!-- ======================= REGISTERED USER ======================= -->
-        <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
+        <c:if test="#{conferenceViewController.currentUserIsRegistered}">
             <h:outputText value="You are registered as #{conferenceViewController.currentUserRole} "/>
 
-            (<c:if test="#{conferenceViewController.currentUserRole == 'AUTHOR'}">
-                <p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
+            <!-- ======================= ORGANIZER ======================= -->
+            <c:if test="#{conferenceViewController.currentUserRole == 'ORGANIZER'}">
+                <h:form>
+                    <p:commandButton onclick="PF('cancelDialog').show();" value="Cancel Conference" type="button"/>
+                    <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
+                        <p:commandButton value="Yes, cancel #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doCancel()}" type="submit"/>
+                        <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
+                    </p:dialog>
+                </h:form>
+            </c:if>
+
+            <!-- ======================= USER ======================= -->
+            <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
+                (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
                     <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
-                </p:link>
-            </c:if>)
+                </p:link>)
 
-            <br /><br />
+                <br /><br />
 
-            <h:outputText value="Rate Conference:" />
-            <h:form>
-                <p:rating stars="6" value="#{conferenceViewController.currentUsersRating}">
-                    <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
-                </p:rating>
-            </h:form>
+                <h:outputText value="Rate Conference:" />
+                <h:form>
+                    <p:rating stars="6" value="#{conferenceViewController.currentConferenceRating}">
+                        <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
+                    </p:rating>
+                </h:form>
 
-            <br /><br />
-            <h:form>
-                <p:commandButton onclick="PF('cancelDialog').show();" value="Deregister" type="button"/>
-                <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
-                    <p:commandButton value="Yes, derigster from #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doDeregister()}" type="submit"/>
-                    <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
-                </p:dialog>
-            </h:form>
+                <br /><br />
+
+                <h:form>
+                    <p:commandButton onclick="PF('cancelDialog').show();" value="Deregister" type="button"/>
+                    <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
+                        <p:commandButton value="Yes, derigister from #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doDeregister()}" type="submit"/>
+                        <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
+                    </p:dialog>
+                </h:form>
+            </c:if>
         </c:if>
 
         <!-- ======================= UNREGISTERED USER ======================= -->
-        <c:if test="#{conferenceViewController.currentUserRole == null}">
+        <c:if test="#{!conferenceViewController.currentUserIsRegistered}">
             <h:outputText value="You are not registered. Register now:" />
             <h:form>
                 <p:commandButton onclick="PF('registerDialog').show();" value="Register" type="button"/>

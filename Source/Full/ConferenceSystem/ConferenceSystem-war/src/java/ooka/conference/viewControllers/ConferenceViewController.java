@@ -96,6 +96,7 @@ public class ConferenceViewController {
 
         try {
             confAdminEJB.registerToConference(currentConference.getId(), authEJB.getCurrentUser().getId(), selectedRoleForRegistration);
+            PageController.redirectTo(PageController.confViewPage, "confId", currentConference.getId().toString());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
@@ -116,7 +117,7 @@ public class ConferenceViewController {
         }
     }
 
-    public void  doCancel() {
+    public void doCancel() {
         try {
             confAdminEJB.cancelConference(currentConference.getId());
         } catch (Exception ex) {
@@ -124,19 +125,22 @@ public class ConferenceViewController {
         } finally {
             PageController.redirectTo(PageController.userViewPage);
         }
-
     }
 
     public int getAverageConferenceRating() {
         return averageConferenceRating;
     }
 
-    public int getCurrentUsersRating() {
+    public int getCurrentConferenceRating() {
         if (currentConferenceRating == null) {
             return 0;
         } else {
             return currentConferenceRating.getRating();
         }
+    }
+
+    public void setCurrentConferenceRating(int currentConferenceRating) {
+        this.currentConferenceRating.setRating(currentConferenceRating);
     }
 
     public Role getSelectedRoleForRegistration() {
