@@ -1,6 +1,5 @@
 package ooka.conference.ejb;
 
-import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -78,6 +77,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         }
 
         em.flush();
+        em.refresh(organizer);
     }
 
     @Override
@@ -99,10 +99,17 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void deregisterToConference(int conferenceId, int userId) throws Exception {
-        Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceIdAndUserId");
-        associationQuery.setParameter("conferenceId", conferenceId);
-        associationQuery.setParameter("userId", userId);
-        associationQuery.executeUpdate();
+        /*
+         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceIdAndUserId");
+         associationQuery.setParameter("conferenceId", conferenceId);
+         associationQuery.setParameter("userId", userId);
+         associationQuery.executeUpdate();
+         */
+        Query roleQuery = em.createNamedQuery("ConferenceUserRole.findByConferenceIdAndUserId");
+        roleQuery.setParameter("conferenceId", conferenceId);
+        roleQuery.setParameter("userId", userId);
+        ConferenceUserRole role = (ConferenceUserRole) roleQuery.getSingleResult();
+        em.remove(role);
     }
 
     @Override
@@ -110,20 +117,20 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         Query searchQuery = em.createNamedQuery("Conference.findById");
         searchQuery.setParameter("id", conferenceId);
         em.remove(searchQuery.getSingleResult());
-        
+
         /*
-        Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
-        Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
-        associationQuery.setParameter("conferenceId", conferenceId);
-        ratingQuery.setParameter("conferenceId", conferenceId);
-        try {
-            associationQuery.executeUpdate();
-            ratingQuery.executeUpdate();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            throw new Exception();
-        }
-                */
+         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
+         Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
+         associationQuery.setParameter("conferenceId", conferenceId);
+         ratingQuery.setParameter("conferenceId", conferenceId);
+         try {
+         associationQuery.executeUpdate();
+         ratingQuery.executeUpdate();
+         } catch (Exception e) {
+         em.getTransaction().rollback();
+         throw new Exception();
+         }
+         */
     }
 
 }

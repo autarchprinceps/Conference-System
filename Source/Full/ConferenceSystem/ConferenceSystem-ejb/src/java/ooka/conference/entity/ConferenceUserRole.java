@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ConferenceUserRole.findAll", query = "SELECT c FROM ConferenceUserRole c"),
     @NamedQuery(name = "ConferenceUserRole.findByUserId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.userId = :userId"),
     @NamedQuery(name = "ConferenceUserRole.findByConferenceId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "ConferenceUserRole.findByConferenceIdAndUserId", query = "SELECT c FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId AND c.conferenceUserRolePK.userId = :userId"),
     @NamedQuery(name = "ConferenceUserRole.deleteByConferenceId", query = "DELETE FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId"),
     @NamedQuery(name = "ConferenceUserRole.deleteByConferenceIdAndUserId", query = "DELETE FROM ConferenceUserRole c WHERE c.conferenceUserRolePK.conferenceId = :conferenceId AND c.conferenceUserRolePK.userId = :userId")})
 public class ConferenceUserRole implements Serializable {

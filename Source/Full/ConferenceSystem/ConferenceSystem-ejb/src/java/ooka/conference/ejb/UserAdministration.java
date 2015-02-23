@@ -1,11 +1,10 @@
 package ooka.conference.ejb;
 
+import java.util.List;
 import javax.ejb.Stateful;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.validation.ConstraintViolationException;
 import ooka.conference.dto.UserData;
 import ooka.conference.entity.User;
 
@@ -16,7 +15,7 @@ public class UserAdministration implements UserAdministrationLocal {
     EntityManager em;
 
     @Override
-    public void registerUser(UserData data) {
+    public void registerUser(UserData data) throws Exception {
         User newUser = new User();
         newUser.setName(data.getName());
         newUser.setPassword(data.getPassword());
@@ -24,11 +23,17 @@ public class UserAdministration implements UserAdministrationLocal {
     }
 
     @Override
-    public User validateUser(UserData data) {
+    public User validateUser(UserData data) throws Exception {
         Query checkQuery = em.createNamedQuery("User.check");
         checkQuery.setParameter("name", data.getName());
         checkQuery.setParameter("password", data.getPassword());
-        return (User) checkQuery.getSingleResult();
+
+        List results = checkQuery.getResultList();
+
+        if (results.size() == 1) {
+            return (User) results.get(0);
+        }
+        return null;
     }
 
 }

@@ -13,14 +13,10 @@ import ooka.conference.dto.ConferenceData;
 import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.User;
-import ooka.conference.util.Redirector;
 
 @ManagedBean
 @ViewScoped
 public class ConferenceCreateController {
-
-    @ManagedProperty(value = "#{pageController}")
-    private PageController pageController;
 
     @EJB
     private ConferenceAdministrationLocal confAdminEJB;
@@ -43,7 +39,7 @@ public class ConferenceCreateController {
         try {
             availableUsers.remove(authEJB.getCurrentUser());
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
     }
@@ -80,14 +76,6 @@ public class ConferenceCreateController {
         this.newConfParticipantLimit = newConfParticipantLimit;
     }
 
-    public PageController getPageController() {
-        return pageController;
-    }
-
-    public void setPageController(PageController pageController) {
-        this.pageController = pageController;
-    }
-
     public Collection<User> getSelectedUsers() {
         return selectedUsers;
     }
@@ -110,10 +98,10 @@ public class ConferenceCreateController {
         try {
             confAdminEJB.createConference(authEJB.getCurrentUser().getId(), data);
         } catch (Exception e) {
-            e.printStackTrace();
+            return;
         }
 
-        PageController.redirectTo(pageController.getUserViewPage());
+        PageController.redirectTo(PageController.userViewPage);
     }
 
 }

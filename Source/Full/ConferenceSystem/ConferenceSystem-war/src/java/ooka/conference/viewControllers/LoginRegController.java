@@ -1,27 +1,16 @@
 package ooka.conference.viewControllers;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import ooka.conference.appControllers.ErrorController;
 import ooka.conference.appControllers.PageController;
-import ooka.conference.util.Message;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.UserData;
-import ooka.conference.util.WrongLoginCredentialsException;
 
 @ManagedBean
 @ViewScoped
 public class LoginRegController {
-
-    @ManagedProperty(value = "#{errorController}")
-    private ErrorController errorController;
-
-    @ManagedProperty(value = "#{pageController}")
-    private PageController pageController;
 
     @ManagedProperty(value = "#{authenticationController}")
     private AuthenticationController authEJB;
@@ -45,14 +34,6 @@ public class LoginRegController {
 
     public void setAuthEJB(AuthenticationController authEJB) {
         this.authEJB = authEJB;
-    }
-
-    public PageController getPageController() {
-        return pageController;
-    }
-
-    public void setPageController(PageController pageController) {
-        this.pageController = pageController;
     }
 
     public String getLoginUserame() {
@@ -87,26 +68,15 @@ public class LoginRegController {
         this.registrationPassword = registrationPassword;
     }
 
-    public ErrorController getErrorController() {
-        return errorController;
-    }
-
-    public void setErrorController(ErrorController errorController) {
-        this.errorController = errorController;
-    }
-
     public void doLogin() {
 
         UserData data = new UserData(loginUserame, loginPassword);
         try {
             authEJB.loginUser(data);
-        } catch (WrongLoginCredentialsException ex) {
-            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
-            errorController.setErrorMsg(new Message("Login", "failure"));
-            PageController.redirectTo(pageController.getUserLoginPage());
+        } catch (Exception ex) {
+            return;
         }
 
-        errorController.setErrorMsg(null);
         PageController.redirectTo(PageController.userViewPage);
     }
 
@@ -116,10 +86,12 @@ public class LoginRegController {
     }
 
     public void doRegister() {
-
         UserData data = new UserData(registrationUsername, registrationPassword);
-        if (!authEJB.registerUser(data)) {
-            errorController.setErrorMsg(new Message("Register", "failure"));
+
+        try {
+            authEJB.registerUser(data);
+        } catch (Exception ex) {
+            return;
         }
 
         PageController.redirectTo(PageController.userLoginPage);

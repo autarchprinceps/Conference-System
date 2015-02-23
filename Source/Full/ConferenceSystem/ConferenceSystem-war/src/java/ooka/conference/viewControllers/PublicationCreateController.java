@@ -1,8 +1,6 @@
 package ooka.conference.viewControllers;
 
-import java.util.Collection;
 import ooka.conference.appControllers.PageController;
-import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -10,21 +8,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
-import ooka.conference.dto.ConferenceData;
-import ooka.conference.dto.PublicationData;
-import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
-import ooka.conference.entity.User;
-import ooka.conference.util.Redirector;
 
 @ManagedBean
 @ViewScoped
 public class PublicationCreateController {
-
-    @ManagedProperty(value = "#{pageController}")
-    private PageController pageController;
 
     @EJB
     private PublicationAdministrationLocal pubAdminEJB;
@@ -51,14 +41,6 @@ public class PublicationCreateController {
 
     public void setAuthEJB(AuthenticationController authEJB) {
         this.authEJB = authEJB;
-    }
-
-    public PageController getPageController() {
-        return pageController;
-    }
-
-    public void setPageController(PageController pageController) {
-        this.pageController = pageController;
     }
 
     public String getNewPubTitle() {
@@ -89,7 +71,7 @@ public class PublicationCreateController {
             e.printStackTrace();
         }
 
-        PageController.redirectTo(pageController.getConfViewPage(), "confId", currentConference.getId().toString());
+        PageController.redirectTo(PageController.confViewPage, "confId", currentConference.getId().toString());
     }
 
 }

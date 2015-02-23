@@ -7,8 +7,8 @@ import ooka.conference.entity.User;
 @Local
 public interface UserAdministrationLocal {
 
-    public void registerUser(UserData data);
+    public void registerUser(UserData data) throws Exception;
 
-    public User validateUser(UserData data);
+    public User validateUser(UserData data) throws Exception;
 
 }

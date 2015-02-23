@@ -54,6 +54,7 @@ public class ConferenceViewController {
         User currentUser = authEJB.getCurrentUser();
         for (ConferenceUserRole role : currentConference.getConferenceUserRoleCollection()) {
             if (role.getUser().equals(currentUser)) {
+                System.out.println("YYYYYYYYEEEEEEEEEEEEEEEEEEESSSSSSSSS");
                 currentUserIsRegistered = true;
                 currentUserRole = (String) role.getUserRole();
                 break;

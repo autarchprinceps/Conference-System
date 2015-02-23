@@ -10,7 +10,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.SearchLocal;
-import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.Review;
