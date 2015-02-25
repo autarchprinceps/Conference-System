@@ -38,8 +38,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
     @Override
     public void createConference(int organizerId, ConferenceData data) throws Exception {
 
-        User organizer = em.find(User.class, organizerId);
-
+        // User organizer = em.find(User.class, organizerId);
         Conference newConference = new Conference();
         newConference.setName(data.getName());
         newConference.setDate(data.getDate());
@@ -49,35 +48,15 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         em.flush();
         em.refresh(newConference);
 
-        ConferenceUserRole newOrganizerRole = new ConferenceUserRole();
-        newOrganizerRole.setConference(newConference);
-        newOrganizerRole.setUserRole(Role.ORGANIZER.toString());
-        newOrganizerRole.setUser(organizer);
-
-        ConferenceUserRolePK associatioin_pk = new ConferenceUserRolePK();
-        associatioin_pk.setConferenceId(newConference.getId());
-        associatioin_pk.setUserId(organizerId);
-
-        newOrganizerRole.setConferenceUserRolePK(associatioin_pk);
-
-        em.persist(newOrganizerRole);
+        registerToConference(newConference.getId(), organizerId, Role.ORGANIZER);
 
         for (User reviewer : data.getComittee()) {
-            ConferenceUserRole newReviewerRole = new ConferenceUserRole();
-            newReviewerRole.setConference(newConference);
-            newReviewerRole.setUserRole(Role.REVIEWER.toString());
-            newReviewerRole.setUser(reviewer);
-
-            associatioin_pk = new ConferenceUserRolePK();
-            associatioin_pk.setConferenceId(newConference.getId());
-            associatioin_pk.setUserId(reviewer.getId());
-
-            newReviewerRole.setConferenceUserRolePK(associatioin_pk);
-            em.persist(newReviewerRole);
+            registerToConference(newConference.getId(), reviewer.getId(), Role.REVIEWER);
         }
 
-        em.flush();
-        em.refresh(organizer);
+        //em.flush();
+        //em.refresh(organizer);
+        //em.refresh(newConference);
     }
 
     @Override
@@ -99,12 +78,6 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void deregisterToConference(int conferenceId, int userId) throws Exception {
-        /*
-         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceIdAndUserId");
-         associationQuery.setParameter("conferenceId", conferenceId);
-         associationQuery.setParameter("userId", userId);
-         associationQuery.executeUpdate();
-         */
         Query roleQuery = em.createNamedQuery("ConferenceUserRole.findByConferenceIdAndUserId");
         roleQuery.setParameter("conferenceId", conferenceId);
         roleQuery.setParameter("userId", userId);
@@ -114,23 +87,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void cancelConference(int conferenceId) throws Exception {
-        Query searchQuery = em.createNamedQuery("Conference.findById");
-        searchQuery.setParameter("id", conferenceId);
-        em.remove(searchQuery.getSingleResult());
-
-        /*
-         Query associationQuery = em.createNamedQuery("ConferenceUserRole.deleteByConferenceId");
-         Query ratingQuery = em.createNamedQuery("ConferenceRating.deleteByConferenceId");
-         associationQuery.setParameter("conferenceId", conferenceId);
-         ratingQuery.setParameter("conferenceId", conferenceId);
-         try {
-         associationQuery.executeUpdate();
-         ratingQuery.executeUpdate();
-         } catch (Exception e) {
-         em.getTransaction().rollback();
-         throw new Exception();
-         }
-         */
+        em.remove(em.find(Conference.class, conferenceId));
     }
 
 }

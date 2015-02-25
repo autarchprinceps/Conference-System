@@ -41,7 +41,9 @@ public class Search implements SearchLocal {
     public Conference searchConferenceById(Integer pk) {
         Query searchQuery = em.createNamedQuery("Conference.findById");
         searchQuery.setParameter("id", pk);
-        return (Conference) searchQuery.getSingleResult();
+        Conference conf = (Conference) searchQuery.getSingleResult();
+        em.refresh(conf);
+        return conf;
     }
 
     @Override
