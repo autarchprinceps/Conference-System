@@ -1,5 +1,6 @@
 package ooka.conference.viewControllers;
 
+import java.util.Collection;
 import ooka.conference.dto.Role;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceRating;
+import ooka.conference.entity.ConferenceRatingPK;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.User;
 import org.primefaces.event.RateEvent;
@@ -59,23 +61,25 @@ public class ConferenceViewController {
                 break;
             }
         }
+        
+        Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection();
 
-        for (ConferenceRating rating : currentConference.getConferenceRatingCollection()) {
-            if (rating.getUser().equals(currentUser)) {
-                averageConferenceRating = rating.getRating();
-                currentConferenceRating = rating;
+        for(ConferenceRating confRating : confRatings) {
+            if(confRating.getUser().equals(currentUser)) {
+                currentConferenceRating = confRating;
                 break;
             }
         }
-
-        int ratingCount = currentConference.getConferenceRatingCollection().size();
-        if (ratingCount > 0) {
-            averageConferenceRating = Math.round(averageConferenceRating / ratingCount);
-            averageConferenceRating = averageConferenceRating > 6 ? 6 : averageConferenceRating;
-        } else {
-            averageConferenceRating = 0;
+        if(this.currentConferenceRating == null) {
+            this.currentConferenceRating = new ConferenceRating(currentUser.getId(), currentConference.getId()); // TODO FIX
         }
 
+        int ratingCount = confRatings.size();
+        if(ratingCount > 0) {
+            averageConferenceRating = Math.round(confRatings.stream().map((conferenceRating) -> conferenceRating.getRating()).reduce((a, b) -> a + b).orElse(ratingCount * 3) / ratingCount);
+        } else {
+            averageConferenceRating = 3;
+        }
     }
 
     public Role[] getRolesForSelection() {

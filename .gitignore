@@ -48,3 +48,5 @@ hs_err_pid*
 /Source/Full/ConferenceSystem/build/
 /Source/Full/ConferenceSystem/dist/
 
+/Source/Full/ConferenceSystem/ConferenceSystem-ejb/dist/
+/Source/Full/ConferenceSystem/ConferenceSystem-war/dist/

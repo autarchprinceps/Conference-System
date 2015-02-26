@@ -7,23 +7,29 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <title>Conference-System</title>
-        <h2>Conference-System</h2>
-        <c:if test="#{authenticationController.loggedIn}">
-            <h:form>
-                <h:outputText value="Logged in as "/>
-                <p:link outcome="#{pageController.userViewPage}" value="#{authenticationController.currentUser.name}">
-                    <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
-                </p:link>
-                ( <h:commandLink value="logout" action="#{authenticationController.logoutUser()}" /> )
-            </h:form>
-            <h3>What you can do:</h3>
-            <ul>
-                <li><p:link outcome="#{pageController.confCreatePage}" value="Create new Conference"/></li>
-                <li><p:link outcome="#{pageController.confSearchPage}" value="Search for Conferences"/></li>
-                <li><p:link outcome="#{pageController.pubSearchPage}" value="Search for Publications"/></li>
-            </ul>
-            <hr />
-        </c:if>
+        <p:toolbar>
+            <f:facet name="left">
+                Conference-System
+                <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
+                <c:if test="#{authenticationController.loggedIn}">
+                    <p:button outcome="#{pageController.confCreatePage}" value="Create new Conference"/>
+                    <span class="ui-separator" />
+                    <p:button outcome="#{pageController.confSearchPage}" value="Search for Conferences"/>
+                    <span class="ui-separator" />
+                    <p:button outcome="#{pageController.pubSearchPage}" value="Search for Publications"/>
+                </c:if>
+            </f:facet>
+            <f:facet name="right">
+                <c:if test="#{authenticationController.loggedIn}">
+                    <h:form>
+                    <h:outputText value="Logged in as "/>
+                    <p:link outcome="#{pageController.userViewPage}" value="#{authenticationController.currentUser.name}">
+                        <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
+                    </p:link>
+                    ( <h:commandLink value="logout" action="#{authenticationController.logoutUser()}" /> )
+                    </h:form>
+                </c:if>
+            </f:facet>
+        </p:toolbar>
     </ui:composition> 
 </html>
