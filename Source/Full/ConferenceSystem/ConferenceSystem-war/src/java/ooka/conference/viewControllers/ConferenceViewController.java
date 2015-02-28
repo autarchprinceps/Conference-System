@@ -115,7 +115,7 @@ public class ConferenceViewController {
 
     public void doRate(RateEvent event) {
         try {
-            confAdminEJB.rateConference(currentConference.getId(), authEJB.getCurrentUser().getId(), ((Integer) (event.getRating())) - 6);
+            confAdminEJB.rateConference(currentConference.getId(), authEJB.getCurrentUser().getId(), ((Integer) (event.getRating())) - 3);
         } catch (Exception ex) {
 
         }

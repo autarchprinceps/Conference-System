@@ -16,7 +16,7 @@
         <br/>
         <h:outputText value="Average Rating:" />
         <h:form>
-            <p:rating id="avgrating" stars="6" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
+            <p:rating id="avgrating" stars="5" cancel="false" disabled="true" value="#{conferenceViewController.averageConferenceRating}"/>
         </h:form>
         <br />
 
@@ -45,7 +45,7 @@
 
                 <h:outputText value="Rate Conference:" />
                 <h:form>
-                    <p:rating stars="6" value="#{conferenceViewController.currentConferenceRating}">
+                    <p:rating cancel="false" stars="5" value="#{conferenceViewController.currentConferenceRating}">
                         <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
                     </p:rating>
                 </h:form>

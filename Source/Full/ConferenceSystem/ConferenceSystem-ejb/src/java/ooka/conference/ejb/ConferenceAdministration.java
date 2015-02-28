@@ -21,6 +21,9 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void rateConference(int conferenceId, int userId, int rating) throws Exception {
+        if(rating > 2 || rating < -2) {
+            throw new Exception("Rating out of bounds");
+        }
 
         ConferenceRating newRating = new ConferenceRating();
         newRating.setUser(em.find(User.class, userId));
