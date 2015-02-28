@@ -34,6 +34,7 @@ public class PublicationAdministration implements PublicationAdministrationLocal
 
     @Override
     public void revisePublication(int authorId, int conferenceId, String content) throws Exception {
+        // TODO replace String content with byte[]
         Query pubQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
         pubQuery.setParameter(":authorId", authorId);
         pubQuery.setParameter(":conferenceId", conferenceId);

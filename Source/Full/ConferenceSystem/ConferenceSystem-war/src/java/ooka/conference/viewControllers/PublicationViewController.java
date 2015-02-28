@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Publication;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @ViewScoped
@@ -50,4 +51,33 @@ public class PublicationViewController {
         this.authEJB = authEJB;
     }
 
+    private int selectedPublicationRevision;
+
+    public int getSelectedPublicationRevision() {
+        return selectedPublicationRevision;
+    }
+
+    public void setSelectedPublicationRevision(int selectedPublicationRevision) {
+        this.selectedPublicationRevision = selectedPublicationRevision;
+    }
+    
+    public int getMaxRevisionCount() {
+        // TODO
+        return 3;
+    }
+    
+    public void changeRevision() {
+        // TODO param?
+    }
+    
+    private StreamedContent revision; // TODO init
+
+    public StreamedContent getRevision() {
+        return revision;
+    }
+
+    public void setRevision(StreamedContent revision) {
+        this.revision = revision;
+    }
+    
 }

@@ -21,6 +21,12 @@
             Your are the author...
         </c:if>
 
+        <p:selectOneMenu value="#{publicationViewController.selectedPublicationRevision}" valueChangeListener="">
+            <c:forEach begin="0" end="#{publicationViewController.maxRevisionCount}" var="count">
+                <f:selectItem itemLabel="#{count}" itemValue="#{count}"/>
+            </c:forEach>
+        </p:selectOneMenu>
+        <p:fileDownload value="#{publicationViewController.revision}"/>
         <!--
         <h3>Publication</h3>
         <c:choose>

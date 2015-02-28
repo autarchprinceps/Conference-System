@@ -11,6 +11,7 @@ import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Conference;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @ViewScoped
@@ -27,7 +28,15 @@ public class PublicationCreateController {
 
     private Conference currentConference;
     private String newPubTitle;
-    private String newPubContent;
+    private UploadedFile newPubContent;
+
+    public UploadedFile getNewPubContent() {
+        return newPubContent;
+    }
+
+    public void setNewPubContent(UploadedFile newPubContent) {
+        this.newPubContent = newPubContent;
+    }
 
     @PostConstruct
     public void init() {
@@ -51,22 +60,14 @@ public class PublicationCreateController {
         this.newPubTitle = newPubTitle;
     }
 
-    public String getNewPubContent() {
-        return newPubContent;
-    }
-
-    public void setNewPubContent(String newPubContent) {
-        this.newPubContent = newPubContent;
-    }
-
     public Conference getCurrentConference() {
         return currentConference;
     }
 
     public void doCreate() {
-
         try {
             pubAdminEJB.createPublication(newPubTitle, authEJB.getCurrentUser().getId(), currentConference.getId());
+            // TODO create initial Revision of Publication with newPubContent.getContents() as content;
         } catch (Exception e) {
             e.printStackTrace();
         }

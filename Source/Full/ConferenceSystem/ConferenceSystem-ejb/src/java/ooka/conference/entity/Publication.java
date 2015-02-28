@@ -47,7 +47,7 @@ public class Publication implements Serializable {
     private String title;
     @Size(max = 2147483647)
     @Column(name = "text")
-    private String text;
+    private String text; // TODO replace with Array/List of Revisions and byte[] as Data type
     @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Conference conference;
