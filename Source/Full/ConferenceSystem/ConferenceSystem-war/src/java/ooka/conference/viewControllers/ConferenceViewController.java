@@ -100,7 +100,7 @@ public class ConferenceViewController {
 
         try {
             confAdminEJB.registerToConference(currentConference.getId(), authEJB.getCurrentUser().getId(), selectedRoleForRegistration);
-            PageController.redirectTo(PageController.confViewPage, "confId", currentConference.getId().toString());
+            PageController.reload();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,

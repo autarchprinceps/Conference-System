@@ -5,10 +5,10 @@ import javax.ejb.Local;
 @Local
 public interface PublicationAdministrationLocal {
 
-    void createPublication(String title, int authorId, int conferenceId);
+    void createPublication(int authorId, int conferenceId, String title);
     
-    void revisePublication(int authorId, int conferenceId, String content) throws Exception;
+    void revisePublication(int authorId, int conferenceId, byte[] content) throws Exception;
 
-    void reviewPublication(int reviewerId, int authorId, int conferenceId, String content) throws Exception;
+    // void reviewPublication(int authorId, int conferenceId, reviewerId, byte[] content) throws Exception;
 
 }

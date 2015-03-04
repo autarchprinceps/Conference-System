@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,21 +18,43 @@ import javax.validation.constraints.NotNull;
  * @author Bastian
  */
 @Embeddable
-public class PublicationPK implements Serializable {
+public class PublicationRevisionPK implements Serializable {
+
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "conference_id")
-    private int conferenceId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "author_id")
     private int authorId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "conference_id")
+    private int conferenceId;
 
-    public PublicationPK() {
+    public PublicationRevisionPK() {
     }
 
-    public PublicationPK(int conferenceId, int authorId) {
+    public PublicationRevisionPK(int id, int authorId, int conferenceId) {
+        this.id = id;
+        this.authorId = authorId;
         this.conferenceId = conferenceId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
 
@@ -42,33 +66,29 @@ public class PublicationPK implements Serializable {
         this.conferenceId = conferenceId;
     }
 
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) conferenceId;
+        hash += (int) id;
         hash += (int) authorId;
+        hash += (int) conferenceId;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PublicationPK)) {
+        if (!(object instanceof PublicationRevisionPK)) {
             return false;
         }
-        PublicationPK other = (PublicationPK) object;
-        if (this.conferenceId != other.conferenceId) {
+        PublicationRevisionPK other = (PublicationRevisionPK) object;
+        if (this.id != other.id) {
             return false;
         }
         if (this.authorId != other.authorId) {
+            return false;
+        }
+        if (this.conferenceId != other.conferenceId) {
             return false;
         }
         return true;
@@ -76,7 +96,7 @@ public class PublicationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ooka.conference.entity.PublicationPK[ conferenceId=" + conferenceId + ", authorId=" + authorId + " ]";
+        return "ooka.conference.entity.PublicationRevisionPK[ id=" + id + ", authorId=" + authorId + ", conferenceId=" + conferenceId + " ]";
     }
-    
+
 }

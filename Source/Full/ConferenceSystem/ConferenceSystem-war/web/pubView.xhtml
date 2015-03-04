@@ -12,56 +12,40 @@
     <h:body>
         <h2>Publication #{publicationViewController.currentPublication.title}</h2>
 
-        <h:outputText value="Author:"/>
+        <h:outputText value="Author: "/>
         <p:link outcome="#{pageController.userViewPage}" value="#{publicationViewController.currentPublication.user.name}">
-            <f:param name="userId" value="#{pubViewController.authorId}"/>
+            <f:param name="userId" value="#{publicationViewController.currentPublication.user.id}"/>
         </p:link>
 
+        <br />
+
+        <h:outputText value="Conference: "/>
+        <p:link outcome="#{pageController.confViewPage}" value="#{publicationViewController.currentPublication.conference.name}">
+            <f:param name="confId" value="#{publicationViewController.currentPublication.conference.id}"/>
+        </p:link>
+
+        <br />
+
         <c:if test="#{publicationViewController.currentUserIsAuthor()}">
-            Your are the author...
+
+            <h:form enctype="multipart/form-data">
+                <p:panelGrid columns="2">
+                    <h:inputFile value="#{publicationViewController.newRevision}" />
+
+                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewRevision()}" ajax="false"/>
+
+                </p:panelGrid>
+            </h:form>
+
         </c:if>
 
-        <p:selectOneMenu value="#{publicationViewController.selectedPublicationRevision}" valueChangeListener="">
-            <c:forEach begin="0" end="#{publicationViewController.maxRevisionCount}" var="count">
-                <f:selectItem itemLabel="#{count}" itemValue="#{count}"/>
-            </c:forEach>
-        </p:selectOneMenu>
-        <p:fileDownload value="#{publicationViewController.revision}"/>
-        <!--
-        <h3>Publication</h3>
-        <c:choose>
-            <c:when test="#{pubViewController.publicationAvailable}">
-                <c:forEach items="#{pubViewController.publicationContent}" var="line">
-                    <h:outputText style="word-wrap: break-word;" value="#{line}"/>
-                </c:forEach>
-                <c:if test="#{pubViewController.currentUserAuthor}">
-
-                </c:if>
-            </c:when>
-            <c:otherwise>
-                <h:outputText value="Content of the publication hasn't been made available yet"/>
-                <c:if test="#{pubViewController.currentUserAuthor}">
-              
-                </c:if>
-            </c:otherwise>
-        </c:choose>
-        <h1>Reviews</h1>
-        <p:dataTable value="#{pubViewController.reviews}" var="review" emptyMessage="No reviewers assigned to this publication yet">
-            <p:column headerText="Reviewer">
-                <p:link outcome="#{pageController.userViewPage}" value="#{review.reviewer.name}">
-                    <f:param name="userId" value="#{review.reviewer.id}"/>
-                </p:link>
+        <h3>Revisions</h3>
+        <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet">
+            <p:column headerText="Revison">
+                <h:outputText value="revision_#{revision.publicationRevisionPK.id} download link..."/>
             </p:column>
-            <p:column headerText="Content">
-                <c:forEach items="#{review.content}" var="line">
-                    <h:outputText style="word-wrap: break-word;" value="#{line}"/>
-                </c:forEach>
-            </p:column>
-            <c:if test="#{pubViewController.isCurrentUserReviewer(review.reviewer.id)}">
-              
-            </c:if>
         </p:dataTable>
-        -->
+
     </h:body>
 </html>
 

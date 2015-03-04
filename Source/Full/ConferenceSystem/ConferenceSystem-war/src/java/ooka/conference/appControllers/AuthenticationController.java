@@ -1,9 +1,12 @@
 package ooka.conference.appControllers;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import ooka.conference.dto.UserData;
 import ooka.conference.ejb.UserAdministrationLocal;
 import ooka.conference.entity.User;
@@ -17,7 +20,17 @@ public class AuthenticationController implements Serializable {
     private UserAdministrationLocal userEJB;
 
     private User currentUser;
-
+/*
+    @PostConstruct
+    public void forceToLogin() {
+        if (!isLoggedIn()) {
+            // force to login
+            if (!((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServletPath().equals(PageController.userLoginPage)) {
+                PageController.redirectTo(PageController.userLoginPage);
+            }
+        }
+    }
+*/
     public void loginUser(UserData data) throws Exception {
 
         if (isLoggedIn()) {

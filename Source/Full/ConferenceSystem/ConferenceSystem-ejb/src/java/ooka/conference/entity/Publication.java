@@ -6,54 +6,56 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
+import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author bastian
+ * @author Bastian
  */
 @Entity
 @Table(name = "publication", schema = "conference_system")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Publication.findAll", query = "SELECT p FROM Publication p"),
-    @NamedQuery(name = "Publication.findByAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId"),
-    @NamedQuery(name = "Publication.findByConferenceId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId"),
-    @NamedQuery(name = "Publication.findByConferenceIdAndAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId AND p.publicationPK.authorId = :authorId"),
     @NamedQuery(name = "Publication.findByTitle", query = "SELECT p FROM Publication p WHERE p.title = :title"),
-    @NamedQuery(name = "Publication.findByText", query = "SELECT p FROM Publication p WHERE p.text = :text")})
+    @NamedQuery(name = "Publication.findByConferenceId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "Publication.findByAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId"),
+    @NamedQuery(name = "Publication.findByConferenceIdAndAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId AND p.publicationPK.conferenceId = :conferenceId")})
 public class Publication implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PublicationPK publicationPK;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    @Size(max = 255)
     @Column(name = "title")
     private String title;
-    @Size(max = 2147483647)
-    @Column(name = "text")
-    private String text; // TODO replace with Array/List of Revisions and byte[] as Data type
     @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false)
     private Conference conference;
     @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false)
     private User user;
+    @JoinColumns({
+        @JoinColumn(name = "author_id", referencedColumnName = "author_id", insertable = false, updatable = false),
+        @JoinColumn(name = "conference_id", referencedColumnName = "conference_id", insertable = false, updatable = false)
+    })
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY
+    )
+    private Collection<PublicationRevision> revisions;
 
     public Publication() {
     }
@@ -62,13 +64,8 @@ public class Publication implements Serializable {
         this.publicationPK = publicationPK;
     }
 
-    public Publication(PublicationPK publicationPK, String title) {
-        this.publicationPK = publicationPK;
-        this.title = title;
-    }
-
-    public Publication(int authorId, int conferenceId) {
-        this.publicationPK = new PublicationPK(authorId, conferenceId);
+    public Publication(int conferenceId, int authorId) {
+        this.publicationPK = new PublicationPK(conferenceId, authorId);
     }
 
     public PublicationPK getPublicationPK() {
@@ -85,14 +82,6 @@ public class Publication implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public Conference getConference() {
@@ -134,6 +123,14 @@ public class Publication implements Serializable {
     @Override
     public String toString() {
         return "ooka.conference.entity.Publication[ publicationPK=" + publicationPK + " ]";
+    }
+
+    public Collection<PublicationRevision> getRevisions() {
+        return revisions;
+    }
+
+    public void setRevisions(Collection<PublicationRevision> revisions) {
+        this.revisions = revisions;
     }
 
 }

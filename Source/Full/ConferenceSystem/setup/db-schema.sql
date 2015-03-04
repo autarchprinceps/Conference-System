@@ -30,9 +30,16 @@ CREATE TABLE conference_system.publication (
 	author_id		INT		NOT NULL REFERENCES conference_system.end_user(id),
 	conference_id		INT		NOT NULL REFERENCES conference_system.conference(id),
 	title			VARCHAR(30)	NOT NULL,
-	text			TEXT,
 	PRIMARY KEY(author_id,conference_id),
 	UNIQUE(title)
+);
+
+CREATE TABLE conference_system.publication_revision (
+	id			SERIAL		NOT NULL,
+	author_id		INT		NOT NULL REFERENCES conference_system.end_user(id),
+	conference_id		INT		NOT NULL REFERENCES conference_system.conference(id),
+	content			bytea,
+	PRIMARY KEY(id,author_id,publication_id)
 );
 
 CREATE TABLE conference_system.publication_review (

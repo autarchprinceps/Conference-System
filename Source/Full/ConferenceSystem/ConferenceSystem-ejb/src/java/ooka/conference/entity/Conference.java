@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Conference.findByParticipantLimit", query = "SELECT c FROM Conference c WHERE c.participantLimit = :participantLimit"),
     @NamedQuery(name = "Conference.findByDate", query = "SELECT c FROM Conference c WHERE c.date = :date")})
 public class Conference implements Serializable {
+
+    @Column(name = "participant_limit")
+    private Integer participantLimit;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,10 +56,6 @@ public class Conference implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "participant_limit")
-    private int participantLimit;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
@@ -176,5 +176,9 @@ public class Conference implements Serializable {
     public String toString() {
         return "ooka.conference.entity.Conference[ id=" + id + " ]";
     }
-    
+
+    public void setParticipantLimit(Integer participantLimit) {
+        this.participantLimit = participantLimit;
+    }
+
 }

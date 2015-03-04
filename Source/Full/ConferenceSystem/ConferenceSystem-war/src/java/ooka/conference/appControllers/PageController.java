@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import ooka.conference.viewControllers.LoginRegController;
 
 @ManagedBean
@@ -38,6 +39,15 @@ public class PageController {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml?" + paramName + "=" + paramValue);
         } catch (IOException ex) {
             Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void reload() {
+        try {
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getServletPath());
+        } catch (IOException ex) {
+            Logger.getLogger(PageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

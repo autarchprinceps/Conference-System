@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.check", query = "SELECT u FROM User u WHERE u.name = :name AND u.password = :password")})
 public class User implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<PublicationRevision> publicationRevisionCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -158,6 +161,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "ooka.conference.entity.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PublicationRevision> getPublicationRevisionCollection() {
+        return publicationRevisionCollection;
+    }
+
+    public void setPublicationRevisionCollection(Collection<PublicationRevision> publicationRevisionCollection) {
+        this.publicationRevisionCollection = publicationRevisionCollection;
     }
 
 }

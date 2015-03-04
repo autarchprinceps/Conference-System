@@ -3,12 +3,11 @@ package ooka.conference.ejb;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationPK;
-import ooka.conference.entity.Review;
-import ooka.conference.entity.ReviewPK;
+import ooka.conference.entity.PublicationRevision;
+import ooka.conference.entity.PublicationRevisionPK;
 import ooka.conference.entity.User;
 
 @Stateless
@@ -18,7 +17,7 @@ public class PublicationAdministration implements PublicationAdministrationLocal
     EntityManager em;
 
     @Override
-    public void createPublication(String title, int authorId, int conferenceId) {
+    public void createPublication(int authorId, int conferenceId, String title) {
         Publication newPublication = new Publication();
         newPublication.setTitle(title);
         newPublication.setUser(em.find(User.class, authorId));
@@ -33,32 +32,38 @@ public class PublicationAdministration implements PublicationAdministrationLocal
     }
 
     @Override
-    public void revisePublication(int authorId, int conferenceId, String content) throws Exception {
-        // TODO replace String content with byte[]
-        Query pubQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
-        pubQuery.setParameter(":authorId", authorId);
-        pubQuery.setParameter(":conferenceId", conferenceId);
-        Publication publication = (Publication) pubQuery.getSingleResult();
+    public void revisePublication(int authorId, int conferenceId, byte[] content) throws Exception {
+        /*
+         Query pubQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
+         pubQuery.setParameter(":authorId", authorId);
+         pubQuery.setParameter(":conferenceId", conferenceId);
+         Publication publication = (Publication) pubQuery.getSingleResult();
+         */
 
-        em.getTransaction().begin();
-        publication.setText(content);
-        em.getTransaction().commit();
+        PublicationRevision newRevision = new PublicationRevision();
+        newRevision.setContent(content);
+        PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
+        newRevisionPK.setAuthorId(authorId);
+        newRevisionPK.setConferenceId(conferenceId);
+        newRevision.setPublicationRevisionPK(newRevisionPK);
+        em.persist(newRevision);
     }
 
-    @Override
-    public void reviewPublication(int reviewerId, int authorId, int conferenceId, String content) throws Exception {
-        Review newReview = new Review();
-        newReview.setUser(em.find(User.class, authorId));
-        newReview.setConference(em.find(Conference.class, conferenceId));
-        newReview.setText(content);
+    /*
+     @Override
+     public void reviewPublication(int reviewerId, int authorId, int conferenceId, String content) throws Exception {
+     Review newReview = new Review();
+     newReview.setUser(em.find(User.class, authorId));
+     newReview.setConference(em.find(Conference.class, conferenceId));
+     newReview.setText(content);
 
-        ReviewPK association_pk = new ReviewPK();
-        association_pk.setAuthorId(authorId);
-        association_pk.setConferenceId(conferenceId);
+     ReviewPK association_pk = new ReviewPK();
+     association_pk.setAuthorId(authorId);
+     association_pk.setConferenceId(conferenceId);
 
-        newReview.setReviewPK(association_pk);
+     newReview.setReviewPK(association_pk);
 
-        em.persist(newReview);
-    }
-
+     em.persist(newReview);
+     }
+     */
 }
