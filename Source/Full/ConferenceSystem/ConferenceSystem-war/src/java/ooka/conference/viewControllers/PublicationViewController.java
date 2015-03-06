@@ -1,9 +1,9 @@
 package ooka.conference.viewControllers;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +16,9 @@ import ooka.conference.appControllers.PageController;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Publication;
+import ooka.conference.entity.PublicationRevision;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @ViewScoped
@@ -47,6 +50,7 @@ public class PublicationViewController {
     }
 
     public boolean currentUserIsAuthor() {
+        // TODO FIX new 1
         return currentPublication.getUser().equals(authEJB.getCurrentUser());
     }
 
@@ -84,12 +88,16 @@ public class PublicationViewController {
         try {
             byte[] content = new byte[(int) newRevision.getSize()];
             newRevision.getInputStream().read(content);
-            pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content);
+            pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType());
         } catch (Exception ex) {
 
         } finally {
             PageController.redirectTo(PageController.confViewPage, "confId", currentPublication.getConference().getId().toString());
         }
 
+    }
+    
+    public StreamedContent getDownload(PublicationRevision revision) {
+        return new DefaultStreamedContent(new ByteArrayInputStream(revision.getContent()), revision.getPublicationRevisionPK().getContentType(), revision.getPublicationRevisionPK().getFileName());
     }
 }

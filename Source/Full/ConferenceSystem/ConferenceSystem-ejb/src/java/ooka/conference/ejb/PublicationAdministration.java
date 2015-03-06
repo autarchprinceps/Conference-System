@@ -32,7 +32,7 @@ public class PublicationAdministration implements PublicationAdministrationLocal
     }
 
     @Override
-    public void revisePublication(int authorId, int conferenceId, byte[] content) throws Exception {
+    public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType) throws Exception {
         /*
          Query pubQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
          pubQuery.setParameter(":authorId", authorId);
@@ -45,6 +45,8 @@ public class PublicationAdministration implements PublicationAdministrationLocal
         PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
         newRevisionPK.setAuthorId(authorId);
         newRevisionPK.setConferenceId(conferenceId);
+        newRevisionPK.setFileName(fileName);
+        newRevisionPK.setContentType(contentType);
         newRevision.setPublicationRevisionPK(newRevisionPK);
         em.persist(newRevision);
     }

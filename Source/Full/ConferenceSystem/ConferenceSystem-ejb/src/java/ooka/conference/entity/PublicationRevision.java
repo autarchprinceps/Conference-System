@@ -50,10 +50,6 @@ public class PublicationRevision implements Serializable {
         this.publicationRevisionPK = publicationRevisionPK;
     }
 
-    public PublicationRevision(int id, int authorId, int conferenceId) {
-        this.publicationRevisionPK = new PublicationRevisionPK(id, authorId, conferenceId);
-    }
-
     public PublicationRevisionPK getPublicationRevisionPK() {
         return publicationRevisionPK;
     }

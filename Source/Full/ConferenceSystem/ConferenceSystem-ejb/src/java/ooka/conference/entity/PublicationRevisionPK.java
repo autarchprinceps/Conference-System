@@ -32,14 +32,40 @@ public class PublicationRevisionPK implements Serializable {
     @NotNull
     @Column(name = "conference_id")
     private int conferenceId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "file_name")
+    private String fileName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "content_type")
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public PublicationRevisionPK() {
     }
 
-    public PublicationRevisionPK(int id, int authorId, int conferenceId) {
+    public PublicationRevisionPK(int id, int authorId, int conferenceId, String fileName, String contentType) {
         this.id = id;
         this.authorId = authorId;
         this.conferenceId = conferenceId;
+        this.fileName = fileName;
+        this.contentType = contentType;
     }
 
     public int getId() {
@@ -68,11 +94,7 @@ public class PublicationRevisionPK implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (int) id;
-        hash += (int) authorId;
-        hash += (int) conferenceId;
-        return hash;
+        return id + authorId + conferenceId + fileName.hashCode() + contentType.hashCode();
     }
 
     @Override
@@ -82,21 +104,18 @@ public class PublicationRevisionPK implements Serializable {
             return false;
         }
         PublicationRevisionPK other = (PublicationRevisionPK) object;
-        if (this.id != other.id) {
-            return false;
-        }
-        if (this.authorId != other.authorId) {
-            return false;
-        }
-        if (this.conferenceId != other.conferenceId) {
-            return false;
-        }
-        return true;
+
+        return
+                this.id == other.id &&
+                this.authorId == other.authorId &&
+                this.conferenceId == other.conferenceId &&
+                this.fileName.equals(other.fileName) &&
+                this.contentType.equals(other.contentType);
     }
 
     @Override
     public String toString() {
-        return "ooka.conference.entity.PublicationRevisionPK[ id=" + id + ", authorId=" + authorId + ", conferenceId=" + conferenceId + " ]";
+        return "ooka.conference.entity.PublicationRevisionPK[ id=" + id + ", authorId=" + authorId + ", conferenceId=" + conferenceId + ", fileName=" + fileName + ", contentType=" + contentType + " ]";
     }
 
 }

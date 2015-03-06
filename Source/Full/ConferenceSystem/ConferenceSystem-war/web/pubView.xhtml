@@ -42,7 +42,14 @@
         <h3>Revisions</h3>
         <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet">
             <p:column headerText="Revison">
-                <h:outputText value="revision_#{revision.publicationRevisionPK.id} download link..."/>
+                <h:outputText value="#{revision.publicationRevisionPK.id}: #{revision.publicationRevisionPK.fileName}"/>
+            </p:column>
+            <p:column headerText="">
+                <h:form>
+                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{publicationViewController.getDownload(revision)}"/>
+                    </p:commandButton>
+                </h:form>
             </p:column>
         </p:dataTable>
 
