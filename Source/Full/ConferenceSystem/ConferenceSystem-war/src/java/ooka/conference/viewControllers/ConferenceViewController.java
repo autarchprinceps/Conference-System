@@ -102,9 +102,10 @@ public class ConferenceViewController {
             confAdminEJB.registerToConference(currentConference.getId(), authEJB.getCurrentUser().getId(), selectedRoleForRegistration);
             PageController.reload();
         } catch (Exception ex) {
+            ex.printStackTrace();
             FacesContext.getCurrentInstance()
                     .addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while trying to register to conference", null)
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while trying to register to conference", ex.getMessage())
                     );
             return;
         }

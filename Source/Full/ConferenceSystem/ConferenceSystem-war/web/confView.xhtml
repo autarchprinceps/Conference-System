@@ -68,10 +68,12 @@
             <h:form>
                 <p:commandButton onclick="PF('registerDialog').show();" value="Register" type="button"/>
                 <p:dialog header="Register to Conference" modal="true" widgetVar="registerDialog">
-                    <p:outputLabel for="selectRole" value="Select your Role"/>
-                    <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
-                        <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
-                    </p:selectOneMenu>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="selectRole" value="Select your Role"/>
+                        <p:selectOneMenu id="selectRole" value="#{conferenceViewController.selectedRoleForRegistration}">
+                            <f:selectItems value="#{conferenceViewController.rolesForSelection}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
                     <p:commandButton value="Send Registration" action="#{conferenceViewController.doRegister()}" onclick="PF('registerDialog').hide();" type="submit"/>
                 </p:dialog>
             </h:form>
