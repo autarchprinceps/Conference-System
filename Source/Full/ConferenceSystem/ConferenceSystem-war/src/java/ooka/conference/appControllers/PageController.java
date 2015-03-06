@@ -43,6 +43,7 @@ public class PageController {
     }
 
     public static void reload() {
+        // TODO FIX new 2
         try {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext();
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getServletPath());

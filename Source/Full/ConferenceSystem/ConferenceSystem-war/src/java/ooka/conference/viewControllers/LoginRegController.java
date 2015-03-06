@@ -1,10 +1,12 @@
 package ooka.conference.viewControllers;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import ooka.conference.appControllers.PageController;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.UserData;
 
@@ -73,11 +75,10 @@ public class LoginRegController {
         UserData data = new UserData(loginUserame, loginPassword);
         try {
             authEJB.loginUser(data);
+            PageController.redirectTo(PageController.userViewPage);
         } catch (Exception ex) {
-            return;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", ex.getMessage()));
         }
-
-        PageController.redirectTo(PageController.userViewPage);
     }
 
     public void doLogout() {
