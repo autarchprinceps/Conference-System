@@ -32,40 +32,14 @@ public class PublicationRevisionPK implements Serializable {
     @NotNull
     @Column(name = "conference_id")
     private int conferenceId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "file_name")
-    private String fileName;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "content_type")
-    private String contentType;
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 
     public PublicationRevisionPK() {
     }
 
-    public PublicationRevisionPK(int id, int authorId, int conferenceId, String fileName, String contentType) {
+    public PublicationRevisionPK(int id, int authorId, int conferenceId) {
         this.id = id;
         this.authorId = authorId;
         this.conferenceId = conferenceId;
-        this.fileName = fileName;
-        this.contentType = contentType;
     }
 
     public int getId() {
@@ -94,7 +68,7 @@ public class PublicationRevisionPK implements Serializable {
 
     @Override
     public int hashCode() {
-        return id + authorId + conferenceId + fileName.hashCode() + contentType.hashCode();
+        return id + authorId + conferenceId;
     }
 
     @Override
@@ -108,14 +82,12 @@ public class PublicationRevisionPK implements Serializable {
         return
                 this.id == other.id &&
                 this.authorId == other.authorId &&
-                this.conferenceId == other.conferenceId &&
-                this.fileName.equals(other.fileName) &&
-                this.contentType.equals(other.contentType);
+                this.conferenceId == other.conferenceId;
     }
 
     @Override
     public String toString() {
-        return "ooka.conference.entity.PublicationRevisionPK[ id=" + id + ", authorId=" + authorId + ", conferenceId=" + conferenceId + ", fileName=" + fileName + ", contentType=" + contentType + " ]";
+        return "ooka.conference.entity.PublicationRevisionPK[ id=" + id + ", authorId=" + authorId + ", conferenceId=" + conferenceId + " ]";
     }
 
 }

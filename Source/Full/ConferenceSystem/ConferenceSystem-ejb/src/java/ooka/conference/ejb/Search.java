@@ -1,6 +1,7 @@
 package ooka.conference.ejb;
 
 import java.util.Collection;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -76,9 +77,16 @@ public class Search implements SearchLocal {
 
     @Override
     public Collection<Review> searchReviewsForUser(Integer userId) {
-        Query searchQuery = em.createNamedQuery("Review.findByAuthorId");
-        searchQuery.setParameter("authorId", userId);
+        Query searchQuery = em.createNamedQuery("Review.findByUserId");
+        searchQuery.setParameter("reviewerId", userId);
         return searchQuery.getResultList();
     }
 
+    @Override
+    public Collection<Review> searchReviewsForPublication(int authorId, int conferenceId) {
+        Query searchQuery = em.createNamedQuery("Review.findByPublication");
+        searchQuery.setParameter("authorId", authorId);
+        searchQuery.setParameter("conferenceId", conferenceId);
+        return searchQuery.getResultList();
+    }
 }

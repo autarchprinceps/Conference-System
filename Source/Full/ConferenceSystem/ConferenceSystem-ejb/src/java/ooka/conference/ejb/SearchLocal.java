@@ -28,4 +28,6 @@ public interface SearchLocal {
     public Collection<Review> searchReviewsForUser(Integer userId);
 
     public Collection<ConferenceUserRole> searchUsersForConference(Integer confId);
+    
+    public Collection<Review> searchReviewsForPublication(int authorId, int conferenceId);
 }

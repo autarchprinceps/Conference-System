@@ -65,13 +65,7 @@ public class ConferenceUserRolePK implements Serializable {
             return false;
         }
         ConferenceUserRolePK other = (ConferenceUserRolePK) object;
-        if (this.userId != other.userId) {
-            return false;
-        }
-        if (this.conferenceId != other.conferenceId) {
-            return false;
-        }
-        return true;
+        return this.userId == other.userId && this.conferenceId == other.conferenceId;
     }
 
     @Override

@@ -102,9 +102,7 @@ public class Publication implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (publicationPK != null ? publicationPK.hashCode() : 0);
-        return hash;
+        return publicationPK != null ? publicationPK.hashCode() : 0;
     }
 
     @Override
@@ -114,10 +112,7 @@ public class Publication implements Serializable {
             return false;
         }
         Publication other = (Publication) object;
-        if ((this.publicationPK == null && other.publicationPK != null) || (this.publicationPK != null && !this.publicationPK.equals(other.publicationPK))) {
-            return false;
-        }
-        return true;
+        return !((this.publicationPK == null && other.publicationPK != null) || (this.publicationPK != null && !this.publicationPK.equals(other.publicationPK)));
     }
 
     @Override

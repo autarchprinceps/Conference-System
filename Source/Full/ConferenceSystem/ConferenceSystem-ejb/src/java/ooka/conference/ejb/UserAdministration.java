@@ -1,14 +1,14 @@
 package ooka.conference.ejb;
 
 import java.util.List;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import ooka.conference.dto.UserData;
 import ooka.conference.entity.User;
 
-@Stateful
+@Stateless // TODO Why Stateful? Replaced with Stateless
 public class UserAdministration implements UserAdministrationLocal {
 
     @PersistenceContext

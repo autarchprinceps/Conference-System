@@ -6,15 +6,18 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,16 +30,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
-    @NamedQuery(name = "Review.findByAuthorId", query = "SELECT r FROM Review r WHERE r.reviewPK.authorId = :authorId"),
+    @NamedQuery(name = "Review.findByUserId", query = "SELECT r FROM Review r WHERE r.reviewPK.reviewerId = :reviewerId"),
     @NamedQuery(name = "Review.findByConferenceId", query = "SELECT r FROM Review r WHERE r.reviewPK.conferenceId = :conferenceId"),
-    @NamedQuery(name = "Review.findByText", query = "SELECT r FROM Review r WHERE r.text = :text")})
+    @NamedQuery(name = "Review.findByPublication", query= "SELECT r FROM Review r WHERE r.reviewPK.conferenceId = :conferenceId AND r.reviewPK.authorId = :authorId")
+})
 public class Review implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ReviewPK reviewPK;
-    @Size(max = 2147483647)
-    @Column(name = "text")
-    private String text;
+    @Lob
+    @Column(name = "content")
+    private byte[] content;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "file_name")
+    private String fileName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "content_type")
+    private String contentType;
+
     @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Conference conference;
@@ -51,8 +65,28 @@ public class Review implements Serializable {
         this.reviewPK = reviewPK;
     }
 
-    public Review(int authorId, int conferenceId) {
-        this.reviewPK = new ReviewPK(authorId, conferenceId);
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     public ReviewPK getReviewPK() {
@@ -61,14 +95,6 @@ public class Review implements Serializable {
 
     public void setReviewPK(ReviewPK reviewPK) {
         this.reviewPK = reviewPK;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public Conference getConference() {
@@ -101,15 +127,12 @@ public class Review implements Serializable {
             return false;
         }
         Review other = (Review) object;
-        if ((this.reviewPK == null && other.reviewPK != null) || (this.reviewPK != null && !this.reviewPK.equals(other.reviewPK))) {
-            return false;
-        }
-        return true;
+        return !((this.reviewPK == null && other.reviewPK != null) || (this.reviewPK != null && !this.reviewPK.equals(other.reviewPK)));
     }
 
     @Override
     public String toString() {
         return "ooka.conference.entity.Review[ reviewPK=" + reviewPK + " ]";
     }
-    
+
 }

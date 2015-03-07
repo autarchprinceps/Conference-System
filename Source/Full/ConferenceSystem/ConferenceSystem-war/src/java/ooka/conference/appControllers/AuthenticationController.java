@@ -1,14 +1,12 @@
 package ooka.conference.appControllers;
 
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import ooka.conference.dto.UserData;
 import ooka.conference.ejb.UserAdministrationLocal;
+import ooka.conference.entity.Conference;
 import ooka.conference.entity.User;
 import ooka.conference.util.WrongLoginCredentialsException;
 
@@ -66,6 +64,14 @@ public class AuthenticationController implements Serializable {
             return null;
         } else {
             return currentUser;
+        }
+    }
+    
+    public boolean isCurrentUserReviewer(Conference conf) {
+        if (!isLoggedIn()) {
+            return false;
+        } else {
+            return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase("REVIEWER")));
         }
     }
 

@@ -112,10 +112,7 @@ public class ConferenceRating implements Serializable {
             return false;
         }
         ConferenceRating other = (ConferenceRating) object;
-        if ((this.conferenceRatingPK == null && other.conferenceRatingPK != null) || (this.conferenceRatingPK != null && !this.conferenceRatingPK.equals(other.conferenceRatingPK))) {
-            return false;
-        }
-        return true;
+        return !((this.conferenceRatingPK == null && other.conferenceRatingPK != null) || (this.conferenceRatingPK != null && !this.conferenceRatingPK.equals(other.conferenceRatingPK)));
     }
 
     @Override

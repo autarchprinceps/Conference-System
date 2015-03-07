@@ -27,32 +27,49 @@
         <br />
 
         <c:if test="#{publicationViewController.currentUserIsAuthor()}">
-
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newRevision}" />
-
                     <p:commandButton value="Add Revision" action="#{publicationViewController.addNewRevision()}" ajax="false"/>
-
                 </p:panelGrid>
             </h:form>
-
+        </c:if>
+        <c:if test="#{publicationViewController.currentUserReviewer}">
+            <h:form enctype="multipart/form-data">
+                <p:panelGrid columns="2">
+                    <h:inputFile value="#{publicationViewController.newReview}" />
+                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewReview()}" ajax="false"/>
+                </p:panelGrid>
+            </h:form>
         </c:if>
 
         <h3>Revisions</h3>
         <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet">
             <p:column headerText="Revison">
-                <h:outputText value="#{revision.publicationRevisionPK.id}: #{revision.publicationRevisionPK.fileName}"/>
+                <h:outputText value="#{revision.publicationRevisionPK.id}: #{revision.fileName}"/>
             </p:column>
             <p:column headerText="">
                 <h:form>
                     <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-                        <p:fileDownload value="#{publicationViewController.getDownload(revision)}"/>
+                        <p:fileDownload value="#{publicationViewController.getRevisionDownload(revision)}"/>
                     </p:commandButton>
                 </h:form>
             </p:column>
         </p:dataTable>
 
+        <h3>Reviews</h3>
+        <p:dataTable value="#{publicationViewController.reviews}" var="review" emptyMessage="No reviews uploaded yet">
+            <p:column headerText="Reviewer">
+                <h:outputText value="#{review.user.name}"/>
+            </p:column>
+            <p:column headerText="">
+                <h:form>
+                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{publicationViewController.getReviewDownload(review)}"/>
+                    </p:commandButton>
+                </h:form>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
 

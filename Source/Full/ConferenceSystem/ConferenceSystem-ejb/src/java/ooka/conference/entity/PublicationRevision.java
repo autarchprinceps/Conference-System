@@ -6,6 +6,7 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,12 +44,37 @@ public class PublicationRevision implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "file_name")
+    private String fileName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "content_type")
+    private String contentType;
 
     public PublicationRevision() {
     }
 
     public PublicationRevision(PublicationRevisionPK publicationRevisionPK) {
         this.publicationRevisionPK = publicationRevisionPK;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public PublicationRevisionPK getPublicationRevisionPK() {
@@ -84,9 +111,7 @@ public class PublicationRevision implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (publicationRevisionPK != null ? publicationRevisionPK.hashCode() : 0);
-        return hash;
+        return publicationRevisionPK != null ? publicationRevisionPK.hashCode() : 0;
     }
 
     @Override

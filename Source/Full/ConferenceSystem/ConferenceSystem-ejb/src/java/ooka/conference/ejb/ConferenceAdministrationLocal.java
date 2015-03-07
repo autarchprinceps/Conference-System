@@ -3,7 +3,6 @@ package ooka.conference.ejb;
 import javax.ejb.Local;
 import ooka.conference.dto.ConferenceData;
 import ooka.conference.dto.Role;
-import ooka.conference.entity.Conference;
 
 @Local
 public interface ConferenceAdministrationLocal {

@@ -1,5 +1,6 @@
 package ooka.conference.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,6 +9,8 @@ import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationPK;
 import ooka.conference.entity.PublicationRevision;
 import ooka.conference.entity.PublicationRevisionPK;
+import ooka.conference.entity.Review;
+import ooka.conference.entity.ReviewPK;
 import ooka.conference.entity.User;
 
 @Stateless
@@ -33,39 +36,26 @@ public class PublicationAdministration implements PublicationAdministrationLocal
 
     @Override
     public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType) throws Exception {
-        /*
-         Query pubQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
-         pubQuery.setParameter(":authorId", authorId);
-         pubQuery.setParameter(":conferenceId", conferenceId);
-         Publication publication = (Publication) pubQuery.getSingleResult();
-         */
-
         PublicationRevision newRevision = new PublicationRevision();
         newRevision.setContent(content);
         PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
         newRevisionPK.setAuthorId(authorId);
         newRevisionPK.setConferenceId(conferenceId);
-        newRevisionPK.setFileName(fileName);
-        newRevisionPK.setContentType(contentType);
+        newRevision.setFileName(fileName);
+        newRevision.setContentType(contentType);
         newRevision.setPublicationRevisionPK(newRevisionPK);
         em.persist(newRevision);
     }
-
-    /*
-     @Override
-     public void reviewPublication(int reviewerId, int authorId, int conferenceId, String content) throws Exception {
-     Review newReview = new Review();
-     newReview.setUser(em.find(User.class, authorId));
-     newReview.setConference(em.find(Conference.class, conferenceId));
-     newReview.setText(content);
-
-     ReviewPK association_pk = new ReviewPK();
-     association_pk.setAuthorId(authorId);
-     association_pk.setConferenceId(conferenceId);
-
-     newReview.setReviewPK(association_pk);
-
-     em.persist(newReview);
-     }
-     */
+    
+    @Override
+    public void reviewPublication(final int reviewerId, final int authorId, final int conferenceId, final byte[] content, final String fileName, final String contentType) throws Exception {
+        ReviewPK newReviewPK = new ReviewPK(reviewerId, authorId, conferenceId);
+        Review newReview = new Review(newReviewPK);
+        newReview.setContent(content);
+        newReview.setContentType(contentType);
+        newReview.setFileName(fileName);
+        newReview.setConference(em.find(Conference.class, conferenceId));
+        newReview.setUser(em.find(User.class, reviewerId));
+        em.persist(newReview);
+    }
 }

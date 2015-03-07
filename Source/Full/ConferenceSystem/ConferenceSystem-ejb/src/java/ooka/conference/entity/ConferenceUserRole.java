@@ -76,7 +76,7 @@ public class ConferenceUserRole implements Serializable {
         this.conferenceUserRolePK = conferenceUserRolePK;
     }
 
-    public Object getUserRole() {
+    public String getUserRole() {
         return userRole;
     }
 
@@ -114,10 +114,7 @@ public class ConferenceUserRole implements Serializable {
             return false;
         }
         ConferenceUserRole other = (ConferenceUserRole) object;
-        if ((this.conferenceUserRolePK == null && other.conferenceUserRolePK != null) || (this.conferenceUserRolePK != null && !this.conferenceUserRolePK.equals(other.conferenceUserRolePK))) {
-            return false;
-        }
-        return true;
+        return !((this.conferenceUserRolePK == null && other.conferenceUserRolePK != null) || (this.conferenceUserRolePK != null && !this.conferenceUserRolePK.equals(other.conferenceUserRolePK)));
     }
 
     @Override

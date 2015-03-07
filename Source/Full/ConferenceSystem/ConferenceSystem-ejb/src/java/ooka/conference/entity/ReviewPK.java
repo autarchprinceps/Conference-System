@@ -19,6 +19,10 @@ import javax.validation.constraints.NotNull;
 public class ReviewPK implements Serializable {
     @Basic(optional = false)
     @NotNull
+    @Column(name = "reviewer_id")
+    private int reviewerId;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "author_id")
     private int authorId;
     @Basic(optional = false)
@@ -29,9 +33,18 @@ public class ReviewPK implements Serializable {
     public ReviewPK() {
     }
 
-    public ReviewPK(int authorId, int conferenceId) {
+    public ReviewPK(int reviewerId, int authorId, int conferenceId) {
+        this.reviewerId = reviewerId;
         this.authorId = authorId;
         this.conferenceId = conferenceId;
+    }
+
+    public int getReviewerId() {
+        return reviewerId;
+    }
+
+    public void setReviewerId(int reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public int getAuthorId() {

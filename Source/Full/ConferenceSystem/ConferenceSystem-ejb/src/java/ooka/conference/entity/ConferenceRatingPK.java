@@ -65,13 +65,7 @@ public class ConferenceRatingPK implements Serializable {
             return false;
         }
         ConferenceRatingPK other = (ConferenceRatingPK) object;
-        if (this.userId != other.userId) {
-            return false;
-        }
-        if (this.conferenceId != other.conferenceId) {
-            return false;
-        }
-        return true;
+        return this.userId == other.userId && this.conferenceId == other.conferenceId;
     }
 
     @Override
