@@ -56,6 +56,14 @@ public class UserViewController {
         // search to get the most recent data
         return searchEJB.searchReviewsForUser(currentUser.getId());
     }
+    
+    public String getConferenceNameById(int confId) {
+        return searchEJB.searchConferenceById(confId).getName();
+    }
+    
+    public String getPublicationTitleByReview(Review review) {
+        return searchEJB.searchForPublication(review.getReviewPK().getConferenceId(), review.getReviewPK().getAuthorId()).getTitle();
+    }
 
     public AuthenticationController getAuthEJB() {
         return authEJB;

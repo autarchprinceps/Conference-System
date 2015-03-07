@@ -36,7 +36,7 @@
         </p:dataTable>
 
         <h3>Associated Publications</h3>
-        <p:dataTable value="#{userViewController.publications}" var="pub_assoc">
+        <p:dataTable value="#{userViewController.publications}" var="pub_assoc" emptyMessage="No publications contributed yet">
             <p:column headerText="Publication">
                 <p:link outcome="#{pageController.pubViewPage}" value="#{pub_assoc.title}">
                     <f:param name="confId" value="#{pub_assoc.publicationPK.conferenceId}"/>
@@ -44,10 +44,26 @@
                 </p:link>
             </p:column>
             <p:column headerText="Conference">
-                <h:outputText value="#{pub_assoc.conference.name}"/>
+                <p:link outcome="#{pageController.confViewPage}" value="#{pub_assoc.conference.name}">
+                    <f:param name="confId" value="#{pub_assoc.conference.id}"/>
+                </p:link>
             </p:column>
         </p:dataTable>
-
+        
+        <h3>Associated Reviews</h3>
+        <p:dataTable value="#{userViewController.reviews}" var="review" emptyMessage="No reviews contributed yet">
+            <p:column headerText="Publication">
+                <p:link outcome="#{pageController.pubViewPage}" value="#{userViewController.getPublicationTitleByReview(review)}">
+                    <f:param name="confId" value="#{review.reviewPK.conferenceId}"/>
+                    <f:param name="userId" value="#{review.reviewPK.authorId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Conference">
+                <p:link outcome="#{pageController.confViewPage}" value="#{userViewController.getConferenceNameById(review.reviewPK.conferenceId)}">
+                    <f:param name="confId" value="#{review.reviewPK.conferenceId}"/>
+                </p:link>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
 
