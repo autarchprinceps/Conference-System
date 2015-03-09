@@ -1,6 +1,6 @@
 package ooka.conference.ejb;
 
-import java.util.List;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,27 +35,30 @@ public class PublicationAdministration implements PublicationAdministrationLocal
     }
 
     @Override
-    public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType) throws Exception {
+    public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
         PublicationRevision newRevision = new PublicationRevision();
-        newRevision.setContent(content);
         PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
         newRevisionPK.setAuthorId(authorId);
         newRevisionPK.setConferenceId(conferenceId);
+        newRevision.setContent(content);
+        newRevision.setDate(date);
         newRevision.setFileName(fileName);
         newRevision.setContentType(contentType);
         newRevision.setPublicationRevisionPK(newRevisionPK);
         em.persist(newRevision);
     }
-    
+
     @Override
-    public void reviewPublication(final int reviewerId, final int authorId, final int conferenceId, final byte[] content, final String fileName, final String contentType) throws Exception {
+    public void reviewPublication(int reviewerId, int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
         ReviewPK newReviewPK = new ReviewPK(reviewerId, authorId, conferenceId);
         Review newReview = new Review(newReviewPK);
         newReview.setContent(content);
+        newReview.setDate(date);
         newReview.setContentType(contentType);
         newReview.setFileName(fileName);
         newReview.setConference(em.find(Conference.class, conferenceId));
         newReview.setUser(em.find(User.class, reviewerId));
         em.persist(newReview);
     }
+
 }

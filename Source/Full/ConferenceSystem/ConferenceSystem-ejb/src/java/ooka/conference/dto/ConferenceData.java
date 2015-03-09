@@ -3,7 +3,6 @@ package ooka.conference.dto;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import ooka.conference.entity.User;
 
 public class ConferenceData implements Serializable {

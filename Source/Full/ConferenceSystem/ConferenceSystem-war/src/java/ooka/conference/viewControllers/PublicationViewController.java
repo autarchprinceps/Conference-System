@@ -1,7 +1,9 @@
 package ooka.conference.viewControllers;
 
 import java.io.ByteArrayInputStream;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -100,7 +102,8 @@ public class PublicationViewController {
         try {
             byte[] content = new byte[(int) newRevision.getSize()];
             newRevision.getInputStream().read(content);
-            pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType());
+            Date currentDate = new Date();
+            pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType(), currentDate);
             PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
             PageController.message("Revision could not be added");
@@ -109,9 +112,10 @@ public class PublicationViewController {
 
     public void addNewReview() {
         try {
-            byte[] content = new byte[(int) newRevision.getSize()];
-            newRevision.getInputStream().read(content);
-            pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType());
+            byte[] content = new byte[(int) newReview.getSize()];
+            newReview.getInputStream().read(content);
+            Date currentDate = new Date();
+            pubEJB.reviewPublication(authEJB.getCurrentUser().getId(), currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newReview.getSubmittedFileName(), newReview.getContentType(), currentDate);
             PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
             PageController.message("Review could not be added");

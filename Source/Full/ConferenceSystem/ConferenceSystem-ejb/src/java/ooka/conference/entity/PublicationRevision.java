@@ -6,6 +6,7 @@
 package ooka.conference.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -32,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PublicationRevision.findByAuthorId", query = "SELECT p FROM PublicationRevision p WHERE p.publicationRevisionPK.authorId = :authorId"),
     @NamedQuery(name = "PublicationRevision.findByConferenceId", query = "SELECT p FROM PublicationRevision p WHERE p.publicationRevisionPK.conferenceId = :conferenceId")})
 public class PublicationRevision implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PublicationRevisionPK publicationRevisionPK;
@@ -52,6 +56,11 @@ public class PublicationRevision implements Serializable {
     @NotNull
     @Column(name = "content_type")
     private String contentType;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     public PublicationRevision() {
     }
@@ -67,7 +76,6 @@ public class PublicationRevision implements Serializable {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
 
     public String getContentType() {
         return contentType;
@@ -127,9 +135,17 @@ public class PublicationRevision implements Serializable {
         return true;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "ooka.conference.entity.PublicationRevision[ publicationRevisionPK=" + publicationRevisionPK + " ]";
     }
-    
+
 }

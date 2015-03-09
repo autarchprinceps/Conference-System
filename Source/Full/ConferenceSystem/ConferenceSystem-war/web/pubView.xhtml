@@ -26,27 +26,23 @@
 
         <br />
 
+        <h3>Revisions</h3>
         <c:if test="#{publicationViewController.currentUserIsAuthor()}">
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newRevision}" />
-                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewRevision()}" ajax="false"/>
+                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewRevision()}" icon="ui-icon-arrowthick-0-s" ajax="false"/>
                 </p:panelGrid>
             </h:form>
-        </c:if>
-        <c:if test="#{publicationViewController.currentUserReviewer}">
-            <h:form enctype="multipart/form-data">
-                <p:panelGrid columns="2">
-                    <h:inputFile value="#{publicationViewController.newReview}" />
-                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewReview()}" ajax="false"/>
-                </p:panelGrid>
-            </h:form>
+            <br />
         </c:if>
 
-        <h3>Revisions</h3>
         <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet" rowIndexVar="revision_count" sortBy="#{revision.publicationRevisionPK.id}">
             <p:column headerText="Revison">
                 <h:outputText value="#{revision_count + 1}: #{revision.fileName}"/>
+            </p:column>
+            <p:column headerText="Upload date">
+                <h:outputText value="#{revision.date}"/>
             </p:column>
             <p:column headerText="">
                 <h:form>
@@ -58,9 +54,22 @@
         </p:dataTable>
 
         <h3>Reviews</h3>
+        <c:if test="#{publicationViewController.currentUserReviewer}">
+            <h:form enctype="multipart/form-data">
+                <p:panelGrid columns="2">
+                    <h:inputFile value="#{publicationViewController.newReview}" />
+                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewReview()}" ajax="false"/>
+                </p:panelGrid>
+            </h:form>
+            <br />
+        </c:if>
+
         <p:dataTable value="#{publicationViewController.reviews}" var="review" emptyMessage="No reviews uploaded yet">
             <p:column headerText="Reviewer">
                 <h:outputText value="#{review.user.name}"/>
+            </p:column>
+            <p:column headerText="Upload date">
+                <h:outputText value="#{review.date}"/>
             </p:column>
             <p:column headerText="">
                 <h:form>
