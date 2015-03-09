@@ -44,9 +44,9 @@
         </c:if>
 
         <h3>Revisions</h3>
-        <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet">
+        <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet" rowIndexVar="revision_count" sortBy="#{revision.publicationRevisionPK.id}">
             <p:column headerText="Revison">
-                <h:outputText value="#{revision.publicationRevisionPK.id}: #{revision.fileName}"/>
+                <h:outputText value="#{revision_count + 1}: #{revision.fileName}"/>
             </p:column>
             <p:column headerText="">
                 <h:form>

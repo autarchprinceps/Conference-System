@@ -4,18 +4,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import ooka.conference.viewControllers.LoginRegController;
 
 @ManagedBean
 @ApplicationScoped
 public class PageController {
 
-    public static final String errorPage = "error";
     public static final String confSearchPage = "confSearch";
     public static final String confViewPage = "confView";
     public static final String confCreatePage = "confCreate";
@@ -26,34 +23,30 @@ public class PageController {
     public static final String pubViewPage = "pubView";
     public static final String pubSearchPage = "pubSearch";
 
-    public static void redirectTo(String page) {
+    public static void redirectTo(String page, String... params) {
+
+        String url = "./" + page + ".xhtml";
+
+        for (int i = 0; i < params.length - 1; i += 2) {
+            if (i != 0) {
+                url += "&";
+            } else {
+                url += "?";
+            }
+            url += params[i] + "=" + params[i + 1];
+        }
+
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url);
         } catch (IOException ex) {
             Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public static void redirectTo(String page, String paramName, String paramValue) {
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./" + page + ".xhtml?" + paramName + "=" + paramValue);
-        } catch (IOException ex) {
-            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void reload() {
-        // TODO FIX new 2
-        try {
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext();
-            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getServletPath());
-        } catch (IOException ex) {
-            Logger.getLogger(PageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public String getErrorPage() {
-        return errorPage;
+    public static void message(String message) {
+        FacesContext.getCurrentInstance()
+                .addMessage(null,
+                        new FacesMessage(message));
     }
 
     public String getConfCreatePage() {

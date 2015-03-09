@@ -36,10 +36,9 @@ public class PublicationViewController {
     private Publication currentPublication;
 
     private Part newRevision;
-    
+
     private Part newReview;
 
-    
     private int selectedPublicationRevision;
 
     public Part getNewReview() {
@@ -62,7 +61,7 @@ public class PublicationViewController {
 
     public boolean currentUserIsAuthor() {
         // TODO FIX new 1
-        return currentPublication.getUser().equals(authEJB.getCurrentUser());
+        return authEJB.getCurrentUser().equals(currentPublication.getUser());
     }
 
     public boolean isCurrentUserReviewer() {
@@ -76,7 +75,7 @@ public class PublicationViewController {
     public void setAuthEJB(AuthenticationController authEJB) {
         this.authEJB = authEJB;
     }
-    
+
     public Collection<Review> getReviews() {
         return searchEJB.searchReviewsForPublication(currentPublication.getPublicationPK().getAuthorId(), currentPublication.getPublicationPK().getConferenceId());
     }
@@ -102,27 +101,27 @@ public class PublicationViewController {
             byte[] content = new byte[(int) newRevision.getSize()];
             newRevision.getInputStream().read(content);
             pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType());
+            PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
-        } finally {
-            PageController.redirectTo(PageController.confViewPage, "confId", currentPublication.getConference().getId().toString());
+            PageController.message("Revision could not be added");
         }
     }
-    
+
     public void addNewReview() {
         try {
             byte[] content = new byte[(int) newRevision.getSize()];
             newRevision.getInputStream().read(content);
             pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType());
+            PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
-        } finally {
-            PageController.redirectTo(PageController.confViewPage, "confId", currentPublication.getConference().getId().toString());
+            PageController.message("Review could not be added");
         }
     }
-    
+
     public StreamedContent getRevisionDownload(PublicationRevision revision) {
         return new DefaultStreamedContent(new ByteArrayInputStream(revision.getContent()), revision.getContentType(), revision.getFileName());
     }
-    
+
     public StreamedContent getReviewDownload(Review review) {
         return new DefaultStreamedContent(new ByteArrayInputStream(review.getContent()), review.getContentType(), review.getFileName());
     }

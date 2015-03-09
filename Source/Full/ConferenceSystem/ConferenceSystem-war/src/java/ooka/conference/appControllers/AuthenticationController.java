@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import ooka.conference.dto.Role;
 import ooka.conference.dto.UserData;
 import ooka.conference.ejb.UserAdministrationLocal;
 import ooka.conference.entity.Conference;
@@ -18,17 +19,7 @@ public class AuthenticationController implements Serializable {
     private UserAdministrationLocal userEJB;
 
     private User currentUser;
-/*
-    @PostConstruct
-    public void forceToLogin() {
-        if (!isLoggedIn()) {
-            // force to login
-            if (!((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServletPath().equals(PageController.userLoginPage)) {
-                PageController.redirectTo(PageController.userLoginPage);
-            }
-        }
-    }
-*/
+
     public void loginUser(UserData data) throws Exception {
 
         if (isLoggedIn()) {
@@ -38,11 +29,13 @@ public class AuthenticationController implements Serializable {
         try {
             currentUser = userEJB.validateUser(data);
         } catch (Exception e) {
+            PageController.message("Wrong login credentials!");
             currentUser = null;
             throw new WrongLoginCredentialsException();
         }
 
         if (currentUser == null) {
+            PageController.message("Wrong login credentials!");
             throw new WrongLoginCredentialsException();
         }
 
@@ -66,12 +59,12 @@ public class AuthenticationController implements Serializable {
             return currentUser;
         }
     }
-    
+
     public boolean isCurrentUserReviewer(Conference conf) {
         if (!isLoggedIn()) {
             return false;
         } else {
-            return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase("REVIEWER")));
+            return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())));
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import ooka.conference.entity.Conference;
@@ -23,7 +24,11 @@ public class Search implements SearchLocal {
         Query searchQuery = em.createNamedQuery("Publication.findByConferenceIdAndAuthorId");
         searchQuery.setParameter("conferenceId", confId);
         searchQuery.setParameter("authorId", userId);
-        return (Publication) searchQuery.getSingleResult();
+        try {
+            return (Publication) searchQuery.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

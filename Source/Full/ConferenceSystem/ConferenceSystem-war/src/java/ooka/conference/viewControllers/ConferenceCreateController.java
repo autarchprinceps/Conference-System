@@ -36,12 +36,7 @@ public class ConferenceCreateController {
     @PostConstruct
     public void init() {
         availableUsers = searchEJB.searchForUsers();
-        try {
-            availableUsers.remove(authEJB.getCurrentUser());
-        } catch (Exception e) {
-
-        }
-
+        availableUsers.remove(authEJB.getCurrentUser());
     }
 
     public AuthenticationController getAuthEJB() {
@@ -97,11 +92,10 @@ public class ConferenceCreateController {
 
         try {
             confAdminEJB.createConference(authEJB.getCurrentUser().getId(), data);
+            PageController.redirectTo(PageController.userViewPage);
         } catch (Exception e) {
-            return;
+            PageController.message("Could not create the Conference");
         }
-
-        PageController.redirectTo(PageController.userViewPage);
     }
 
 }

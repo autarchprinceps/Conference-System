@@ -37,9 +37,19 @@
 
             <!-- ======================= USER ======================= -->
             <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
-                (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
-                    <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
-                </p:link>)
+
+                <c:if test="#{!conferenceViewController.currentUserAlreadyCreatedPublication}"> 
+                    (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
+                        <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
+                    </p:link>)
+                </c:if>
+
+                <c:if test="#{conferenceViewController.currentUserAlreadyCreatedPublication}"> 
+                    (<p:link outcome="#{pageController.pubViewPage}" value="Manage Publication">
+                        <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
+                        <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
+                    </p:link>)
+                </c:if>
 
                 <br /><br />
 

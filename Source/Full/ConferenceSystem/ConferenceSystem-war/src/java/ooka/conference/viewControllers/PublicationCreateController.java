@@ -58,12 +58,11 @@ public class PublicationCreateController {
     public void doCreate() {
         try {
             pubAdminEJB.createPublication(authEJB.getCurrentUser().getId(), currentConference.getId(), newPubTitle);
+            PageController.redirectTo(PageController.pubViewPage, "confId", currentConference.getId().toString(), "userId", authEJB.getCurrentUser().getId().toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            PageController.message("Could not create the Publication");
         }
-
-        PageController.redirectTo(PageController.confViewPage, "confId", currentConference.getId().toString());
     }
 
 }

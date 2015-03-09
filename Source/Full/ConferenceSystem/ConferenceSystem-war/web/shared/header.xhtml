@@ -22,15 +22,16 @@
             <f:facet name="right">
                 <c:if test="#{authenticationController.loggedIn}">
                     <h:form>
-                    <h:outputText value="Logged in as "/>
-                    <p:link outcome="#{pageController.userViewPage}" value="#{authenticationController.currentUser.name}">
-                        <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
-                    </p:link>
-                    ( <h:commandLink value="logout" action="#{authenticationController.logoutUser()}" /> )
+                        <h:outputText value="Logged in as "/>
+                        <p:link outcome="#{pageController.userViewPage}" value="#{authenticationController.currentUser.name}">
+                            <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
+                        </p:link>
+                        ( <h:commandLink value="logout" action="#{authenticationController.logoutUser()}" /> )
                     </h:form>
                 </c:if>
             </f:facet>
         </p:toolbar>
         <p:growl showDetail="true" sticky="true" autoUpdate="true"/>
+        <h:messages globalOnly="true" showSummary="false"/>
     </ui:composition> 
 </html>
