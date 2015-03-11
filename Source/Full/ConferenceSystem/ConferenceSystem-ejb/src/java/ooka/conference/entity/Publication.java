@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Publication.findByTitle", query = "SELECT p FROM Publication p WHERE p.title = :title"),
     @NamedQuery(name = "Publication.findByConferenceId", query = "SELECT p FROM Publication p WHERE p.publicationPK.conferenceId = :conferenceId"),
     @NamedQuery(name = "Publication.findByAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId"),
-    @NamedQuery(name = "Publication.findByConferenceIdAndAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId AND p.publicationPK.conferenceId = :conferenceId")})
+    @NamedQuery(name = "Publication.findByConferenceIdAndAuthorId", query = "SELECT p FROM Publication p WHERE p.publicationPK.authorId = :authorId AND p.publicationPK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "Publication.deleteByConferenceIdAndAuthorId", query = "DELETE FROM Publication c WHERE c.publicationPK.conferenceId = :conferenceId AND c.publicationPK.authorId = :userId")})
 public class Publication implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,8 +54,7 @@ public class Publication implements Serializable {
         @JoinColumn(name = "author_id", referencedColumnName = "author_id", insertable = false, updatable = false),
         @JoinColumn(name = "conference_id", referencedColumnName = "conference_id", insertable = false, updatable = false)
     })
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<PublicationRevision> revisions;
 
     public Publication() {

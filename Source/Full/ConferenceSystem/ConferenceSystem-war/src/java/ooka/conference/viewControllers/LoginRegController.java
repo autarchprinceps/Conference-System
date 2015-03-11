@@ -77,7 +77,7 @@ public class LoginRegController {
             authEJB.loginUser(data);
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", ex.getMessage()));
+            PageController.message("Login not possible");
         }
     }
 

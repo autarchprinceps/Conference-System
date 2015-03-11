@@ -20,7 +20,6 @@
         </h:form>
         <br />
 
-
         <c:if test="#{conferenceViewController.currentUserIsRegistered}">
             <h:outputText value="You are registered as #{conferenceViewController.currentUserRole} "/>
 
@@ -55,8 +54,8 @@
 
                 <h:outputText value="Rate Conference:" />
                 <h:form>
-                    <p:rating cancel="false" stars="5" value="#{conferenceViewController.currentConferenceRating}">
-                        <p:ajax event="rate" listener="#{conferenceViewController.doRate}"/>
+                    <p:rating cancel="false" id="userRating" disabled="#{conferenceViewController.currentUserAlreadyRated()}" stars="5" value="#{conferenceViewController.currentConferenceRating}">
+                        <p:ajax event="rate" listener="#{conferenceViewController.doRate}" update="userRating"/>
                     </p:rating>
                 </h:form>
 

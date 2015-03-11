@@ -29,13 +29,11 @@ public class AuthenticationController implements Serializable {
         try {
             currentUser = userEJB.validateUser(data);
         } catch (Exception e) {
-            PageController.message("Wrong login credentials!");
             currentUser = null;
             throw new WrongLoginCredentialsException();
         }
 
         if (currentUser == null) {
-            PageController.message("Wrong login credentials!");
             throw new WrongLoginCredentialsException();
         }
 
