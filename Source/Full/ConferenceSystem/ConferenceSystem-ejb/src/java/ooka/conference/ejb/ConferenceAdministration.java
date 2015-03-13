@@ -1,5 +1,7 @@
 package ooka.conference.ejb;
 
+import java.util.Optional;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,26 +20,33 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @PersistenceContext
     private EntityManager em;
+    
+    @EJB
+    private SearchLocal searchEJB;
 
     @Override
     public void rateConference(int conferenceId, int userId, int rating) throws Exception {
+        if (rating > 2 || rating < -2) {
+            throw new Exception("Rating out of bounds");
+        }
+        Optional<ConferenceRating> opt = searchEJB.searchConferenceById(conferenceId).getConferenceRatingCollection().stream().filter((confRate) -> confRate.getConferenceRatingPK().getUserId() == userId).findAny();
+        if(opt.isPresent()) {
+            ConferenceRating exRating = opt.get();
+            exRating.setRating(rating);
+            em.persist(exRating);
+        } else {
+            ConferenceRating newRating = new ConferenceRating();
+            newRating.setUser(em.find(User.class, userId));
+            newRating.setConference(em.find(Conference.class, conferenceId));
+            newRating.setRating(rating);
 
-        /*
-         if (rating > 2 || rating < -2) {
-         throw new Exception("Rating out of bounds");
-         }
-         */
-        ConferenceRating newRating = new ConferenceRating();
-        newRating.setUser(em.find(User.class, userId));
-        newRating.setConference(em.find(Conference.class, conferenceId));
-        newRating.setRating(rating);
+            ConferenceRatingPK association_pk = new ConferenceRatingPK();
+            association_pk.setConferenceId(conferenceId);
+            association_pk.setUserId(userId);
+            newRating.setConferenceRatingPK(association_pk);
 
-        ConferenceRatingPK association_pk = new ConferenceRatingPK();
-        association_pk.setConferenceId(conferenceId);
-        association_pk.setUserId(userId);
-        newRating.setConferenceRatingPK(association_pk);
-
-        em.persist(newRating);
+            em.persist(newRating);
+        }
     }
 
     @Override

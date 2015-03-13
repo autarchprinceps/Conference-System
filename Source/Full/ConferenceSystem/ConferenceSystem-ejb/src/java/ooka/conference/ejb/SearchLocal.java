@@ -30,4 +30,10 @@ public interface SearchLocal {
     public Collection<ConferenceUserRole> searchUsersForConference(Integer confId);
     
     public Collection<Review> searchReviewsForPublication(int authorId, int conferenceId);
+
+    Collection<Publication> searchPublicationsByTitleStartingWith(final String searchTerm);
+
+    Collection<Conference> searchConferencesByNameStartingWith(final String searchTerm);
+
+    User searchOrganizerForConference(final int conferenceId);
 }

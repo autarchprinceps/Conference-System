@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import ooka.conference.dto.Role;
 import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
@@ -94,4 +95,25 @@ public class Search implements SearchLocal {
         searchQuery.setParameter("conferenceId", conferenceId);
         return searchQuery.getResultList();
     }
+
+    @Override
+    public Collection<Publication> searchPublicationsByTitleStartingWith(final String searchTerm) {
+        Query searchQuery = em.createNamedQuery("Publication.searchTitleStartingWith");
+        searchQuery.setParameter("title", searchTerm);
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public Collection<Conference> searchConferencesByNameStartingWith(final String searchTerm) {
+        Query searchQuery = em.createNamedQuery("Conference.searchNameStartingWith");
+        searchQuery.setParameter("name", searchTerm);
+        return searchQuery.getResultList();
+    }
+
+    @Override
+    public User searchOrganizerForConference(final int conferenceId) {
+        return searchUsersForConference(conferenceId).stream().filter((user) -> user.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())).findAny().get().getUser();
+    }
+    
+    
 }

@@ -31,8 +31,7 @@ public class PublicationSearchController {
     }
 
     public void doSearch(String searchTerm) {
-        //TODO
-        
+        searchResults = searchEJB.searchPublicationsByTitleStartingWith(searchTerm);
     }
 
     public Collection<Publication> getSearchResults() {

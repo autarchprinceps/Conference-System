@@ -23,7 +23,7 @@ import org.primefaces.event.RateEvent;
 public class ConferenceViewController {
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     @EJB
     private ConferenceAdministrationLocal confAdminEJB;
@@ -54,7 +54,7 @@ public class ConferenceViewController {
         currentConference = searchEJB.searchConferenceById(Integer.parseInt(confId));
 
         // ROLES
-        User currentUser = authEJB.getCurrentUser();
+        User currentUser = authController.getCurrentUser();
         for (ConferenceUserRole role : currentConference.getConferenceUserRoleCollection()) {
             if (role.getUser().equals(currentUser)) {
                 currentUserIsRegistered = true;
@@ -67,26 +67,26 @@ public class ConferenceViewController {
             currentUserAlreadyCreatedPublication = searchEJB.searchForPublication(currentConference.getId(), currentUser.getId()) != null;
         }
 
-        // RATING
-        Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection();
-
+        findCurrentUserRating();
+        Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection(); 
+        
+        int ratingCount = confRatings.size();
+        if (ratingCount > 0) {
+            averageConferenceRating = Math.round(confRatings.stream().map((conferenceRating) -> conferenceRating.getRating()).reduce((a, b) -> a + b).get() / ratingCount) + 3;
+        } else {
+            averageConferenceRating = 3;
+        }
+    }
+    
+    private void findCurrentUserRating() {
+        currentUserAlreadyRated = false;
+        Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection();        
         for (ConferenceRating confRating : confRatings) {
             if (confRating.getUser().equals(currentUser)) {
                 currentConferenceRating = confRating;
                 currentUserAlreadyRated = true;
                 break;
             }
-        }
-        if (this.currentConferenceRating == null) {
-            currentUserAlreadyRated = false;
-            this.currentConferenceRating = new ConferenceRating(currentUser.getId(), currentConference.getId());
-        }
-
-        int ratingCount = confRatings.size();
-        if (ratingCount > 0) {
-            averageConferenceRating = Math.round(confRatings.stream().map((conferenceRating) -> conferenceRating.getRating()).reduce((a, b) -> a + b).orElse(ratingCount * 3) / ratingCount);
-        } else {
-            averageConferenceRating = 0;
         }
     }
 
@@ -96,7 +96,7 @@ public class ConferenceViewController {
 
     public void doDeregister() {
         try {
-            confAdminEJB.deregisterToConference(currentConference.getId(), authEJB.getCurrentUser().getId());
+            confAdminEJB.deregisterToConference(currentConference.getId(), authController.getCurrentUser().getId());
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception ex) {
             PageController.message("Deregister Error");
@@ -106,7 +106,7 @@ public class ConferenceViewController {
     public void doRegister() {
 
         try {
-            confAdminEJB.registerToConference(currentConference.getId(), authEJB.getCurrentUser().getId(), selectedRoleForRegistration);
+            confAdminEJB.registerToConference(currentConference.getId(), authController.getCurrentUser().getId(), selectedRoleForRegistration);
             PageController.redirectTo(PageController.confViewPage, "confId", currentConference.getId().toString());
         } catch (Exception ex) {
             PageController.message("Registration Error");
@@ -116,8 +116,10 @@ public class ConferenceViewController {
 
     public void doRate(RateEvent event) {
         try {
-            confAdminEJB.rateConference(currentConference.getId(), authEJB.getCurrentUser().getId(), ((Integer) (event.getRating())));
-            currentUserAlreadyRated = true;
+            confAdminEJB.rateConference(currentConference.getId(), authController.getCurrentUser().getId(), ((Integer) (event.getRating())) - 3);
+            if(!currentUserAlreadyRated) {
+                findCurrentUserRating();
+            }
             PageController.message("Rated with " + ((Integer) (event.getRating())) + " stars");
         } catch (Exception ex) {
             PageController.message("Rating Error");
@@ -143,16 +145,18 @@ public class ConferenceViewController {
     }
 
     public int getCurrentConferenceRating() {
-        if (currentConferenceRating == null) {
-            return 0;
+        if (currentUserAlreadyRated) {
+            return currentConferenceRating.getRating() + 3;
         } else {
-            return currentConferenceRating.getRating();
+            return 0;
         }
     }
 
+    /* In doRate implementiert
     public void setCurrentConferenceRating(int currentConferenceRating) {
-        this.currentConferenceRating.setRating(currentConferenceRating);
-    }
+        currentUserAlreadyRated = true;
+        this.currentConferenceRating.setRating(currentConferenceRating - 3);
+    }*/
 
     public Role getSelectedRoleForRegistration() {
         return selectedRoleForRegistration;
@@ -174,16 +178,16 @@ public class ConferenceViewController {
         return currentUserRole;
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
     public boolean isCurrentUserAlreadyCreatedPublication() {
         return currentUserAlreadyCreatedPublication;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public ConferenceAdministrationLocal getConfAdminEJB() {
