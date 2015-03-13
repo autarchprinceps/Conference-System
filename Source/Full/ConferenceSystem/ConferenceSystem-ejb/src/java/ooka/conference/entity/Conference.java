@@ -65,7 +65,7 @@ public class Conference implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
     private Collection<Publication> publicationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
-    private Collection<Review> reviewCollection;
+    private Collection<PublicationReview> reviewCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
     private Collection<ConferenceUserRole> conferenceUserRoleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conference", fetch = FetchType.LAZY)
@@ -127,11 +127,11 @@ public class Conference implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Review> getReviewCollection() {
+    public Collection<PublicationReview> getReviewCollection() {
         return reviewCollection;
     }
 
-    public void setReviewCollection(Collection<Review> reviewCollection) {
+    public void setReviewCollection(Collection<PublicationReview> reviewCollection) {
         this.reviewCollection = reviewCollection;
     }
 

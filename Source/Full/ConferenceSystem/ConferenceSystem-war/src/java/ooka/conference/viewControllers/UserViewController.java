@@ -12,7 +12,7 @@ import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
-import ooka.conference.entity.Review;
+import ooka.conference.entity.PublicationReview;
 import ooka.conference.entity.User;
 
 @ManagedBean
@@ -52,7 +52,7 @@ public class UserViewController {
         return searchEJB.searchPublicationsForUser(currentUser.getId());
     }
 
-    public Collection<Review> getReviews() {
+    public Collection<PublicationReview> getReviews() {
         // search to get the most recent data
         return searchEJB.searchReviewsForUser(currentUser.getId());
     }
@@ -61,7 +61,7 @@ public class UserViewController {
         return searchEJB.searchConferenceById(confId).getName();
     }
     
-    public String getPublicationTitleByReview(Review review) {
+    public String getPublicationTitleByReview(PublicationReview review) {
         return searchEJB.searchForPublication(review.getReviewPK().getConferenceId(), review.getReviewPK().getAuthorId()).getTitle();
     }
 

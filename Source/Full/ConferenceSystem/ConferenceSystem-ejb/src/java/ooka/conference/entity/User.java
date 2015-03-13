@@ -59,8 +59,8 @@ public class User implements Serializable {
     private String password;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Publication> publicationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private Collection<Review> reviewCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pub_author", fetch = FetchType.LAZY)
+    private Collection<PublicationReview> reviewCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<ConferenceUserRole> conferenceUserRoleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
@@ -112,11 +112,11 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Review> getReviewCollection() {
+    public Collection<PublicationReview> getReviewCollection() {
         return reviewCollection;
     }
 
-    public void setReviewCollection(Collection<Review> reviewCollection) {
+    public void setReviewCollection(Collection<PublicationReview> reviewCollection) {
         this.reviewCollection = reviewCollection;
     }
 

@@ -58,7 +58,7 @@
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newReview}" />
-                    <p:commandButton value="Add Revision" action="#{publicationViewController.addNewReview()}" ajax="false"/>
+                    <p:commandButton value="Add Review" action="#{publicationViewController.addNewReview()}" ajax="false"/>
                 </p:panelGrid>
             </h:form>
             <br />
@@ -66,7 +66,7 @@
 
         <p:dataTable value="#{publicationViewController.reviews}" var="review" emptyMessage="No reviews uploaded yet">
             <p:column headerText="Reviewer">
-                <h:outputText value="#{review.user.name}"/>
+                <h:outputText value="#{review.review_author.name}"/>
             </p:column>
             <p:column headerText="Upload date">
                 <h:outputText value="#{review.date}"/>

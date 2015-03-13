@@ -58,6 +58,7 @@ public class Publication implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<PublicationRevision> revisions;
 
+    
     public Publication() {
     }
 

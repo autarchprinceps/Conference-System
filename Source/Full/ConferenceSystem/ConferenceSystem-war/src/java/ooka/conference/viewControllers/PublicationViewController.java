@@ -1,7 +1,6 @@
 package ooka.conference.viewControllers;
 
 import java.io.ByteArrayInputStream;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -18,7 +17,7 @@ import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationRevision;
-import ooka.conference.entity.Review;
+import ooka.conference.entity.PublicationReview;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -78,7 +77,7 @@ public class PublicationViewController {
         this.authEJB = authEJB;
     }
 
-    public Collection<Review> getReviews() {
+    public Collection<PublicationReview> getReviews() {
         return searchEJB.searchReviewsForPublication(currentPublication.getPublicationPK().getAuthorId(), currentPublication.getPublicationPK().getConferenceId());
     }
 
@@ -126,7 +125,7 @@ public class PublicationViewController {
         return new DefaultStreamedContent(new ByteArrayInputStream(revision.getContent()), revision.getContentType(), revision.getFileName());
     }
 
-    public StreamedContent getReviewDownload(Review review) {
+    public StreamedContent getReviewDownload(PublicationReview review) {
         return new DefaultStreamedContent(new ByteArrayInputStream(review.getContent()), review.getContentType(), review.getFileName());
     }
 }
