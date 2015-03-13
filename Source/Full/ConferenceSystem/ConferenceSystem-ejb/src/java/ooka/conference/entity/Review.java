@@ -57,9 +57,15 @@ public class Review implements Serializable {
     @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Conference conference;
+
     @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User user;
+    private User pub_author;
+
+    @JoinColumn(name = "reviewer_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private User review_author;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
@@ -71,6 +77,14 @@ public class Review implements Serializable {
 
     public Review(ReviewPK reviewPK) {
         this.reviewPK = reviewPK;
+    }
+
+    public User getReview_author() {
+        return review_author;
+    }
+
+    public void setReview_author(User review_author) {
+        this.review_author = review_author;
     }
 
     public String getFileName() {
@@ -113,12 +127,12 @@ public class Review implements Serializable {
         this.conference = conference;
     }
 
-    public User getUser() {
-        return user;
+    public User getPub_author() {
+        return pub_author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPub_author(User pub_author) {
+        this.pub_author = pub_author;
     }
 
     public Date getDate() {

@@ -59,7 +59,7 @@ public class User implements Serializable {
     private String password;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Publication> publicationCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pub_author", fetch = FetchType.LAZY)
     private Collection<Review> reviewCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<ConferenceUserRole> conferenceUserRoleCollection;

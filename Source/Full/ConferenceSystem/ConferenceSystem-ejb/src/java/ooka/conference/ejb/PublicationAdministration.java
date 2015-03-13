@@ -57,7 +57,7 @@ public class PublicationAdministration implements PublicationAdministrationLocal
         newReview.setContentType(contentType);
         newReview.setFileName(fileName);
         newReview.setConference(em.find(Conference.class, conferenceId));
-        newReview.setUser(em.find(User.class, reviewerId));
+        newReview.setPub_author(em.find(User.class, reviewerId));
         em.persist(newReview);
     }
 

@@ -20,7 +20,15 @@
             ...
         </c:if>
 
-        <h3>Associated Conferences</h3>
+
+        <c:choose>
+            <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
+                <h3>Your Conferences</h3>
+            </c:when>
+            <c:otherwise>
+                <h3>Associated Conferences</h3>
+            </c:otherwise>
+        </c:choose>
         <p:dataTable value="#{userViewController.conferences}" var="conf_assoc" emptyMessage="Not registered to any conference yet">
             <p:column headerText="Conference">
                 <p:link outcome="#{pageController.confViewPage}" value="#{conf_assoc.conference.name}">
@@ -35,7 +43,14 @@
             </p:column>
         </p:dataTable>
 
-        <h3>Associated Publications</h3>
+        <c:choose>
+            <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
+                <h3>Your Publications</h3>
+            </c:when>
+            <c:otherwise>
+                <h3>Associated Publications</h3>
+            </c:otherwise>
+        </c:choose>
         <p:dataTable value="#{userViewController.publications}" var="pub_assoc" emptyMessage="No publications contributed yet">
             <p:column headerText="Publication">
                 <p:link outcome="#{pageController.pubViewPage}" value="#{pub_assoc.title}">
@@ -49,8 +64,15 @@
                 </p:link>
             </p:column>
         </p:dataTable>
-        
-        <h3>Associated Reviews</h3>
+
+        <c:choose>
+            <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
+                <h3>Your Reviews</h3>
+            </c:when>
+            <c:otherwise>
+                <h3>Associated Reviews</h3>
+            </c:otherwise>
+        </c:choose>
         <p:dataTable value="#{userViewController.reviews}" var="review" emptyMessage="No reviews contributed yet">
             <p:column headerText="Publication">
                 <p:link outcome="#{pageController.pubViewPage}" value="#{userViewController.getPublicationTitleByReview(review)}">
