@@ -82,7 +82,7 @@ public class ConferenceViewController {
         currentUserAlreadyRated = false;
         Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection();        
         for (ConferenceRating confRating : confRatings) {
-            if (confRating.getUser().equals(currentUser)) {
+            if (confRating.getUser().equals(authController.getCurrentUser())) {
                 currentConferenceRating = confRating;
                 currentUserAlreadyRated = true;
                 break;
