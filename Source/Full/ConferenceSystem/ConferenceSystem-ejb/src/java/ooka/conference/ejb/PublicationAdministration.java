@@ -61,4 +61,9 @@ public class PublicationAdministration implements PublicationAdministrationLocal
         em.persist(newReview);
     }
 
+    @Override
+    public void addReviewerToPublication(int reviewerId, int authorId, int conferenceId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

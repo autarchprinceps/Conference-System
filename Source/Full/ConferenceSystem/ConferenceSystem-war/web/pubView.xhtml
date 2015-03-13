@@ -64,19 +64,28 @@
             <br />
         </c:if>
 
-        <p:dataTable value="#{publicationViewController.reviews}" var="review" emptyMessage="No reviews uploaded yet">
+        <p:dataTable value="#{publicationViewController.currentPublication.reviews}" var="review" emptyMessage="No reviews uploaded yet">
             <p:column headerText="Reviewer">
                 <h:outputText value="#{review.review_author.name}"/>
             </p:column>
             <p:column headerText="Upload date">
-                <h:outputText value="#{review.date}"/>
+                <c:choose>
+                    <c:when test="#{review.date != null}">
+                        <h:outputText value="#{review.date}"/>
+                    </c:when>
+                    <c:otherwise>
+                        Not uploaded yet
+                    </c:otherwise>
+                </c:choose>
             </p:column>
             <p:column headerText="">
-                <h:form>
-                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-                        <p:fileDownload value="#{publicationViewController.getReviewDownload(review)}"/>
-                    </p:commandButton>
-                </h:form>
+                <c:if test="#{review.date != null}">
+                    <h:form>
+                        <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+                            <p:fileDownload value="#{publicationViewController.getReviewDownload(review)}"/>
+                        </p:commandButton>
+                    </h:form>
+                </c:if>
             </p:column>
         </p:dataTable>
     </h:body>

@@ -12,4 +12,5 @@ public interface PublicationAdministrationLocal {
 
     void reviewPublication(int reviewerId, int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception;
 
+    void addReviewerToPublication(int reviewerId, int authorId, int conferenceId) throws Exception;
 }

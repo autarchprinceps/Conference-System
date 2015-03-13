@@ -40,23 +40,29 @@ public class PublicationRevision implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PublicationRevisionPK publicationRevisionPK;
+
     @Lob
     @Column(name = "content")
     private byte[] content;
+
     @JoinColumn(name = "conference_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Conference conference;
+
     @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "file_name")
     private String fileName;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "content_type")
     private String contentType;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")

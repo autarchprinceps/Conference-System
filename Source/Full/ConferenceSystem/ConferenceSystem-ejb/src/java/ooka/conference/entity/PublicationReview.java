@@ -13,6 +13,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -42,13 +43,16 @@ public class PublicationReview implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PublicationReviewPK reviewPK;
+
     @Lob
     @Column(name = "content")
     private byte[] content;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "file_name")
     private String fileName;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "content_type")

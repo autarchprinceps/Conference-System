@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,7 +58,13 @@ public class Publication implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<PublicationRevision> revisions;
 
-    
+    @JoinColumns({
+        @JoinColumn(name = "conference_id", referencedColumnName = "conference_id", insertable = false, updatable = false),
+        @JoinColumn(name = "author_id", referencedColumnName = "author_id", insertable = false, updatable = false)
+    })
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<PublicationReview> reviews;
+
     public Publication() {
     }
 
@@ -75,6 +82,14 @@ public class Publication implements Serializable {
 
     public void setPublicationPK(PublicationPK publicationPK) {
         this.publicationPK = publicationPK;
+    }
+
+    public Collection<PublicationReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Collection<PublicationReview> reviews) {
+        this.reviews = reviews;
     }
 
     public String getTitle() {

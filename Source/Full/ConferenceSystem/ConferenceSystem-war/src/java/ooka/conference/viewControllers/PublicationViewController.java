@@ -18,6 +18,7 @@ import ooka.conference.ejb.SearchLocal;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationRevision;
 import ooka.conference.entity.PublicationReview;
+import ooka.conference.entity.User;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
