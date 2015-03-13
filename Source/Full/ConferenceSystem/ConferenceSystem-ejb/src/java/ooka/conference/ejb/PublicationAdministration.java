@@ -9,8 +9,8 @@ import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationPK;
 import ooka.conference.entity.PublicationRevision;
 import ooka.conference.entity.PublicationRevisionPK;
-import ooka.conference.entity.Review;
-import ooka.conference.entity.ReviewPK;
+import ooka.conference.entity.PublicationReview;
+import ooka.conference.entity.PublicationReviewPK;
 import ooka.conference.entity.User;
 
 @Stateless
@@ -50,8 +50,8 @@ public class PublicationAdministration implements PublicationAdministrationLocal
 
     @Override
     public void reviewPublication(int reviewerId, int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
-        ReviewPK newReviewPK = new ReviewPK(reviewerId, authorId, conferenceId);
-        Review newReview = new Review(newReviewPK);
+        PublicationReviewPK newReviewPK = new PublicationReviewPK(reviewerId, authorId, conferenceId);
+        PublicationReview newReview = new PublicationReview(newReviewPK);
         newReview.setContent(content);
         newReview.setDate(date);
         newReview.setContentType(contentType);

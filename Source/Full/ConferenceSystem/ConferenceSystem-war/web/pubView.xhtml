@@ -66,7 +66,7 @@
 
         <p:dataTable value="#{publicationViewController.reviews}" var="review" emptyMessage="No reviews uploaded yet">
             <p:column headerText="Reviewer">
-                <h:outputText value="#{review.pub_author.name}"/>
+                <h:outputText value="#{review.review_author.name}"/>
             </p:column>
             <p:column headerText="Upload date">
                 <h:outputText value="#{review.date}"/>

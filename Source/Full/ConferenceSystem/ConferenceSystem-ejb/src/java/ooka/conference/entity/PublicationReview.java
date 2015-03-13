@@ -31,17 +31,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "publication_review", schema = "conference_system")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
-    @NamedQuery(name = "Review.findByUserId", query = "SELECT r FROM Review r WHERE r.reviewPK.reviewerId = :reviewerId"),
-    @NamedQuery(name = "Review.findByConferenceId", query = "SELECT r FROM Review r WHERE r.reviewPK.conferenceId = :conferenceId"),
-    @NamedQuery(name = "Review.findByPublication", query = "SELECT r FROM Review r WHERE r.reviewPK.conferenceId = :conferenceId AND r.reviewPK.authorId = :authorId"),
-    @NamedQuery(name = "Review.deleteByConferenceIdAndReviewerId", query = "DELETE FROM Review c WHERE c.reviewPK.conferenceId = :conferenceId AND c.reviewPK.reviewerId = :reviewerId")
+    @NamedQuery(name = "PublicationReview.findAll", query = "SELECT r FROM PublicationReview r"),
+    @NamedQuery(name = "PublicationReview.findByUserId", query = "SELECT r FROM PublicationReview r WHERE r.reviewPK.reviewerId = :reviewerId"),
+    @NamedQuery(name = "PublicationReview.findByConferenceId", query = "SELECT r FROM PublicationReview r WHERE r.reviewPK.conferenceId = :conferenceId"),
+    @NamedQuery(name = "PublicationReview.findByPublication", query = "SELECT r FROM PublicationReview r WHERE r.reviewPK.conferenceId = :conferenceId AND r.reviewPK.authorId = :authorId"),
+    @NamedQuery(name = "PublicationReview.deleteByConferenceIdAndReviewerId", query = "DELETE FROM PublicationReview c WHERE c.reviewPK.conferenceId = :conferenceId AND c.reviewPK.reviewerId = :reviewerId")
 })
-public class Review implements Serializable {
+public class PublicationReview implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected ReviewPK reviewPK;
+    protected PublicationReviewPK reviewPK;
     @Lob
     @Column(name = "content")
     private byte[] content;
@@ -72,10 +72,10 @@ public class Review implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Review() {
+    public PublicationReview() {
     }
 
-    public Review(ReviewPK reviewPK) {
+    public PublicationReview(PublicationReviewPK reviewPK) {
         this.reviewPK = reviewPK;
     }
 
@@ -111,11 +111,11 @@ public class Review implements Serializable {
         this.content = content;
     }
 
-    public ReviewPK getReviewPK() {
+    public PublicationReviewPK getReviewPK() {
         return reviewPK;
     }
 
-    public void setReviewPK(ReviewPK reviewPK) {
+    public void setReviewPK(PublicationReviewPK reviewPK) {
         this.reviewPK = reviewPK;
     }
 
@@ -153,10 +153,10 @@ public class Review implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Review)) {
+        if (!(object instanceof PublicationReview)) {
             return false;
         }
-        Review other = (Review) object;
+        PublicationReview other = (PublicationReview) object;
         return !((this.reviewPK == null && other.reviewPK != null) || (this.reviewPK != null && !this.reviewPK.equals(other.reviewPK)));
     }
 

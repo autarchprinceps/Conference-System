@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * @author bastian
  */
 @Embeddable
-public class ReviewPK implements Serializable {
+public class PublicationReviewPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "reviewer_id")
@@ -30,10 +30,10 @@ public class ReviewPK implements Serializable {
     @Column(name = "conference_id")
     private int conferenceId;
 
-    public ReviewPK() {
+    public PublicationReviewPK() {
     }
 
-    public ReviewPK(int reviewerId, int authorId, int conferenceId) {
+    public PublicationReviewPK(int reviewerId, int authorId, int conferenceId) {
         this.reviewerId = reviewerId;
         this.authorId = authorId;
         this.conferenceId = conferenceId;
@@ -74,10 +74,10 @@ public class ReviewPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ReviewPK)) {
+        if (!(object instanceof PublicationReviewPK)) {
             return false;
         }
-        ReviewPK other = (ReviewPK) object;
+        PublicationReviewPK other = (PublicationReviewPK) object;
         if (this.authorId != other.authorId) {
             return false;
         }

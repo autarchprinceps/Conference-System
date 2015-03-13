@@ -67,10 +67,10 @@
 
         <c:choose>
             <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
-                <h3>Your Reviews</h3>
+                <h3>Your reviewed publications</h3>
             </c:when>
             <c:otherwise>
-                <h3>Associated Reviews</h3>
+                <h3>Reviewed Publications</h3>
             </c:otherwise>
         </c:choose>
         <p:dataTable value="#{userViewController.reviews}" var="review" emptyMessage="No reviews contributed yet">
