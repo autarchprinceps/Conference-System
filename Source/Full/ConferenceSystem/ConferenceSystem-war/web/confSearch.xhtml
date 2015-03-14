@@ -9,28 +9,31 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <p:autoComplete minQueryLength="2" completeMethod="#{conferenceSearchController.doSearch}" value="#{conferenceSearchController.searchTerm}">
-            <p:ajax event="keyup" delay="40" update="results"/>
-        </p:autoComplete>
+        <h:form>
+            <p:inputText value="#{conferenceSearchController.searchTerm}" placeholder="Search for" style="display: block; margin-top: 5px; margin-bottom: 10px; width: calc(100% - 10px);">
+                <p:ajax event="keyup" update="results"/>
+                <p:ajax event="keyup" delay="0" listener="#{conferenceSearchController.doSearch()}"/>
+            </p:inputText>
 
-        <p:dataTable id="results" value="#{conferenceSearchController.searchResults}" var="result" emptyMessage="">
-            <p:column headerText="Name">
-                <p:link outcome="#{pageController.confViewPage}" value="#{result.name}">
-                    <f:param name="confId" value="#{result.id}"/>
-                </p:link>
-            </p:column>
-            <p:column headerText="Organizer">
-                <p:link outcome="#{pageController.userViewPage}" value="#{conferenceSearchController.getOrganizerOfConference(result).name}">
-                    <f:param name="userId" value="#{conferenceSearchController.getOrganizerOfConference(result).id}"/>
-                </p:link>
-            </p:column>
-            <p:column headerText="Start">
-                <h:outputText value="#{result.date.toLocaleString()}"/>
-            </p:column>
-            <p:column headerText="Rating">
-                <p:rating stars="5" value="#{conferenceSearchController.getAvgRating(result)}" disabled="true"/>
-            </p:column>
-        </p:dataTable>
+            <p:dataTable id="results" value="#{conferenceSearchController.searchResults}" var="result" emptyMessage="">
+                <p:column headerText="Name">
+                    <p:link outcome="#{pageController.confViewPage}" value="#{result.name}">
+                        <f:param name="confId" value="#{result.id}"/>
+                    </p:link>
+                </p:column>
+                <p:column headerText="Organizer">
+                    <p:link outcome="#{pageController.userViewPage}" value="#{conferenceSearchController.getOrganizerOfConference(result).name}">
+                        <f:param name="userId" value="#{conferenceSearchController.getOrganizerOfConference(result).id}"/>
+                    </p:link>
+                </p:column>
+                <p:column headerText="Start">
+                    <h:outputText value="#{result.date.toLocaleString()}"/>
+                </p:column>
+                <p:column headerText="Rating">
+                    <p:rating stars="5" value="#{conferenceSearchController.getAvgRating(result)}" disabled="true"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
     </h:body>
 </html>
 

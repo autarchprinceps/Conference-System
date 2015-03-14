@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Conference.findAll", query = "SELECT c FROM Conference c"),
-    @NamedQuery(name = "Conference.searchNameStartingWith", query = "SELECT p FROM Publication p WHERE p.title LIKE ':name%'"),
+    @NamedQuery(name = "Conference.searchNameStartingWith", query = "SELECT p FROM Publication p WHERE p.title LIKE :name"),
     @NamedQuery(name = "Conference.findById", query = "SELECT c FROM Conference c WHERE c.id = :id"),
     @NamedQuery(name = "Conference.findByName", query = "SELECT c FROM Conference c WHERE c.name = :name"),
     @NamedQuery(name = "Conference.findByParticipantLimit", query = "SELECT c FROM Conference c WHERE c.participantLimit = :participantLimit"),

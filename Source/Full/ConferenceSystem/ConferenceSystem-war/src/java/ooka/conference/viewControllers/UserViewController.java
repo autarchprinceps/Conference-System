@@ -25,36 +25,36 @@ public class UserViewController {
     @EJB
     private SearchLocal searchEJB;
 
-    private User currentUser;
+    private User displayedUser;
 
     @PostConstruct
     public void init() {
         Map<String, String> context = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         if (context.containsKey("userId")) {
             String userId = (String) context.get("userId");
-            currentUser = searchEJB.searchUserById(Integer.parseInt(userId));
+            displayedUser = searchEJB.searchUserById(Integer.parseInt(userId));
         } else {
-            currentUser = authEJB.getCurrentUser();
+            displayedUser = authEJB.getCurrentUser();
         }
     }
 
     public boolean viewingUserIsCurrentUser() {
-        return currentUser.equals(authEJB.getCurrentUser());
+        return displayedUser.equals(authEJB.getCurrentUser());
     }
 
     public Collection<ConferenceUserRole> getConferences() {
         // search to get the most recent data
-        return searchEJB.searchConferencesForUser(currentUser.getId());
+        return searchEJB.searchConferencesForUser(displayedUser.getId());
     }
 
     public Collection<Publication> getPublications() {
         // search to get the most recent data
-        return searchEJB.searchPublicationsForUser(currentUser.getId());
+        return searchEJB.searchPublicationsForUser(displayedUser.getId());
     }
 
     public Collection<PublicationReview> getReviews() {
         // search to get the most recent data
-        return searchEJB.searchReviewsForUser(currentUser.getId());
+        return searchEJB.searchReviewsForUser(displayedUser.getId());
     }
     
     public String getConferenceNameById(int confId) {
@@ -81,8 +81,8 @@ public class UserViewController {
         this.searchEJB = searchEJB;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public User getDisplayedUser() {
+        return displayedUser;
     }
 
 }
