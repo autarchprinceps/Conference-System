@@ -57,6 +57,7 @@ public class PublicationAdministration implements PublicationAdministrationLocal
         review.setFileName(fileName);
         review.setContentType(contentType);
         em.merge(review);
+        em.flush();
     }
 
     @Override

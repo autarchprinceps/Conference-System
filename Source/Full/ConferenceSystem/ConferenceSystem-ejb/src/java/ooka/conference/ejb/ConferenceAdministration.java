@@ -20,7 +20,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @EJB
     private SearchLocal searchEJB;
 
@@ -30,7 +30,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             throw new Exception("Rating out of bounds");
         }
         Optional<ConferenceRating> opt = searchEJB.searchConferenceById(conferenceId).getConferenceRatingCollection().stream().filter((confRate) -> confRate.getConferenceRatingPK().getUserId() == userId).findAny();
-        if(opt.isPresent()) {
+        if (opt.isPresent()) {
             ConferenceRating exRating = opt.get();
             exRating.setRating(rating);
             em.persist(exRating);
@@ -51,6 +51,10 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void createConference(int organizerId, ConferenceData data) throws Exception {
+
+        if (data.getComittee().isEmpty()) {
+            throw new Exception("Can not create conference without reviewers");
+        }
 
         Conference newConference = new Conference();
         newConference.setName(data.getName());

@@ -100,6 +100,10 @@ public class AuthenticationController implements Serializable {
         return checkForRole(conf, Role.AUTHOR);
     }
 
+    public boolean isAuthorOfPublication(Publication pub) {
+        return pub.getUser().equals(currentUser);
+    }
+
     public boolean isReviewerOfPublication(Publication pub) {
         for (PublicationReview review : pub.getReviews()) {
             if (review.getReview_author().equals(currentUser)) {
@@ -109,8 +113,12 @@ public class AuthenticationController implements Serializable {
         return false;
     }
 
-    public boolean isAuthorOfPublication(Publication pub) {
-        return pub.getUser().equals(currentUser);
+    public boolean isOrganizerOfPublicationConference(Publication pub) {
+        return checkForRole(pub.getConference(), Role.ORGANIZER);
+    }
+
+    public boolean isViewerOfPublicationConference(Publication pub) {
+        return checkForRole(pub.getConference(), Role.VIEWER);
     }
 
     private boolean checkForRole(Conference conf, Role role) {

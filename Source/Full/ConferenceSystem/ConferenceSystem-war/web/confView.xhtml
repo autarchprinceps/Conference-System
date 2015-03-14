@@ -10,9 +10,11 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
+        <c:set var="conference" value="#{conferenceViewController.currentConference}" scope="request" />
+        <c:set var="role" value="#{authenticationController.getRoleForConference(conference)}" scope="request" />
 
-        <h2>Conference #{conferenceViewController.currentConference.name}</h2>
-        <h:outputText value="Date: #{conferenceViewController.currentConference.date}" />
+        <h2>Conference #{conference.name}</h2>
+        <h:outputText value="Date: #{conference.date}" />
         <br/>
         <h:outputText value="Average Rating:" />
         <h:form>
@@ -20,33 +22,33 @@
         </h:form>
         <br />
 
-        <c:if test="#{conferenceViewController.currentUserIsRegistered}">
-            <h:outputText value="You are registered as #{conferenceViewController.currentUserRole} "/>
+        <c:if test="#{authenticationController.isRegisteredOnConference(conference)}">
+            <h:outputText value="You are registered as #{role} "/>
 
             <!-- ======================= ORGANIZER ======================= -->
-            <c:if test="#{conferenceViewController.currentUserRole == 'ORGANIZER'}">
+            <c:if test="#{role == 'ORGANIZER'}">
                 <h:form>
                     <p:commandButton onclick="PF('cancelDialog').show();" value="Cancel Conference" type="button"/>
                     <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
-                        <p:commandButton value="Yes, cancel #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doCancel()}" type="submit"/>
+                        <p:commandButton value="Yes, cancel #{conference.name}" action="#{conferenceViewController.doCancel()}" type="submit"/>
                         <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
                     </p:dialog>
                 </h:form>
             </c:if>
 
             <!-- ======================= USER ======================= -->
-            <c:if test="#{conferenceViewController.currentUserRole != 'ORGANIZER'}">
+            <c:if test="#{role != 'ORGANIZER'}">
 
                 <c:if test="#{!conferenceViewController.currentUserAlreadyCreatedPublication}"> 
                     (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
-                        <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
+                        <f:param name="confId" value="#{conference.id}"/>
                     </p:link>)
                 </c:if>
 
                 <c:if test="#{conferenceViewController.currentUserAlreadyCreatedPublication}"> 
                     (<p:link outcome="#{pageController.pubViewPage}" value="Manage Publication">
-                        <f:param name="confId" value="#{conferenceViewController.currentConference.id}"/>
-                        <f:param name="userId" value="#{authenticationController.currentUser.id}"/>
+                        <f:param name="confId" value="#{conference.id}"/>
+                        <f:param name="userId" value="#{conference.id}"/>
                     </p:link>)
                 </c:if>
 
@@ -64,7 +66,7 @@
                 <h:form>
                     <p:commandButton onclick="PF('cancelDialog').show();" value="Deregister" type="button"/>
                     <p:dialog header="Are your sure?" modal="true" widgetVar="cancelDialog">
-                        <p:commandButton value="Yes, derigister from #{conferenceViewController.currentConference.name}" action="#{conferenceViewController.doDeregister()}" type="submit"/>
+                        <p:commandButton value="Yes, derigister from #{conference.name}" action="#{conferenceViewController.doDeregister()}" type="submit"/>
                         <p:commandButton value="Abort" onclick="PF('cancelDialog').hide();" type="button"/>
                     </p:dialog>
                 </h:form>
@@ -89,7 +91,7 @@
         </c:if>
 
         <h3>Associated Users</h3>
-        <p:dataTable value="#{conferenceViewController.currentConference.conferenceUserRoleCollection}" var="conf_assoc">
+        <p:dataTable value="#{conference.conferenceUserRoleCollection}" var="conf_assoc">
             <p:column headerText="User">
                 <p:link outcome="#{pageController.userViewPage}" value="#{conf_assoc.user.name}">
                     <f:param name="userId" value="#{conf_assoc.user.id}"/>
@@ -101,7 +103,7 @@
         </p:dataTable>
 
         <h3>Associated Publications</h3>
-        <p:dataTable value="#{conferenceViewController.currentConference.publicationCollection}" var="pub_assoc">
+        <p:dataTable value="#{conference.publicationCollection}" var="pub_assoc">
             <p:column headerText="Publication">
                 <p:link outcome="#{pageController.pubViewPage}" value="#{pub_assoc.title}">
                     <f:param name="confId" value="#{pub_assoc.publicationPK.conferenceId}"/>

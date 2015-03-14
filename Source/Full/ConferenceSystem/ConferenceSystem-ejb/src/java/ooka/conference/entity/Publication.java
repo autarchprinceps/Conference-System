@@ -60,8 +60,8 @@ public class Publication implements Serializable {
     private Collection<PublicationRevision> revisions;
 
     @JoinColumns({
-        @JoinColumn(name = "conference_id", referencedColumnName = "conference_id", insertable = false, updatable = false),
-        @JoinColumn(name = "author_id", referencedColumnName = "author_id", insertable = false, updatable = false)
+        @JoinColumn(name = "conference_id", referencedColumnName = "conference_id", insertable = false, updatable = true),
+        @JoinColumn(name = "author_id", referencedColumnName = "author_id", insertable = false, updatable = true)
     })
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<PublicationReview> reviews;
