@@ -11,24 +11,12 @@ import ooka.conference.ejb.SearchLocal;
 @ManagedBean
 @ViewScoped
 public class PublicationSearchController {
-
-    @ManagedProperty(value = "#{param.conferenceId}")
-    private int conferenceId;
-
     @EJB
     private SearchLocal searchEJB;
 
     private String searchTerm;
 
     private Collection<Publication> searchResults;
-
-    public int getConferenceId() {
-        return conferenceId;
-    }
-
-    public void setConferenceId(int conferenceId) {
-        this.conferenceId = conferenceId;
-    }
 
     public void doSearch() {
         searchResults = searchEJB.searchPublicationsByTitleStartingWith(searchTerm);

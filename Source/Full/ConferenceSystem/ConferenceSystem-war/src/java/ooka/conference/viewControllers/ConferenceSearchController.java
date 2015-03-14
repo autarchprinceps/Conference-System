@@ -2,6 +2,7 @@ package ooka.conference.viewControllers;
 
 import ooka.conference.entity.Conference;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -41,14 +42,6 @@ public class ConferenceSearchController {
     }
     
     public int getAvgRating(Conference conf) {
-        // TODO FIX
-        Collection<ConferenceRating> confRatings = conf.getConferenceRatingCollection(); 
-        
-        int ratingCount = confRatings.size();
-        if (ratingCount > 0) {
-            return Math.round(confRatings.stream().map((conferenceRating) -> conferenceRating.getRating()).reduce((a, b) -> a + b).get() / ratingCount) + 3;
-        } else {
-            return 3;
-        }
+        return searchEJB.getAverageRatingOfConference(conf) + 3;
     }
 }

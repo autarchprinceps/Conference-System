@@ -38,4 +38,6 @@ public interface SearchLocal {
     User searchOrganizerForConference(final int conferenceId);
 
     Collection<Publication> searchForPublications();
+
+    int getAverageRatingOfConference(final Conference conference);
 }

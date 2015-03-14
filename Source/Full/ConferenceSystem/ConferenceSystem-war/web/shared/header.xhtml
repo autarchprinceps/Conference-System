@@ -29,6 +29,9 @@
                         ( <h:commandLink value="logout" action="#{authenticationController.logoutUser()}" /> )
                     </h:form>
                 </c:if>
+                <c:if test="#{!authenticationController.loggedIn}">
+                    <p:link outcome="#{pageController.userLoginPage}" value="Login"/>
+                </c:if>
             </f:facet>
         </p:toolbar>
         <p:growl showDetail="true" sticky="true" autoUpdate="true"/>

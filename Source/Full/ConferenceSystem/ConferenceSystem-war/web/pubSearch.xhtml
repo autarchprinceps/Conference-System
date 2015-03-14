@@ -27,6 +27,11 @@
                         <f:param name="userId" value="#{result.publicationPK.authorId}"/>
                     </p:link>
                 </p:column>
+                <p:column headerText="Conference">
+                    <p:link outcome="#{pageController.confViewPage}" value="#{result.conference.name}">
+                        <f:param name="confId" value="#{result.conference.id}"/>
+                    </p:link>
+                </p:column>
             </p:dataTable>
         </h:form>
     </h:body>
