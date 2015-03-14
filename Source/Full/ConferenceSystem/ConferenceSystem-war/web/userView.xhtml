@@ -12,7 +12,7 @@
     <h:body>
 
         <c:if test="#{!userViewController.viewingUserIsCurrentUser()}">
-            <h3><h:outputText value="User: #{userViewController.currentUser.name}"/></h3>
+            <h3><h:outputText value="User: #{userViewController.displayedUser.name}"/></h3>
         </c:if>
 
         <c:if test="#{userViewController.viewingUserIsCurrentUser()}">
