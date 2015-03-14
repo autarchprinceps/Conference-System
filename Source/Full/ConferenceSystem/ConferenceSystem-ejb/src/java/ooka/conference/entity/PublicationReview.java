@@ -163,4 +163,7 @@ public class PublicationReview implements Serializable {
         return "ooka.conference.entity.Review[ reviewPK=" + reviewPK + " ]";
     }
 
+    public boolean hasContent() {
+        return date != null;
+    }
 }

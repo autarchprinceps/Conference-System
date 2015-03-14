@@ -10,37 +10,42 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <h2>Publication #{publicationViewController.currentPublication.title}</h2>
+
+        <c:set var="publication" value="#{publicationViewController.currentPublication}" scope="request"/>
+
+        <h2>Publication #{publication.title}</h2>
 
         <h:outputText value="Author: "/>
-        <p:link outcome="#{pageController.userViewPage}" value="#{publicationViewController.currentPublication.user.name}">
-            <f:param name="userId" value="#{publicationViewController.currentPublication.user.id}"/>
+        <p:link outcome="#{pageController.userViewPage}" value="#{publication.user.name}">
+            <f:param name="userId" value="#{publication.user.id}"/>
         </p:link>
 
         <br />
 
         <h:outputText value="Conference: "/>
-        <p:link outcome="#{pageController.confViewPage}" value="#{publicationViewController.currentPublication.conference.name}">
-            <f:param name="confId" value="#{publicationViewController.currentPublication.conference.id}"/>
+        <p:link outcome="#{pageController.confViewPage}" value="#{publication.conference.name}">
+            <f:param name="confId" value="#{publication.conference.id}"/>
         </p:link>
 
         <br />
 
-        <c:if test="#{publicationViewController.currentPublication.reviews.size() == 0}">
-            <h3>Set Reviewer</h3>
-            <h:form>
-                <p:panelGrid columns="2">
-                    <h:selectManyListbox value="#{publicationViewController.selectedUsers}" size="3" converter="#{userConverter}">
-                        <f:selectItems
-                            value="#{publicationViewController.committeeUsers}" var="user" itemLabel="#{user.name}" itemValue="#{user}" />
-                    </h:selectManyListbox>
-                    <p:commandButton value="Commit selection" action="#{publicationViewController.addNewReviewer()}"/>
-                </p:panelGrid>
-            </h:form>
-        </c:if> 
+        <c:if test="#{authenticationController.isOrganizerOfPublicationConference(publication)}">
+            <c:if test="#{!publicationViewController.reviewerAlreadySelected()}">
+                <h3>Set Reviewer</h3>
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <h:selectManyListbox value="#{publicationViewController.selectedUsers}" size="3" converter="#{userConverter}">
+                            <f:selectItems
+                                value="#{publicationViewController.committeeUsers}" var="user" itemLabel="#{user.name}" itemValue="#{user}" />
+                        </h:selectManyListbox>
+                        <p:commandButton value="Commit selection" action="#{publicationViewController.addNewReviewer()}"/>
+                    </p:panelGrid>
+                </h:form>
+            </c:if> 
+        </c:if>
 
         <h3>Revisions</h3>
-        <c:if test="#{publicationViewController.currentUserIsAuthor()}">
+        <c:if test="#{authenticationController.isAuthorOfPublication(publication)}">
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newRevision}" />
@@ -50,7 +55,7 @@
             <br />
         </c:if>
 
-        <p:dataTable value="#{publicationViewController.currentPublication.revisions}" var="revision" emptyMessage="No revisons uploaded yet" rowIndexVar="revision_count" sortBy="#{revision.publicationRevisionPK.id}">
+        <p:dataTable value="#{publication.revisions}" var="revision" emptyMessage="No revisons uploaded yet" rowIndexVar="revision_count" sortBy="#{revision.publicationRevisionPK.id}">
             <p:column headerText="Revison">
                 <h:outputText value="#{revision_count + 1}: #{revision.fileName}"/>
             </p:column>
@@ -67,7 +72,7 @@
         </p:dataTable>
 
         <h3>Reviews</h3>
-        <c:if test="#{publicationViewController.currentUserReviewer}">
+        <c:if test="#{publicationViewController.currentUserCanReview()}">
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newReview}" />
@@ -77,28 +82,26 @@
             <br />
         </c:if>
 
-        <p:dataTable value="#{publicationViewController.currentPublication.reviews}" var="review" emptyMessage="No reviews uploaded yet">
+        <p:dataTable value="#{publication.reviews}" var="review" emptyMessage="No reviews uploaded yet">
             <p:column headerText="Reviewer">
                 <h:outputText value="#{review.review_author.name}"/>
             </p:column>
             <p:column headerText="Upload date">
-                <c:choose>
-                    <c:when test="#{review.date != null}">
-                        <h:outputText value="#{review.date}"/>
-                    </c:when>
-                    <c:otherwise>
-                        Not uploaded yet
-                    </c:otherwise>
-                </c:choose>
+                <ui:fragment rendered="#{review.hasContent()}">
+                    <h:outputText value="#{review.date}"/>
+                </ui:fragment>
+                <ui:fragment rendered="#{not review.hasContent()}">
+                    Not uploaded yet
+                </ui:fragment>
             </p:column>
             <p:column headerText="">
-                <c:if test="#{review.date != null}">
+                <ui:fragment rendered="#{review.hasContent()}">
                     <h:form>
                         <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
                             <p:fileDownload value="#{publicationViewController.getReviewDownload(review)}"/>
                         </p:commandButton>
                     </h:form>
-                </c:if>
+                </ui:fragment>
             </p:column>
         </p:dataTable>
     </h:body>

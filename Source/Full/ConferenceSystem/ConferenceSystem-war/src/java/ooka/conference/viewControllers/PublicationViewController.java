@@ -3,21 +3,20 @@ package ooka.conference.viewControllers;
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
-import java.util.function.Predicate;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.appControllers.PageController;
 import ooka.conference.dto.Role;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
+import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationRevision;
@@ -63,22 +62,21 @@ public class PublicationViewController {
     public void init() {
         int confId = PageController.getParamToInt("confId");
         int userId = PageController.getParamToInt("userId");
-        currentPublication = (Publication) searchEJB.searchForPublication(confId, userId);
-        //comitteeUsers = currentPublication.getConference().getConferenceUserRoleCollection().stream().filter(r -> r.getUserRole().equals(Role.REVIEWER.toString())).map(r -> r.getUser()).collect(Collectors.toList());
-        comitteeUsers = searchEJB.searchForUsers();
+        currentPublication = searchEJB.searchForPublication(confId, userId);
+        comitteeUsers = new HashSet<>();
+        for (ConferenceUserRole role : currentPublication.getConference().getConferenceUserRoleCollection()) {
+            if (role.getUserRole().equals(Role.REVIEWER.toString())) {
+                comitteeUsers.add(role.getUser());
+            }
+        }
+    }
+
+    public boolean reviewerAlreadySelected() {
+        return currentPublication.getReviews().size() > 0;
     }
 
     public Publication getCurrentPublication() {
         return currentPublication;
-    }
-
-    public boolean currentUserIsAuthor() {
-        // TODO FIX new 1
-        return authEJB.getCurrentUser().equals(currentPublication.getUser());
-    }
-
-    public boolean isCurrentUserReviewer() {
-        return authEJB.isReviewerOfConference(currentPublication.getConference());
     }
 
     public AuthenticationController getAuthEJB() {
@@ -90,7 +88,7 @@ public class PublicationViewController {
     }
 
     public Collection<PublicationReview> getReviews() {
-        return searchEJB.searchReviewsForPublication(currentPublication.getPublicationPK().getAuthorId(), currentPublication.getPublicationPK().getConferenceId());
+        return currentPublication.getReviews();
     }
 
     public int getSelectedPublicationRevision() {
@@ -107,6 +105,16 @@ public class PublicationViewController {
 
     public void setNewRevision(Part newRevision) {
         this.newRevision = newRevision;
+    }
+
+    public boolean currentUserCanReview() {
+
+        for (PublicationReview review : currentPublication.getReviews()) {
+            if (review.getReview_author().equals(authEJB.getCurrentUser())) {
+                return !review.hasContent();
+            }
+        }
+        return false;
     }
 
     public void addNewRevision() {
