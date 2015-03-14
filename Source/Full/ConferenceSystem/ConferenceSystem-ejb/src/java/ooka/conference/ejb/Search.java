@@ -1,6 +1,7 @@
 package ooka.conference.ejb;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -34,6 +35,12 @@ public class Search implements SearchLocal {
     @Override
     public Collection<Conference> searchForConferences() {
         Query searchQuery = em.createNamedQuery("Conference.findAll");
+        return searchQuery.getResultList();
+    }
+    
+    @Override
+    public Collection<Publication> searchForPublications() {
+        Query searchQuery = em.createNamedQuery("Publication.findAll");
         return searchQuery.getResultList();
     }
 
@@ -97,22 +104,30 @@ public class Search implements SearchLocal {
 
     @Override
     public Collection<Publication> searchPublicationsByTitleStartingWith(final String searchTerm) {
-        Query searchQuery = em.createNamedQuery("Publication.searchTitleStartingWith");
-        searchQuery.setParameter("title", searchTerm);
-        return searchQuery.getResultList();
+        // Query searchQuery = em.createNamedQuery("Publication.searchTitleStartingWith");
+        // searchQuery.setParameter("title", searchTerm + '%');
+        // return searchQuery.getResultList();
+        
+        // TODO case insensitive
+        return searchForPublications().stream().filter((pub) -> pub.getTitle().startsWith(searchTerm)).collect(Collectors.toList());
     }
 
     @Override
     public Collection<Conference> searchConferencesByNameStartingWith(final String searchTerm) {
-        Query searchQuery = em.createNamedQuery("Conference.searchNameStartingWith");
-        searchQuery.setParameter("name", searchTerm);
-        return searchQuery.getResultList();
+        // Query searchQuery = em.createNamedQuery("Conference.searchNameStartingWith");
+        // searchQuery.setParameter("name", searchTerm + '%');
+        // return searchQuery.getResultList();
+        
+        // TODO case insensitive
+        return searchForConferences().stream().filter((conf) -> conf.getName().startsWith(searchTerm)).collect(Collectors.toList());
     }
 
     @Override
     public User searchOrganizerForConference(final int conferenceId) {
         return searchUsersForConference(conferenceId).stream().filter((user) -> user.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())).findAny().get().getUser();
     }
+
+    
     
     
 }
