@@ -6,7 +6,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
@@ -31,8 +30,8 @@ public class PublicationCreateController {
 
     @PostConstruct
     public void init() {
-        String confId = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("confId");
-        currentConference = searchEJB.searchConferenceById(Integer.parseInt(confId));
+        int confId = PageController.getParamToInt("confId");
+        currentConference = searchEJB.searchConferenceById(confId);
     }
 
     public AuthenticationController getAuthEJB() {
@@ -61,7 +60,7 @@ public class PublicationCreateController {
             PageController.redirectTo(PageController.pubViewPage, "confId", currentConference.getId().toString(), "userId", authEJB.getCurrentUser().getId().toString());
 
         } catch (Exception e) {
-            PageController.message("Could not create the Publication");
+            PageController.message("Error", "Could not create the Publication");
         }
     }
 

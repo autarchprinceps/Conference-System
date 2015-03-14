@@ -77,7 +77,7 @@ public class LoginRegController {
             authEJB.loginUser(data);
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception ex) {
-            PageController.message("Login not possible");
+            PageController.message("Error", "Login not possible");
         }
     }
 

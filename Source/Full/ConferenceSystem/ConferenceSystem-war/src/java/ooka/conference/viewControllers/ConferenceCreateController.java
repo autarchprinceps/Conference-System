@@ -94,7 +94,7 @@ public class ConferenceCreateController {
             confAdminEJB.createConference(authEJB.getCurrentUser().getId(), data);
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception e) {
-            PageController.message("Could not create the Conference");
+            PageController.message("Error", "Could not create the Conference");
         }
     }
 

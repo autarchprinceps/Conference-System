@@ -50,20 +50,22 @@ public class PublicationAdministration implements PublicationAdministrationLocal
 
     @Override
     public void reviewPublication(int reviewerId, int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
+        PublicationReviewPK reviewPK = new PublicationReviewPK(reviewerId, authorId, conferenceId);
+        PublicationReview review = em.find(PublicationReview.class, reviewPK);
+        review.setContent(content);
+        review.setDate(date);
+        review.setFileName(fileName);
+        review.setContentType(contentType);
+        em.merge(review);
+    }
+
+    @Override
+    public void addReviewerToPublication(int reviewerId, int authorId, int conferenceId) throws Exception {
         PublicationReviewPK newReviewPK = new PublicationReviewPK(reviewerId, authorId, conferenceId);
         PublicationReview newReview = new PublicationReview(newReviewPK);
-        newReview.setContent(content);
-        newReview.setDate(date);
-        newReview.setContentType(contentType);
-        newReview.setFileName(fileName);
         newReview.setConference(em.find(Conference.class, conferenceId));
         newReview.setPub_author(em.find(User.class, reviewerId));
         em.persist(newReview);
     }
 
-    @Override
-    public void addReviewerToPublication(int reviewerId, int authorId, int conferenceId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

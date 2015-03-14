@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -13,8 +15,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.appControllers.PageController;
+import ooka.conference.dto.Role;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
+import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationRevision;
 import ooka.conference.entity.PublicationReview;
@@ -43,6 +47,10 @@ public class PublicationViewController {
 
     private int selectedPublicationRevision;
 
+    private Collection<User> selectedUsers;
+
+    private Collection<User> comitteeUsers;
+
     public Part getNewReview() {
         return newReview;
     }
@@ -53,8 +61,11 @@ public class PublicationViewController {
 
     @PostConstruct
     public void init() {
-        Map<String, String> context = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        currentPublication = (Publication) searchEJB.searchForPublication(Integer.parseInt(context.get("confId")), Integer.parseInt(context.get("userId")));
+        int confId = PageController.getParamToInt("confId");
+        int userId = PageController.getParamToInt("userId");
+        currentPublication = (Publication) searchEJB.searchForPublication(confId, userId);
+        //comitteeUsers = currentPublication.getConference().getConferenceUserRoleCollection().stream().filter(r -> r.getUserRole().equals(Role.REVIEWER.toString())).map(r -> r.getUser()).collect(Collectors.toList());
+        comitteeUsers = searchEJB.searchForUsers();
     }
 
     public Publication getCurrentPublication() {
@@ -67,7 +78,7 @@ public class PublicationViewController {
     }
 
     public boolean isCurrentUserReviewer() {
-        return authEJB.isCurrentUserReviewer(currentPublication.getConference());
+        return authEJB.isReviewerOfConference(currentPublication.getConference());
     }
 
     public AuthenticationController getAuthEJB() {
@@ -106,7 +117,20 @@ public class PublicationViewController {
             pubEJB.revisePublication(currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newRevision.getSubmittedFileName(), newRevision.getContentType(), currentDate);
             PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
-            PageController.message("Revision could not be added");
+            PageController.message("Error", "Revision could not be added");
+        }
+    }
+
+    public void addNewReviewer() {
+        try {
+
+            for (User reviewer : selectedUsers) {
+                pubEJB.addReviewerToPublication(reviewer.getId(), currentPublication.getUser().getId(), currentPublication.getConference().getId());
+            }
+
+            PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
+        } catch (Exception ex) {
+            PageController.message("Error", "Reviewer could not be added");
         }
     }
 
@@ -118,7 +142,7 @@ public class PublicationViewController {
             pubEJB.reviewPublication(authEJB.getCurrentUser().getId(), currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newReview.getSubmittedFileName(), newReview.getContentType(), currentDate);
             PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
-            PageController.message("Review could not be added");
+            PageController.message("Error", "Review could not be added");
         }
     }
 
@@ -129,4 +153,21 @@ public class PublicationViewController {
     public StreamedContent getReviewDownload(PublicationReview review) {
         return new DefaultStreamedContent(new ByteArrayInputStream(review.getContent()), review.getContentType(), review.getFileName());
     }
+
+    public Collection<User> getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(Collection<User> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
+
+    public Collection<User> getCommitteeUsers() {
+        return comitteeUsers;
+    }
+
+    public void setCommitteeUsers(Collection<User> availableUsers) {
+        this.comitteeUsers = availableUsers;
+    }
+
 }

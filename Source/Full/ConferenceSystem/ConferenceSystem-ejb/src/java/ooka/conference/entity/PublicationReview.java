@@ -48,13 +48,9 @@ public class PublicationReview implements Serializable {
     @Column(name = "content")
     private byte[] content;
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "file_name")
     private String fileName;
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "content_type")
     private String contentType;
 
@@ -70,8 +66,6 @@ public class PublicationReview implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User review_author;
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;

@@ -43,10 +43,18 @@ public class PageController {
         }
     }
 
-    public static void message(String message) {
+    public static void message(String title, String message) {
         FacesContext.getCurrentInstance()
                 .addMessage(null,
-                        new FacesMessage(message));
+                        new FacesMessage(title, message));
+    }
+
+    public static String getParam(String param) {
+        return (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(param);
+    }
+
+    public static int getParamToInt(String param) {
+        return Integer.parseInt((String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(param));
     }
 
     public String getConfCreatePage() {

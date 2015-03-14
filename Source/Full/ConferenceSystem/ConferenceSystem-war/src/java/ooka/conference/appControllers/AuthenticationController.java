@@ -8,6 +8,9 @@ import ooka.conference.dto.Role;
 import ooka.conference.dto.UserData;
 import ooka.conference.ejb.UserAdministrationLocal;
 import ooka.conference.entity.Conference;
+import ooka.conference.entity.ConferenceUserRole;
+import ooka.conference.entity.Publication;
+import ooka.conference.entity.PublicationReview;
 import ooka.conference.entity.User;
 import ooka.conference.util.WrongLoginCredentialsException;
 
@@ -58,16 +61,73 @@ public class AuthenticationController implements Serializable {
         }
     }
 
-    public boolean isCurrentUserReviewer(Conference conf) {
-        if (!isLoggedIn()) {
-            return false;
-        } else {
-            return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())));
-        }
-    }
-
     public void registerUser(UserData data) throws Exception {
         userEJB.registerUser(data);
     }
 
+    public String getRoleForConference(Conference conf) {
+        for (ConferenceUserRole role : conf.getConferenceUserRoleCollection()) {
+            if (role.getUser().equals(currentUser)) {
+                return role.getUserRole();
+            }
+        }
+        return null;
+    }
+
+    public boolean isRegisteredOnConference(Conference conf) {
+        for (ConferenceUserRole role : conf.getConferenceUserRoleCollection()) {
+            if (role.getUser().equals(currentUser)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isReviewerOfConference(Conference conf) {
+        return checkForRole(conf, Role.REVIEWER);
+    }
+
+    public boolean isOrganizerOfConference(Conference conf) {
+        return checkForRole(conf, Role.ORGANIZER);
+    }
+
+    public boolean isViewerOfConference(Conference conf) {
+        return checkForRole(conf, Role.VIEWER);
+    }
+
+    public boolean isAuthorOfConference(Conference conf) {
+        return checkForRole(conf, Role.AUTHOR);
+    }
+
+    public boolean isReviewerOfPublication(Publication pub) {
+        for (PublicationReview review : pub.getReviews()) {
+            if (review.getReview_author().equals(currentUser)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAuthorOfPublication(Publication pub) {
+        return pub.getUser().equals(currentUser);
+    }
+
+    private boolean checkForRole(Conference conf, Role role) {
+
+        if (!isLoggedIn()) {
+            return false;
+        }
+
+        for (ConferenceUserRole crole : conf.getConferenceUserRoleCollection()) {
+            if (crole.getUserRole().equals(role.toString()) && crole.getUser().equals(currentUser)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())));
+        return false;
+    }
 }

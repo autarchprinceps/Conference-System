@@ -26,6 +26,19 @@
 
         <br />
 
+        <c:if test="#{publicationViewController.currentPublication.reviews.size() == 0}">
+            <h3>Set Reviewer</h3>
+            <h:form>
+                <p:panelGrid columns="2">
+                    <h:selectManyListbox value="#{publicationViewController.selectedUsers}" size="3" converter="#{userConverter}">
+                        <f:selectItems
+                            value="#{publicationViewController.committeeUsers}" var="user" itemLabel="#{user.name}" itemValue="#{user}" />
+                    </h:selectManyListbox>
+                    <p:commandButton value="Commit selection" action="#{publicationViewController.addNewReviewer()}"/>
+                </p:panelGrid>
+            </h:form>
+        </c:if> 
+
         <h3>Revisions</h3>
         <c:if test="#{publicationViewController.currentUserIsAuthor()}">
             <h:form enctype="multipart/form-data">
