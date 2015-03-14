@@ -36,4 +36,6 @@ public interface SearchLocal {
     Collection<Conference> searchConferencesByNameStartingWith(final String searchTerm);
 
     User searchOrganizerForConference(final int conferenceId);
+
+    Collection<Publication> searchForPublications();
 }
