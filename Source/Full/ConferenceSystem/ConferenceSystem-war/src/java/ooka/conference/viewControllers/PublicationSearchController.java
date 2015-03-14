@@ -30,7 +30,7 @@ public class PublicationSearchController {
         this.conferenceId = conferenceId;
     }
 
-    public void doSearch(String searchTerm) {
+    public void doSearch() {
         searchResults = searchEJB.searchPublicationsByTitleStartingWith(searchTerm);
     }
 

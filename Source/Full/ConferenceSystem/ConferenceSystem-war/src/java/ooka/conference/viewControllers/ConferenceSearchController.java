@@ -21,9 +21,7 @@ public class ConferenceSearchController {
     private Collection<Conference> searchResults;
 
     public void doSearch() {
-        System.err.println("DEBUG: doSearch start " + searchTerm + " " + searchResults);
         searchResults = searchEJB.searchConferencesByNameStartingWith(searchTerm);
-        System.err.println("DEBUG: doSearch end " + searchTerm + " " + searchResults);
     }
 
     public Collection<Conference> getSearchResults() {
@@ -43,6 +41,7 @@ public class ConferenceSearchController {
     }
     
     public int getAvgRating(Conference conf) {
+        // TODO FIX
         Collection<ConferenceRating> confRatings = conf.getConferenceRatingCollection(); 
         
         int ratingCount = confRatings.size();
