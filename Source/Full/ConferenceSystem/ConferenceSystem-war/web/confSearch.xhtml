@@ -10,11 +10,10 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:inputText value="#{conferenceSearchController.searchTerm}">
-                <p:ajax event="keyup" delay="40" update="results"/> <!-- TODO FIX update doesn't happen -->
+            <p:inputText value="#{conferenceSearchController.searchTerm}" placeholder="Search for" style="display: block; margin-top: 5px; margin-bottom: 10px; width: calc(100% - 10px);">
+                <p:ajax event="keyup" update="results"/>
                 <p:ajax event="keyup" delay="0" listener="#{conferenceSearchController.doSearch()}"/>
             </p:inputText>
-            <p:commandButton value="Search" update="results"/>
 
             <p:dataTable id="results" value="#{conferenceSearchController.searchResults}" var="result" emptyMessage="">
                 <p:column headerText="Name">

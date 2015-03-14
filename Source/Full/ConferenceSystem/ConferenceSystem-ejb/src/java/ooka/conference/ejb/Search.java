@@ -124,7 +124,7 @@ public class Search implements SearchLocal {
 
     @Override
     public User searchOrganizerForConference(final int conferenceId) {
-        return searchUsersForConference(conferenceId).stream().filter((user) -> user.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())).findAny().get().getUser();
+        return searchUsersForConference(conferenceId).stream().filter((user) -> user.getUserRole().equalsIgnoreCase(Role.ORGANIZER.toString())).findAny().get().getUser();
     }
 
     
