@@ -65,13 +65,7 @@ public class PublicationPK implements Serializable {
             return false;
         }
         PublicationPK other = (PublicationPK) object;
-        if (this.conferenceId != other.conferenceId) {
-            return false;
-        }
-        if (this.authorId != other.authorId) {
-            return false;
-        }
-        return true;
+        return this.conferenceId == other.conferenceId && this.authorId == other.authorId;
     }
 
     @Override

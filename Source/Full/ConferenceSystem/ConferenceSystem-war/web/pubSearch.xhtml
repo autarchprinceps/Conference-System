@@ -9,19 +9,31 @@
         <ui:include src="/shared/header.xhtml"/>
     </h:head>
     <h:body>
-        <p:dataTable id="results" value="#{publicationSearchController.searchResults}" var="result" emptyMessage="nothing found">
-            <p:column headerText="Name">
-                <p:link outcome="#{pageController.pubViewPage}" value="#{result.title}">
-                    <f:param name="confId" value="#{result.publicationPK.conferenceId}"/>
-                    <f:param name="userId" value="#{result.publicationPK.authorId}"/>
-                </p:link>
-            </p:column>
-            <p:column headerText="Author">
-                <p:link outcome="#{pageController.userViewPage}" value="#{result.user.name}">
-                    <f:param name="userId" value="#{result.publicationPK.authorId}"/>
-                </p:link>
-            </p:column>
-        </p:dataTable>
+        <h:form>
+            <p:inputText value="#{publicationSearchController.searchTerm}" placeholder="Search for" style="display: block; margin-top: 5px; margin-bottom: 10px; width: calc(100% - 10px);">
+                <p:ajax event="keyup" update="results"/>
+                <p:ajax event="keyup" delay="0" listener="#{publicationSearchController.doSearch()}"/>
+            </p:inputText>
+
+            <p:dataTable id="results" value="#{publicationSearchController.searchResults}" var="result" emptyMessage="">
+                <p:column headerText="Name">
+                    <p:link outcome="#{pageController.pubViewPage}" value="#{result.title}">
+                        <f:param name="confId" value="#{result.publicationPK.conferenceId}"/>
+                        <f:param name="userId" value="#{result.publicationPK.authorId}"/>
+                    </p:link>
+                </p:column>
+                <p:column headerText="Author">
+                    <p:link outcome="#{pageController.userViewPage}" value="#{result.user.name}">
+                        <f:param name="userId" value="#{result.publicationPK.authorId}"/>
+                    </p:link>
+                </p:column>
+                <p:column headerText="Conference">
+                    <p:link outcome="#{pageController.confViewPage}" value="#{result.conference.name}">
+                        <f:param name="confId" value="#{result.conference.id}"/>
+                    </p:link>
+                </p:column>
+            </p:dataTable>
+        </h:form>
     </h:body>
 </html>
 

@@ -85,4 +85,11 @@ public class UserViewController {
         return displayedUser;
     }
 
+    public int getAverageOrganizerRating() {
+        return searchEJB.getAverageRatingOfOrganizer(displayedUser.getId());
+    }
+    
+    public boolean isDisplayedUserOrganizer() {
+        return searchEJB.searchConferencesOrganizedBy(displayedUser.getId()).size() > 0;
+    }
 }

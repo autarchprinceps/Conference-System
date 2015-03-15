@@ -1,6 +1,5 @@
 package ooka.conference.viewControllers;
 
-import java.util.Collection;
 import ooka.conference.dto.Role;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -40,8 +39,6 @@ public class ConferenceViewController {
 
     private boolean currentUserAlreadyRated;
 
-    private int averageConferenceRating;
-
     private Role selectedRoleForRegistration;
 
     @PostConstruct
@@ -60,17 +57,6 @@ public class ConferenceViewController {
             if (currentUserRole.equals(Role.AUTHOR.toString())) {
                 currentUserAlreadyCreatedPublication = searchEJB.searchForPublication(confId, authController.getCurrentUser().getId()) != null;
             }
-        }
-
-        // CALCULATE RATINGS
-        Collection<ConferenceRating> confRatings = currentConference.getConferenceRatingCollection();
-        int ratingCount = confRatings.size();
-        if (ratingCount > 0) {
-            // TODO irgendwie bekomme ich ne exception
-            // averageConferenceRating = Math.round(confRatings.stream().map((conferenceRating) -> conferenceRating.getRating()).reduce((a, b) -> a + b).get() / ratingCount) + 3;
-            averageConferenceRating = 0;
-        } else {
-            averageConferenceRating = 0;
         }
     }
 
@@ -134,7 +120,7 @@ public class ConferenceViewController {
     }
 
     public int getAverageConferenceRating() {
-        return averageConferenceRating;
+        return searchEJB.getAverageRatingOfConference(currentConference) + 3;
     }
 
     public int getCurrentConferenceRating() {

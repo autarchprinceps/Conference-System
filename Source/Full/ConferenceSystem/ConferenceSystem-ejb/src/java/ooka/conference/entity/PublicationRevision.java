@@ -136,10 +136,7 @@ public class PublicationRevision implements Serializable {
             return false;
         }
         PublicationRevision other = (PublicationRevision) object;
-        if ((this.publicationRevisionPK == null && other.publicationRevisionPK != null) || (this.publicationRevisionPK != null && !this.publicationRevisionPK.equals(other.publicationRevisionPK))) {
-            return false;
-        }
-        return true;
+        return !((this.publicationRevisionPK == null && other.publicationRevisionPK != null) || (this.publicationRevisionPK != null && !this.publicationRevisionPK.equals(other.publicationRevisionPK)));
     }
 
     public Date getDate() {

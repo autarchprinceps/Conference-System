@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import ooka.conference.dto.Role;
 import ooka.conference.entity.Conference;
+import ooka.conference.entity.ConferenceRating;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationReview;
@@ -109,7 +110,7 @@ public class Search implements SearchLocal {
         // return searchQuery.getResultList();
         
         // TODO case insensitive
-        return searchForPublications().stream().filter((pub) -> pub.getTitle().startsWith(searchTerm)).collect(Collectors.toList());
+        return searchForPublications().stream().filter((pub) -> pub.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase())).collect(Collectors.toList());
     }
 
     @Override
@@ -119,7 +120,7 @@ public class Search implements SearchLocal {
         // return searchQuery.getResultList();
         
         // TODO case insensitive
-        return searchForConferences().stream().filter((conf) -> conf.getName().startsWith(searchTerm)).collect(Collectors.toList());
+        return searchForConferences().stream().filter((conf) -> conf.getName().toLowerCase().startsWith(searchTerm.toLowerCase())).collect(Collectors.toList());
     }
 
     @Override
@@ -127,7 +128,44 @@ public class Search implements SearchLocal {
         return searchUsersForConference(conferenceId).stream().filter((user) -> user.getUserRole().equalsIgnoreCase(Role.ORGANIZER.toString())).findAny().get().getUser();
     }
 
-    
+    @Override
+    public int getAverageRatingOfConference(final Conference conference) {
+        Collection<ConferenceRating> confRatings = conference.getConferenceRatingCollection(); 
+        
+        int ratingCount = confRatings.size();
+        if (ratingCount > 0) {
+            int sum = 0;
+            for(ConferenceRating confRa : confRatings) {
+                sum += confRa.getRating();
+            }
+            return Math.round(sum / ratingCount);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Collection<Conference> searchConferencesOrganizedBy(final int organizerId) {
+        return searchForConferences().stream().filter((conf) -> searchOrganizerForConference(conf.getId()).getId() == organizerId).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getAverageRatingOfOrganizer(final int organizerId) {
+        int sum = 0;
+        int count = 0;
+        for(Conference conf : searchConferencesOrganizedBy(organizerId)) {
+            Collection<ConferenceRating> ratings = conf.getConferenceRatingCollection();
+            count += ratings.size();
+            for(ConferenceRating rating : ratings) {
+                sum += rating.getRating();
+            }
+        }
+        if(count > 0) {
+            return Math.round(sum / count);
+        } else {
+            return 0;
+        }
+    }
     
     
 }
