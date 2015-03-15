@@ -35,6 +35,12 @@ public class PublicationAdministration implements PublicationAdministrationLocal
     }
 
     @Override
+    public void deletePublication(int authorId, int conferenceId) {
+        PublicationPK pubKey = new PublicationPK(conferenceId, authorId);
+        em.remove(em.find(Publication.class, pubKey));
+    }
+
+    @Override
     public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
         PublicationRevision newRevision = new PublicationRevision();
         PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
@@ -57,7 +63,6 @@ public class PublicationAdministration implements PublicationAdministrationLocal
         review.setFileName(fileName);
         review.setContentType(contentType);
         em.merge(review);
-        em.flush();
     }
 
     @Override

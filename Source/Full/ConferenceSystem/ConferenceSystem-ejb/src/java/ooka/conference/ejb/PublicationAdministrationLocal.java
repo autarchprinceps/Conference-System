@@ -7,6 +7,8 @@ import javax.ejb.Local;
 public interface PublicationAdministrationLocal {
 
     void createPublication(int authorId, int conferenceId, String title);
+    
+    void deletePublication(int authorId, int conferenceId);
 
     void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception;
 
