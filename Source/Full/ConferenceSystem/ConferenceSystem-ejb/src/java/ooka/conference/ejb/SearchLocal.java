@@ -40,4 +40,8 @@ public interface SearchLocal {
     Collection<Publication> searchForPublications();
 
     int getAverageRatingOfConference(final Conference conference);
+
+    Collection<Conference> searchConferencesOrganizedBy(final int organizerId);
+
+    int getAverageRatingOfOrganizer(final int organizerId);
 }

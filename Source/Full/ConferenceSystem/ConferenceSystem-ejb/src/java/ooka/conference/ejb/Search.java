@@ -143,6 +143,29 @@ public class Search implements SearchLocal {
             return 0;
         }
     }
+
+    @Override
+    public Collection<Conference> searchConferencesOrganizedBy(final int organizerId) {
+        return searchForConferences().stream().filter((conf) -> searchOrganizerForConference(conf.getId()).getId() == organizerId).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getAverageRatingOfOrganizer(final int organizerId) {
+        int sum = 0;
+        int count = 0;
+        for(Conference conf : searchConferencesOrganizedBy(organizerId)) {
+            Collection<ConferenceRating> ratings = conf.getConferenceRatingCollection();
+            count += ratings.size();
+            for(ConferenceRating rating : ratings) {
+                sum += rating.getRating();
+            }
+        }
+        if(count > 0) {
+            return Math.round(sum / count);
+        } else {
+            return 0;
+        }
+    }
     
     
 }

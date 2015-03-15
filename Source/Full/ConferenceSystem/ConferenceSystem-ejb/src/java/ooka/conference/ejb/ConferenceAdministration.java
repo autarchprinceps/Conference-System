@@ -52,8 +52,12 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
     @Override
     public void createConference(int organizerId, ConferenceData data) throws Exception {
 
-        if (data.getComittee().isEmpty()) {
+        if(data.getComittee().isEmpty()) {
             throw new Exception("Can not create conference without reviewers");
+        }
+        
+        if(data.getParticipantLimit() > 200 && searchEJB.getAverageRatingOfOrganizer(organizerId) < 0) {
+            throw new Exception("The average rating of your previous conferences is too low to organize conferences with more than 200 participants.");
         }
 
         Conference newConference = new Conference();
@@ -74,8 +78,13 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
 
     @Override
     public void registerToConference(int conferenceId, int userId, Role role) throws Exception {
+        Conference conf = em.find(Conference.class, conferenceId);
+        if(searchEJB.searchUsersForConference(conferenceId).size() >= conf.getParticipantLimit()) {
+            throw new Exception("Could not register, because the participant limit for this conference has been reached.");
+        }
+        
         ConferenceUserRole newConferenceUserRole = new ConferenceUserRole();
-        newConferenceUserRole.setConference(em.find(Conference.class, conferenceId));
+        newConferenceUserRole.setConference(conf);
         newConferenceUserRole.setUser(em.find(User.class, userId));
         newConferenceUserRole.setUserRole(role.toString());
 
