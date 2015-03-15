@@ -78,13 +78,7 @@ public class PublicationReviewPK implements Serializable {
             return false;
         }
         PublicationReviewPK other = (PublicationReviewPK) object;
-        if (this.authorId != other.authorId) {
-            return false;
-        }
-        if (this.conferenceId != other.conferenceId) {
-            return false;
-        }
-        return true;
+        return this.authorId == other.authorId && this.conferenceId == other.conferenceId;
     }
 
     @Override
