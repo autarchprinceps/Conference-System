@@ -22,7 +22,7 @@ public class PublicationCreateController {
     private SearchLocal searchEJB;
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     private Conference currentConference;
 
@@ -34,12 +34,12 @@ public class PublicationCreateController {
         currentConference = searchEJB.searchConferenceById(confId);
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public String getNewPubTitle() {
@@ -56,8 +56,8 @@ public class PublicationCreateController {
 
     public void doCreate() {
         try {
-            pubAdminEJB.createPublication(authEJB.getCurrentUser().getId(), currentConference.getId(), newPubTitle);
-            PageController.redirectTo(PageController.pubViewPage, "confId", currentConference.getId().toString(), "userId", authEJB.getCurrentUser().getId().toString());
+            pubAdminEJB.createPublication(authController.getCurrentUser().getId(), currentConference.getId(), newPubTitle);
+            PageController.redirectTo(PageController.pubViewPage, "confId", currentConference.getId().toString(), "userId", authController.getCurrentUser().getId().toString());
 
         } catch (Exception e) {
             PageController.message("Error", "Could not create the Publication");

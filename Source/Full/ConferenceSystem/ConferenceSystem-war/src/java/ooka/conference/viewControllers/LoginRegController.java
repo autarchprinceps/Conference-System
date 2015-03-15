@@ -1,12 +1,10 @@
 package ooka.conference.viewControllers;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import ooka.conference.appControllers.PageController;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.UserData;
 
@@ -15,7 +13,7 @@ import ooka.conference.dto.UserData;
 public class LoginRegController {
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     private String registrationPassword;
     private String registrationUsername;
@@ -24,18 +22,18 @@ public class LoginRegController {
 
     @PostConstruct
     public void init() {
-        if (authEJB.isLoggedIn()) {
-            loginUserame = authEJB.getCurrentUser().getName();
-            loginPassword = authEJB.getCurrentUser().getPassword();
+        if (authController.isLoggedIn()) {
+            loginUserame = authController.getCurrentUser().getName();
+            loginPassword = authController.getCurrentUser().getPassword();
         }
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public String getLoginUserame() {
@@ -74,7 +72,7 @@ public class LoginRegController {
 
         UserData data = new UserData(loginUserame, loginPassword);
         try {
-            authEJB.loginUser(data);
+            authController.loginUser(data);
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception ex) {
             PageController.message("Error", "Login not possible");
@@ -82,7 +80,7 @@ public class LoginRegController {
     }
 
     public void doLogout() {
-        authEJB.logoutUser();
+        authController.logoutUser();
         PageController.redirectTo(PageController.userLoginPage);
     }
 
@@ -90,7 +88,7 @@ public class LoginRegController {
         UserData data = new UserData(registrationUsername, registrationPassword);
 
         try {
-            authEJB.registerUser(data);
+            authController.registerUser(data);
         } catch (Exception ex) {
             return;
         }

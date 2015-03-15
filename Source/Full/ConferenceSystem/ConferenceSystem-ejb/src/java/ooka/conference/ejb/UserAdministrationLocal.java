@@ -11,4 +11,6 @@ public interface UserAdministrationLocal {
 
     public User validateUser(UserData data) throws Exception;
 
+    void changePassword(final int userId, final String oldPw, final String newPw) throws Exception;
+
 }

@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,7 +15,6 @@ import ooka.conference.appControllers.PageController;
 import ooka.conference.dto.Role;
 import ooka.conference.ejb.PublicationAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
-import ooka.conference.entity.Conference;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationRevision;
@@ -30,7 +28,7 @@ import org.primefaces.model.StreamedContent;
 public class PublicationViewController {
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     @EJB
     private SearchLocal searchEJB;
@@ -79,12 +77,12 @@ public class PublicationViewController {
         return currentPublication;
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public Collection<PublicationReview> getReviews() {
@@ -110,7 +108,7 @@ public class PublicationViewController {
     public boolean currentUserCanReview() {
 
         for (PublicationReview review : currentPublication.getReviews()) {
-            if (review.getReview_author().equals(authEJB.getCurrentUser())) {
+            if (review.getReview_author().equals(authController.getCurrentUser())) {
                 return !review.hasContent();
             }
         }
@@ -147,7 +145,7 @@ public class PublicationViewController {
             byte[] content = new byte[(int) newReview.getSize()];
             newReview.getInputStream().read(content);
             Date currentDate = new Date();
-            pubEJB.reviewPublication(authEJB.getCurrentUser().getId(), currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newReview.getSubmittedFileName(), newReview.getContentType(), currentDate);
+            pubEJB.reviewPublication(authController.getCurrentUser().getId(), currentPublication.getUser().getId(), currentPublication.getConference().getId(), content, newReview.getSubmittedFileName(), newReview.getContentType(), currentDate);
             PageController.redirectTo(PageController.pubViewPage, "confId", String.valueOf(currentPublication.getPublicationPK().getConferenceId()), "userId", String.valueOf(currentPublication.getPublicationPK().getAuthorId()));
         } catch (Exception ex) {
             PageController.message("Error", "Review could not be added");

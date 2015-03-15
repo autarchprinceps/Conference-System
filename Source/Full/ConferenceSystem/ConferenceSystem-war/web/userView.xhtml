@@ -17,7 +17,21 @@
 
         <c:if test="#{userViewController.viewingUserIsCurrentUser()}">
             <h3>Administrate Your Account</h3>
-            ...
+            <h:form>
+                <p:commandButton onclick="PF('changePwDialog').show();" value="Delete Publication" type="button"/>
+                <p:dialog header="Change Password" modal="true" widgetVar="changePwDialog">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Old password:"/>
+                        <p:password value="#{userViewController.oldPw}" required="true"/>
+                        <h:outputText value="New password:"/>
+                        <p:password id="newPw" value="#{userViewController.newPw}" required="true" match="repPw" feedback="true"/>
+                        <h:outputText value="Repeat:"/>
+                        <p:password id="repPw" required="true"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Yes" action="#{userViewController.doChangePw()}" type="submit"/>
+                    <p:commandButton value="No" onclick="PF('changePwDialog').hide();" type="button"/>
+                </p:dialog>
+            </h:form>
         </c:if>
 
         <c:if test="#{userViewController.displayedUserOrganizer}">

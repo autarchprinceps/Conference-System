@@ -25,7 +25,7 @@ public class ConferenceCreateController {
     private SearchLocal searchEJB;
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     private String newConfName;
     private Date newConfDate;
@@ -36,15 +36,15 @@ public class ConferenceCreateController {
     @PostConstruct
     public void init() {
         availableUsers = searchEJB.searchForUsers();
-        availableUsers.remove(authEJB.getCurrentUser());
+        availableUsers.remove(authController.getCurrentUser());
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public String getNewConfName() {
@@ -91,7 +91,7 @@ public class ConferenceCreateController {
         data.setComittee(selectedUsers);
 
         try {
-            confAdminEJB.createConference(authEJB.getCurrentUser().getId(), data);
+            confAdminEJB.createConference(authController.getCurrentUser().getId(), data);
             PageController.redirectTo(PageController.userViewPage);
         } catch (Exception e) {
             PageController.message("Error", "Could not create the Conference");

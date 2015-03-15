@@ -2,12 +2,10 @@ package ooka.conference.viewControllers;
 
 import ooka.conference.entity.Conference;
 import java.util.Collection;
-import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import ooka.conference.ejb.SearchLocal;
-import ooka.conference.entity.ConferenceRating;
 import ooka.conference.entity.User;
 
 @ManagedBean

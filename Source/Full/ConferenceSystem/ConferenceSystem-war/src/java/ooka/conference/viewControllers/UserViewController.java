@@ -9,7 +9,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import ooka.conference.appControllers.AuthenticationController;
+import ooka.conference.appControllers.PageController;
 import ooka.conference.ejb.SearchLocal;
+import ooka.conference.ejb.UserAdministrationLocal;
 import ooka.conference.entity.ConferenceUserRole;
 import ooka.conference.entity.Publication;
 import ooka.conference.entity.PublicationReview;
@@ -20,12 +22,35 @@ import ooka.conference.entity.User;
 public class UserViewController {
 
     @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authEJB;
+    private AuthenticationController authController;
 
     @EJB
     private SearchLocal searchEJB;
+    
+    @EJB
+    private UserAdministrationLocal userEJB;
 
     private User displayedUser;
+    
+    private String oldPw;
+    private String newPw;
+
+    public String getOldPw() {
+        return oldPw;
+    }
+
+    public void setOldPw(String oldPw) {
+        this.oldPw = oldPw;
+    }
+
+    public String getNewPw() {
+        return newPw;
+    }
+
+    public void setNewPw(String newPw) {
+        this.newPw = newPw;
+    }
+    
 
     @PostConstruct
     public void init() {
@@ -34,12 +59,12 @@ public class UserViewController {
             String userId = (String) context.get("userId");
             displayedUser = searchEJB.searchUserById(Integer.parseInt(userId));
         } else {
-            displayedUser = authEJB.getCurrentUser();
+            displayedUser = authController.getCurrentUser();
         }
     }
 
     public boolean viewingUserIsCurrentUser() {
-        return displayedUser.equals(authEJB.getCurrentUser());
+        return displayedUser.equals(authController.getCurrentUser());
     }
 
     public Collection<ConferenceUserRole> getConferences() {
@@ -65,12 +90,12 @@ public class UserViewController {
         return searchEJB.searchForPublication(review.getReviewPK().getConferenceId(), review.getReviewPK().getAuthorId()).getTitle();
     }
 
-    public AuthenticationController getAuthEJB() {
-        return authEJB;
+    public AuthenticationController getAuthController() {
+        return authController;
     }
 
-    public void setAuthEJB(AuthenticationController authEJB) {
-        this.authEJB = authEJB;
+    public void setAuthController(AuthenticationController authController) {
+        this.authController = authController;
     }
 
     public SearchLocal getSearchEJB() {
@@ -91,5 +116,13 @@ public class UserViewController {
     
     public boolean isDisplayedUserOrganizer() {
         return searchEJB.searchConferencesOrganizedBy(displayedUser.getId()).size() > 0;
+    }
+    
+    public void doChangePw() {
+        try {
+            userEJB.changePassword(authController.getCurrentUser().getId(), oldPw, newPw);
+        } catch(Exception ex) {
+            PageController.message("Password change failed", ex.getMessage());
+        }
     }
 }

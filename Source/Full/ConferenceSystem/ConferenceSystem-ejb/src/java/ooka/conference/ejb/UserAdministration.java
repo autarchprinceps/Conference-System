@@ -1,6 +1,7 @@
 package ooka.conference.ejb;
 
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,9 @@ public class UserAdministration implements UserAdministrationLocal {
 
     @PersistenceContext
     EntityManager em;
+    
+    @EJB
+    SearchLocal searchEJB;
 
     @Override
     public void registerUser(UserData data) throws Exception {
@@ -34,6 +38,17 @@ public class UserAdministration implements UserAdministrationLocal {
             return (User) results.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void changePassword(final int userId, final String oldPw, final String newPw) throws Exception {
+        User user = searchEJB.searchUserById(userId);
+        if(user.getPassword().equals(oldPw)) {
+            user.setPassword(newPw);
+            em.persist(newPw);
+        } else {
+            throw new Exception("Old password incorrect");
+        }
     }
 
 }
