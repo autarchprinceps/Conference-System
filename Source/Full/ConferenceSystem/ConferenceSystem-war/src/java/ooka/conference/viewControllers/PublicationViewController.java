@@ -178,4 +178,13 @@ public class PublicationViewController {
         this.comitteeUsers = availableUsers;
     }
 
+    public void doDelete() {
+        try {
+            pubEJB.deletePublication(currentPublication.getPublicationPK().getAuthorId(), currentPublication.getPublicationPK().getConferenceId());
+        } catch(Exception ex) {
+            PageController.message("Error", "Could not delete the publication: " + ex.getMessage());
+        } finally {
+            PageController.redirectTo(PageController.userViewPage);
+        }
+    }
 }

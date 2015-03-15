@@ -28,6 +28,15 @@
         </p:link>
 
         <br />
+        <c:if test="#{authenticationController.isAuthorOfPublication(publication)}">
+            <h:form>
+                <p:commandButton onclick="PF('deleteDialog').show();" value="Delete Publication" type="button"/>
+                <p:dialog header="Are your sure?" modal="true" widgetVar="deleteDialog">
+                    <p:commandButton value="Yes" action="#{publicationViewController.doDelete()}" type="submit"/>
+                    <p:commandButton value="No" onclick="PF('deleteDialog').hide();" type="button"/>
+                </p:dialog>
+            </h:form>
+        </c:if>
 
         <c:if test="#{authenticationController.isOrganizerOfPublicationConference(publication)}">
             <c:if test="#{!publicationViewController.reviewerAlreadySelected()}">
