@@ -39,10 +39,12 @@
             <!-- ======================= USER ======================= -->
             <c:if test="#{role != 'ORGANIZER'}">
 
-                <c:if test="#{!conferenceViewController.currentUserAlreadyCreatedPublication}"> 
-                    (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
-                        <f:param name="confId" value="#{conference.id}"/>
-                    </p:link>)
+                <c:if test="#{role == 'AUTHOR'}">
+                    <c:if test="#{!conferenceViewController.currentUserAlreadyCreatedPublication}"> 
+                        (<p:link outcome="#{pageController.pubCreatePage}" value="Manage Publication">
+                            <f:param name="confId" value="#{conference.id}"/>
+                        </p:link>)
+                    </c:if>
                 </c:if>
 
                 <c:if test="#{conferenceViewController.currentUserAlreadyCreatedPublication}"> 

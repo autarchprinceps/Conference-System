@@ -96,7 +96,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
         roleQuery.setParameter("userId", userId);
         roleQuery.executeUpdate();
 
-        Query reviewQuery = em.createNamedQuery("Review.deleteByConferenceIdAndReviewerId");
+        Query reviewQuery = em.createNamedQuery("PublicationReview.deleteByConferenceIdAndReviewerId");
         reviewQuery.setParameter("reviewerId", userId);
         reviewQuery.setParameter("conferenceId", conferenceId);
         reviewQuery.executeUpdate();
