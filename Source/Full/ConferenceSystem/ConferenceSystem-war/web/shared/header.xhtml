@@ -12,11 +12,13 @@
                 Conference-System
                 <!--<span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span> -->
                 <c:if test="#{authenticationController.loggedIn}">
+
                     <p:button outcome="#{pageController.confCreatePage}" value="Create new Conference"/>
                     <span class="ui-separator" />
                     <p:button outcome="#{pageController.confSearchPage}" value="Search for Conferences"/>
                     <span class="ui-separator" />
                     <p:button outcome="#{pageController.pubSearchPage}" value="Search for Publications"/>
+
                 </c:if>
             </f:facet>
             <f:facet name="right">

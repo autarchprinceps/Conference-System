@@ -28,7 +28,9 @@
         </p:link>
 
         <br />
+
         <c:if test="#{authenticationController.isAuthorOfPublication(publication)}">
+            <br />
             <h:form>
                 <p:commandButton onclick="PF('deleteDialog').show();" value="Delete Publication" type="button"/>
                 <p:dialog header="Are your sure?" modal="true" widgetVar="deleteDialog">

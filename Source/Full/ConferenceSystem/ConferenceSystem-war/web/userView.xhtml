@@ -18,7 +18,7 @@
         <c:if test="#{userViewController.viewingUserIsCurrentUser()}">
             <h3>Administrate Your Account</h3>
             <h:form>
-                <p:commandButton onclick="PF('changePwDialog').show();" value="Delete Publication" type="button"/>
+                <p:commandButton onclick="PF('changePwDialog').show();" value="Change password" type="button"/>
                 <p:dialog header="Change Password" modal="true" widgetVar="changePwDialog">
                     <h:panelGrid columns="2">
                         <h:outputText value="Old password:"/>
@@ -44,6 +44,7 @@
                 </c:otherwise>
             </c:choose>
             <p:rating stars="5" cancel="false" disabled="true" value="#{userViewController.averageOrganizerRating}"/>
+            <br />
         </c:if>
 
         <c:choose>
@@ -92,7 +93,7 @@
 
         <c:choose>
             <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
-                <h3>Your reviewed publications</h3>
+                <h3>Your reviewed Publications</h3>
             </c:when>
             <c:otherwise>
                 <h3>Reviewed Publications</h3>

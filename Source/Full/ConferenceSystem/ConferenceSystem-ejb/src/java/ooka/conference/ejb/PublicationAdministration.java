@@ -1,6 +1,7 @@
 package ooka.conference.ejb;
 
 import java.util.Date;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import ooka.conference.entity.PublicationReview;
 import ooka.conference.entity.PublicationReviewPK;
 import ooka.conference.entity.User;
 
+@PermitAll
 @Stateless
 public class PublicationAdministration implements PublicationAdministrationLocal {
 
