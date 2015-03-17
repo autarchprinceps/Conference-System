@@ -9,7 +9,8 @@ import ooka.conference.ejb.SearchLocal;
 
 @ManagedBean
 @ViewScoped
-public class PublicationSearchController {
+public class PublicationSearchController extends AuthenticatedViewController {
+
     @EJB
     private SearchLocal searchEJB;
 

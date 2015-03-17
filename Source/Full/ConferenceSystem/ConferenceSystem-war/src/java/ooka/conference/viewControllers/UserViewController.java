@@ -5,10 +5,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.appControllers.PageController;
 import ooka.conference.ejb.SearchLocal;
 import ooka.conference.ejb.UserAdministrationLocal;
@@ -19,19 +17,16 @@ import ooka.conference.entity.User;
 
 @ManagedBean
 @ViewScoped
-public class UserViewController {
-
-    @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authController;
+public class UserViewController extends AuthenticatedViewController {
 
     @EJB
     private SearchLocal searchEJB;
-    
+
     @EJB
     private UserAdministrationLocal userEJB;
 
     private User displayedUser;
-    
+
     private String oldPw;
     private String newPw;
 
@@ -50,7 +45,6 @@ public class UserViewController {
     public void setNewPw(String newPw) {
         this.newPw = newPw;
     }
-    
 
     @PostConstruct
     public void init() {
@@ -81,21 +75,13 @@ public class UserViewController {
         // search to get the most recent data
         return searchEJB.searchReviewsForUser(displayedUser.getId());
     }
-    
+
     public String getConferenceNameById(int confId) {
         return searchEJB.searchConferenceById(confId).getName();
     }
-    
+
     public String getPublicationTitleByReview(PublicationReview review) {
         return searchEJB.searchForPublication(review.getReviewPK().getConferenceId(), review.getReviewPK().getAuthorId()).getTitle();
-    }
-
-    public AuthenticationController getAuthController() {
-        return authController;
-    }
-
-    public void setAuthController(AuthenticationController authController) {
-        this.authController = authController;
     }
 
     public SearchLocal getSearchEJB() {
@@ -113,15 +99,15 @@ public class UserViewController {
     public int getAverageOrganizerRating() {
         return searchEJB.getAverageRatingOfOrganizer(displayedUser.getId());
     }
-    
+
     public boolean isDisplayedUserOrganizer() {
         return searchEJB.searchConferencesOrganizedBy(displayedUser.getId()).size() > 0;
     }
-    
-    public void doChangePw() {
+
+    public void doChangePassword() {
         try {
             userEJB.changePassword(authController.getCurrentUser().getId(), oldPw, newPw);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             PageController.message("Password change failed", ex.getMessage());
         }
     }

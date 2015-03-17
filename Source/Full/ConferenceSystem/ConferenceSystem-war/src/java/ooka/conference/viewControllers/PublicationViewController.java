@@ -7,10 +7,8 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.Part;
-import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.appControllers.PageController;
 import ooka.conference.dto.Role;
 import ooka.conference.ejb.PublicationAdministrationLocal;
@@ -25,10 +23,7 @@ import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @ViewScoped
-public class PublicationViewController {
-
-    @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authController;
+public class PublicationViewController extends AuthenticatedViewController {
 
     @EJB
     private SearchLocal searchEJB;
@@ -75,14 +70,6 @@ public class PublicationViewController {
 
     public Publication getCurrentPublication() {
         return currentPublication;
-    }
-
-    public AuthenticationController getAuthController() {
-        return authController;
-    }
-
-    public void setAuthController(AuthenticationController authController) {
-        this.authController = authController;
     }
 
     public Collection<PublicationReview> getReviews() {
@@ -179,7 +166,7 @@ public class PublicationViewController {
     public void doDelete() {
         try {
             pubEJB.deletePublication(currentPublication.getPublicationPK().getAuthorId(), currentPublication.getPublicationPK().getConferenceId());
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             PageController.message("Error", "Could not delete the publication: " + ex.getMessage());
         } finally {
             PageController.redirectTo(PageController.userViewPage);

@@ -6,9 +6,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.dto.ConferenceData;
 import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
@@ -16,16 +14,13 @@ import ooka.conference.entity.User;
 
 @ManagedBean
 @ViewScoped
-public class ConferenceCreateController {
+public class ConferenceCreateController extends AuthenticatedViewController {
 
     @EJB
     private ConferenceAdministrationLocal confAdminEJB;
 
     @EJB
     private SearchLocal searchEJB;
-
-    @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authController;
 
     private String newConfName;
     private Date newConfDate;
@@ -37,14 +32,6 @@ public class ConferenceCreateController {
     public void init() {
         availableUsers = searchEJB.searchForUsers();
         availableUsers.remove(authController.getCurrentUser());
-    }
-
-    public AuthenticationController getAuthController() {
-        return authController;
-    }
-
-    public void setAuthController(AuthenticationController authController) {
-        this.authController = authController;
     }
 
     public String getNewConfName() {

@@ -4,9 +4,7 @@ import ooka.conference.dto.Role;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import ooka.conference.appControllers.AuthenticationController;
 import ooka.conference.appControllers.PageController;
 import ooka.conference.ejb.ConferenceAdministrationLocal;
 import ooka.conference.ejb.SearchLocal;
@@ -16,10 +14,7 @@ import org.primefaces.event.RateEvent;
 
 @ManagedBean
 @ViewScoped
-public class ConferenceViewController {
-
-    @ManagedProperty(value = "#{authenticationController}")
-    private AuthenticationController authController;
+public class ConferenceViewController extends AuthenticatedViewController {
 
     @EJB
     private ConferenceAdministrationLocal confAdminEJB;
@@ -155,16 +150,8 @@ public class ConferenceViewController {
         return currentUserRole;
     }
 
-    public AuthenticationController getAuthController() {
-        return authController;
-    }
-
     public boolean isCurrentUserAlreadyCreatedPublication() {
         return currentUserAlreadyCreatedPublication;
-    }
-
-    public void setAuthController(AuthenticationController authController) {
-        this.authController = authController;
     }
 
     public ConferenceAdministrationLocal getConfAdminEJB() {

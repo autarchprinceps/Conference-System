@@ -7,7 +7,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
-import ooka.conference.viewControllers.LoginRegController;
+import ooka.conference.viewControllers.UserLoginRegController;
 
 @ManagedBean
 @ApplicationScoped
@@ -39,7 +39,7 @@ public class PageController {
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(url);
         } catch (IOException ex) {
-            Logger.getLogger(LoginRegController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserLoginRegController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -18,14 +18,14 @@
                         <p:panelGrid id="reg" columns="2">
 
                             <h:outputText value="Username:"/>
-                            <p:inputText value="#{loginRegController.registrationUsername}" required="true"/>
+                            <p:inputText value="#{userLoginRegController.registrationUsername}" required="true"/>
                             <h:outputText value="Password:"/>
-                            <p:password id="regPass" required="true" match="repeatPass" value="#{loginRegController.registrationPassword}" feedback="true"/>
+                            <p:password id="regPass" required="true" match="repeatPass" value="#{userLoginRegController.registrationPassword}" feedback="true"/>
                             <h:outputText value="Repeat Password:"/>
                             <p:password id="repeatPass" required="true"/>
                             <f:facet name="footer">
                                 <h:panelGroup style="display: block; text-align:center">
-                                    <p:commandButton update="reg" value="Register" action="#{loginRegController.doRegister()}"/>
+                                    <p:commandButton update="reg" value="Register" action="#{userLoginRegController.doRegister()}"/>
                                 </h:panelGroup>
                             </f:facet>
                         </p:panelGrid>

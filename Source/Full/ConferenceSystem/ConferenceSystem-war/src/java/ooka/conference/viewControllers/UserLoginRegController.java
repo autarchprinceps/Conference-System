@@ -10,7 +10,7 @@ import ooka.conference.dto.UserData;
 
 @ManagedBean
 @ViewScoped
-public class LoginRegController {
+public class UserLoginRegController {
 
     @ManagedProperty(value = "#{authenticationController}")
     private AuthenticationController authController;

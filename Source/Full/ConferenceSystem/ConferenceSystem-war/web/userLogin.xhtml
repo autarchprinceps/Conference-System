@@ -17,16 +17,16 @@
                     <h:form>
                         <p:panelGrid id="log" columns="2">
                             <h:outputText value="Username:"/>
-                            <p:inputText autocomplete="true" required="true" value="#{loginRegController.loginUserame}" disabled="#{authenticationController.loggedIn}"/>
+                            <p:inputText autocomplete="true" required="true" value="#{userLoginRegController.loginUserame}" disabled="#{authenticationController.loggedIn}"/>
                             <h:outputText value="Password:"/>
-                            <p:password required="true" value="#{loginRegController.loginPassword}" autocomplete="true" disabled="#{authenticationController.loggedIn}" />
+                            <p:password required="true" value="#{userLoginRegController.loginPassword}" autocomplete="true" disabled="#{authenticationController.loggedIn}" />
                             <f:facet name="footer">
                                 <h:panelGroup style="display: block; text-align:center">
                                     <c:if test="#{!authenticationController.loggedIn}">
-                                        <p:commandButton value="Login" action="#{loginRegController.doLogin()}"/>
+                                        <p:commandButton value="Login" action="#{userLoginRegController.doLogin()}"/>
                                     </c:if>
                                     <c:if test="#{authenticationController.loggedIn}">
-                                        <p:commandButton value="Logout" action="#{loginRegController.doLogout()}"/>
+                                        <p:commandButton value="Logout" action="#{userLoginRegController.doLogout()}"/>
                                     </c:if>
                                 </h:panelGroup>
                             </f:facet>

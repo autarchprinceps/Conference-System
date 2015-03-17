@@ -10,7 +10,7 @@ import ooka.conference.entity.User;
 
 @ManagedBean
 @ViewScoped
-public class ConferenceSearchController {
+public class ConferenceSearchController extends AuthenticatedViewController {
 
     @EJB
     private SearchLocal searchEJB;
@@ -38,7 +38,7 @@ public class ConferenceSearchController {
     public User getOrganizerOfConference(Conference conf) {
         return searchEJB.searchOrganizerForConference(conf.getId());
     }
-    
+
     public int getAvgRating(Conference conf) {
         return searchEJB.getAverageRatingOfConference(conf) + 3;
     }
