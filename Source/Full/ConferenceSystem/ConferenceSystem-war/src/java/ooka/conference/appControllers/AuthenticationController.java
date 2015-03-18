@@ -36,10 +36,6 @@ public class AuthenticationController implements Serializable {
             throw new WrongLoginCredentialsException();
         }
 
-        if (currentUser == null) {
-            throw new WrongLoginCredentialsException();
-        }
-
     }
 
     public void logoutUser() {
@@ -130,12 +126,9 @@ public class AuthenticationController implements Serializable {
         for (ConferenceUserRole crole : conf.getConferenceUserRoleCollection()) {
             if (crole.getUserRole().equals(role.toString()) && crole.getUser().equals(currentUser)) {
                 return true;
-            } else {
-                return false;
             }
         }
 
-        // return conf.getConferenceUserRoleCollection().stream().filter((role) -> (role.getUser().equals(currentUser))).anyMatch((role) -> (role.getUserRole().equalsIgnoreCase(Role.REVIEWER.toString())));
         return false;
     }
 }

@@ -115,7 +115,7 @@ public class ConferenceViewController extends AuthenticatedViewController {
     }
 
     public int getAverageConferenceRating() {
-        return searchEJB.getAverageRatingOfConference(currentConference) + 3;
+        return searchEJB.getAverageRatingOfConference(currentConference.getId()) + 3;
     }
 
     public int getCurrentConferenceRating() {

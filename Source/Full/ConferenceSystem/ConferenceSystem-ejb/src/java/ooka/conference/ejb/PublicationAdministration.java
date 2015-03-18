@@ -19,20 +19,17 @@ import ooka.conference.entity.User;
 public class PublicationAdministration implements PublicationAdministrationLocal {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Override
     public void createPublication(int authorId, int conferenceId, String title) {
+        PublicationPK pubPK = new PublicationPK();
+        pubPK.setAuthorId(authorId);
+        pubPK.setConferenceId(conferenceId);
+
         Publication newPublication = new Publication();
         newPublication.setTitle(title);
-        newPublication.setUser(em.find(User.class, authorId));
-        newPublication.setConference(em.find(Conference.class, conferenceId));
-
-        PublicationPK association_pk = new PublicationPK();
-        association_pk.setAuthorId(authorId);
-        association_pk.setConferenceId(conferenceId);
-
-        newPublication.setPublicationPK(association_pk);
+        newPublication.setPublicationPK(pubPK);
         em.persist(newPublication);
     }
 
@@ -44,10 +41,11 @@ public class PublicationAdministration implements PublicationAdministrationLocal
 
     @Override
     public void revisePublication(int authorId, int conferenceId, byte[] content, String fileName, String contentType, Date date) throws Exception {
-        PublicationRevision newRevision = new PublicationRevision();
         PublicationRevisionPK newRevisionPK = new PublicationRevisionPK();
         newRevisionPK.setAuthorId(authorId);
         newRevisionPK.setConferenceId(conferenceId);
+
+        PublicationRevision newRevision = new PublicationRevision();
         newRevision.setContent(content);
         newRevision.setDate(date);
         newRevision.setFileName(fileName);

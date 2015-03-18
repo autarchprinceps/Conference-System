@@ -7,10 +7,10 @@ import ooka.conference.entity.User;
 @Local
 public interface UserAdministrationLocal {
 
-    public void registerUser(UserData data) throws Exception;
+    void registerUser(UserData data) throws Exception;
 
-    public User validateUser(UserData data) throws Exception;
+    User validateUser(UserData data) throws Exception;
 
-    void changePassword(final int userId, final String oldPw, final String newPw) throws Exception;
+    void changePassword(int userId, String oldPw, String newPw) throws Exception;
 
 }

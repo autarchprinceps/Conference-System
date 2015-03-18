@@ -40,6 +40,6 @@ public class ConferenceSearchController extends AuthenticatedViewController {
     }
 
     public int getAvgRating(Conference conf) {
-        return searchEJB.getAverageRatingOfConference(conf) + 3;
+        return searchEJB.getAverageRatingOfConference(conf.getId()) + 3;
     }
 }

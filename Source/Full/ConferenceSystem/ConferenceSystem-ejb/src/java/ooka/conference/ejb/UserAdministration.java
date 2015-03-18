@@ -1,7 +1,6 @@
 package ooka.conference.ejb;
 
-import java.util.List;
-import javax.ejb.EJB;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,14 +8,12 @@ import javax.persistence.Query;
 import ooka.conference.dto.UserData;
 import ooka.conference.entity.User;
 
-@Stateless // TODO Why Stateful? Replaced with Stateless
+@PermitAll
+@Stateless
 public class UserAdministration implements UserAdministrationLocal {
 
     @PersistenceContext
-    EntityManager em;
-    
-    @EJB
-    SearchLocal searchEJB;
+    private EntityManager em;
 
     @Override
     public void registerUser(UserData data) throws Exception {
@@ -28,24 +25,18 @@ public class UserAdministration implements UserAdministrationLocal {
 
     @Override
     public User validateUser(UserData data) throws Exception {
-        Query checkQuery = em.createNamedQuery("User.check");
-        checkQuery.setParameter("name", data.getName());
-        checkQuery.setParameter("password", data.getPassword());
-
-        List results = checkQuery.getResultList();
-
-        if (results.size() == 1) {
-            return (User) results.get(0);
-        }
-        return null;
+        Query validateQuery = em.createNamedQuery("User.check");
+        validateQuery.setParameter("name", data.getName());
+        validateQuery.setParameter("password", data.getPassword());
+        return (User) validateQuery.getSingleResult();
     }
 
     @Override
-    public void changePassword(final int userId, final String oldPw, final String newPw) throws Exception {
-        User user = searchEJB.searchUserById(userId);
-        if(user.getPassword().equals(oldPw)) {
+    public void changePassword(int userId, String oldPw, String newPw) throws Exception {
+        User user = em.find(User.class, userId);
+        if (user.getPassword().equals(oldPw)) {
             user.setPassword(newPw);
-            em.persist(newPw);
+            em.merge(user);
         } else {
             throw new Exception("Old password incorrect");
         }

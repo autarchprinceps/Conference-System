@@ -37,10 +37,10 @@
         <c:if test="#{userViewController.displayedUserOrganizer}">
             <c:choose>
                 <c:when test="#{userViewController.viewingUserIsCurrentUser()}">
-                    <h3>Average Rating of Conferences You Organized</h3>
+                    <h3>Average Rating of Conferences You organized</h3>
                 </c:when>
                 <c:otherwise>
-                    <h3>Average Rating of Conferences Organized by this User</h3>
+                    <h3>Average Rating of Conferences organized by this User</h3>
                 </c:otherwise>
             </c:choose>
             <p:rating stars="5" cancel="false" disabled="true" value="#{userViewController.averageOrganizerRating}"/>

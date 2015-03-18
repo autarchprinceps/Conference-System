@@ -11,37 +11,47 @@ import ooka.conference.entity.User;
 @Local
 public interface SearchLocal {
 
-    public Publication searchForPublication(Integer confId, Integer userId);
+    /*
+     * CONFERENCE
+     */
+    Conference searchConferenceById(int confId);
 
-    public Collection<Conference> searchForConferences();
+    Collection<Conference> searchForConferences();
 
-    public Collection<User> searchForUsers();
+    Collection<Conference> searchConferencesOrganizedBy(int userId);
 
-    public Conference searchConferenceById(Integer pk);
+    Collection<Conference> searchConferencesByNameStartingWith(String searchTerm);
 
-    public User searchUserById(Integer pk);
+    Collection<ConferenceUserRole> searchConferencesForUser(int userId);
 
-    public Collection<ConferenceUserRole> searchConferencesForUser(Integer userId);
+    Collection<ConferenceUserRole> searchUsersForConference(int confId);
 
-    public Collection<Publication> searchPublicationsForUser(Integer userId);
+    int getAverageRatingOfConference(int confId);
 
-    public Collection<PublicationReview> searchReviewsForUser(Integer userId);
+    /*
+     * USER
+     */
+    Collection<User> searchForUsers();
 
-    public Collection<ConferenceUserRole> searchUsersForConference(Integer confId);
-    
-    public Collection<PublicationReview> searchReviewsForPublication(int authorId, int conferenceId);
+    User searchUserById(int userId);
 
-    Collection<Publication> searchPublicationsByTitleStartingWith(final String searchTerm);
+    User searchOrganizerForConference(int confId);
 
-    Collection<Conference> searchConferencesByNameStartingWith(final String searchTerm);
+    int getAverageRatingOfOrganizer(int userId);
 
-    User searchOrganizerForConference(final int conferenceId);
+    /*
+     * PUBLICATION
+     */
+    Publication searchForPublication(int confId, int userId);
 
     Collection<Publication> searchForPublications();
 
-    int getAverageRatingOfConference(final Conference conference);
+    Collection<Publication> searchPublicationsForUser(int userId);
 
-    Collection<Conference> searchConferencesOrganizedBy(final int organizerId);
+    Collection<Publication> searchPublicationsByTitleStartingWith(String searchTerm);
 
-    int getAverageRatingOfOrganizer(final int organizerId);
+    Collection<PublicationReview> searchReviewsForUser(int userId);
+
+    Collection<PublicationReview> searchReviewsForPublication(int authorId, int confId);
+
 }

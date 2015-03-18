@@ -7,14 +7,14 @@ import ooka.conference.dto.Role;
 @Local
 public interface ConferenceAdministrationLocal {
 
-    public void rateConference(int conferenceId, int userId, int rating) throws Exception;
+    void rateConference(int confId, int userId, int rating) throws Exception;
 
-    public void createConference(int organizerId, ConferenceData data) throws Exception;
+    void createConference(int userId, ConferenceData data) throws Exception;
 
-    public void cancelConference(int conferenceId) throws Exception;
+    void cancelConference(int confId) throws Exception;
 
-    public void registerToConference(int conferenceId, int userId, Role role) throws Exception;
+    void registerToConference(int confId, int userId, Role role) throws Exception;
 
-    public void deregisterToConference(int conferenceId, int userId) throws Exception;
+    void deregisterToConference(int confId, int userId) throws Exception;
 
 }
