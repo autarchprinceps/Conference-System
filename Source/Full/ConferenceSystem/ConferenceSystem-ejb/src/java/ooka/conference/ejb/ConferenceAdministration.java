@@ -84,7 +84,7 @@ public class ConferenceAdministration implements ConferenceAdministrationLocal {
             throw new Exception("Could not register, because the participant limit for this conference has been reached.");
         }
 
-        ConferenceUserRolePK rolePK = new ConferenceUserRolePK(confId, userId);
+        ConferenceUserRolePK rolePK = new ConferenceUserRolePK(userId, confId);
         ConferenceUserRole newConferenceUserRole = new ConferenceUserRole(rolePK);
         newConferenceUserRole.setUserRole(role.toString());
         em.persist(newConferenceUserRole);

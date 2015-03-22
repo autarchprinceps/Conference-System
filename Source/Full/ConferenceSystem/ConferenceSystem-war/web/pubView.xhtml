@@ -82,8 +82,9 @@
             </p:column>
         </p:dataTable>
 
+        <c:if test="#{authenticationController.isAuthorOfPublication(publication) or authenticationController.isReviewerOfPublication(publication)}">
         <h3>Reviews</h3>
-        <c:if test="#{publicationViewController.currentUserCanReview()}">
+        <c:if test="#{authenticationController.isReviewerOfPublication(publication)}">
             <h:form enctype="multipart/form-data">
                 <p:panelGrid columns="2">
                     <h:inputFile value="#{publicationViewController.newReview}" />
@@ -115,6 +116,7 @@
                 </ui:fragment>
             </p:column>
         </p:dataTable>
+        </c:if>
     </h:body>
 </html>
 
