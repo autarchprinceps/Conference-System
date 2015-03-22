@@ -97,7 +97,7 @@ public class UserViewController extends AuthenticatedViewController {
     }
 
     public int getAverageOrganizerRating() {
-        return searchEJB.getAverageRatingOfOrganizer(displayedUser.getId());
+        return searchEJB.getAverageRatingOfOrganizer(displayedUser.getId()) + 3;
     }
 
     public boolean isDisplayedUserOrganizer() {
